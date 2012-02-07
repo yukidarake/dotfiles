@@ -73,15 +73,15 @@ Bundle 'molokai'
 Bundle 'serverhorror/javascript.vim'
 
 " --------------------------------------------------------------------------------------
-Bundle 'basyura/jslint.vim'
-function! s:javascript_filetype_settings()
-    autocmd BufLeave     <buffer> call jslint#clear()
-    autocmd BufWritePost <buffer> call jslint#check()
-    autocmd CursorMoved  <buffer> call jslint#message()
-endfunction
-augroup MyJslint
-    autocmd FileType javascript call s:javascript_filetype_settings()
-augroup END
+"Bundle 'basyura/jslint.vim'
+"function! s:javascript_filetype_settings()
+"    autocmd BufLeave     <buffer> call jslint#clear()
+"    autocmd BufWritePost <buffer> call jslint#check()
+"    autocmd CursorMoved  <buffer> call jslint#message()
+"endfunction
+"augroup MyJslint
+"    autocmd FileType javascript call s:javascript_filetype_settings()
+"augroup END
 
 " --------------------------------------------------------------------------------------
 Bundle 'jamescarr/snipmate-nodejs'
@@ -96,13 +96,13 @@ Bundle 'ack.vim'
 " Bundle 'https://github.com/joestelmach/javaScriptLint.vim.git'
 
 " --------------------------------------------------------------------------------------
-"Bundle 'Shougo/vimfiler'
-
+Bundle 'Syntastic'
+let g:syntastic_enable_signs=1 
+let g:syntastic_auto_loc_list=2
+"
 " --------------------------------------------------------------------------------------
-"Bundle 'majutsushi/tagbar'
-
-" --------------------------------------------------------------------------------------
-"Bundle 'juvenn/mustache'
+Bundle 'majutsushi/tagbar'
+nnoremap <F8> :TagbarToggle<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'https://github.com/thinca/vim-ft-svn_diff.git'
@@ -172,6 +172,9 @@ set laststatus=2
 set statusline=%<%f\ %m%r%h%w
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set statusline+=%=%l/%L,%c%V%8P
+
+" <C-S>でsave
+nnoremap <silent> <C-S> :if expand("%") == ""<CR>browse confirm w<CR>else<CR>confirm w<CR>endif<CR>
 
 augroup MyDev
     autocmd!

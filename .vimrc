@@ -67,21 +67,7 @@ Bundle 'surround.vim'
 Bundle 'repeat.vim'
 
 " --------------------------------------------------------------------------------------
-Bundle 'molokai' 
-
-" --------------------------------------------------------------------------------------
-Bundle 'serverhorror/javascript.vim'
-
-" --------------------------------------------------------------------------------------
-"Bundle 'basyura/jslint.vim'
-"function! s:javascript_filetype_settings()
-"    autocmd BufLeave     <buffer> call jslint#clear()
-"    autocmd BufWritePost <buffer> call jslint#check()
-"    autocmd CursorMoved  <buffer> call jslint#message()
-"endfunction
-"augroup MyJslint
-"    autocmd FileType javascript call s:javascript_filetype_settings()
-"augroup END
+Bundle 'molokai'
 
 " --------------------------------------------------------------------------------------
 Bundle 'jamescarr/snipmate-nodejs'
@@ -90,10 +76,13 @@ Bundle 'jamescarr/snipmate-nodejs'
 Bundle 'pangloss/vim-javascript'
 
 " --------------------------------------------------------------------------------------
+Bundle 'JavaScript-syntax'
+
+" --------------------------------------------------------------------------------------
 Bundle 'ack.vim'
 
 " --------------------------------------------------------------------------------------
-" Bundle 'https://github.com/joestelmach/javaScriptLint.vim.git'
+Bundle 'Lokaltog/vim-powerline'
 
 " --------------------------------------------------------------------------------------
 Bundle 'Syntastic'
@@ -115,11 +104,6 @@ nnoremap ,/ /
 nnoremap ,? ?
 
 filetype plugin indent on " Vundle
-
-" □とか○の文字があってもカーソル位置がずれないようにする
-if exists('&ambiwidth')
-  set ambiwidth=double
-endif
 
 " color
 syntax on

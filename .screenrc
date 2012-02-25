@@ -1,0 +1,34 @@
+# prefix key [Ctrl]-z
+escape ^Zz
+
+# General
+startup_message off
+vbell           off
+msgminwait      0
+autodetach      on
+defscrollback   1000
+
+# http://d.hatena.ne.jp/naoya/20051223/1135351050
+# List window
+hardstatus on
+#hardstatus alwayslastline "%{.Wb}.: %-w%{.RW}%n %t%{-}%+w :. %=[%Y-%m-%d %02c]"
+hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
+
+
+# http://www.negeta.com/~maya/tdiary/?date=20080229#p02
+# 256 colors
+defbce             on
+term               xterm-256color
+termcapinfo xterm* 'Co#256:pa#32767:AB=\E[48;5;%dm:AF=\E[38;5;%dm:'
+termcapinfo kterm* 'Co#256:pa#32767:AB=\E[48;5;%dm:AF=\E[38;5;%dm:'
+
+# http://paranoid.dip.jp/kaworu/2008-03-06-1.html
+# Resize Window
+termcapinfo xterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+termcapinfo kterm* 'is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l'
+
+# Binding Keys
+bind w windowlist -b
+
+# http://subtech.g.hatena.ne.jp/secondlife/20110309/1299648331
+termcapinfo xterm* ti@:te@

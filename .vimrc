@@ -99,6 +99,7 @@ let g:quickrun_config = {}
 let g:quickrun_config['markdown'] = {
       \ 'outputter': 'browser'
       \ }
+let $JS_CMD='node'
 
 " --------------------------------------------------------------------------------------
 Bundle 'open-browser.vim'
@@ -177,7 +178,7 @@ augroup MyDev
     autocmd!
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/ 
     autocmd FileType css set noet | set iskeyword+=-,_,#
-    autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set noet
+    autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 augroup END
 

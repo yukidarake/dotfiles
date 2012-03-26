@@ -20,6 +20,7 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
             npm install -g $x
         fi
     done
+    unset _NPM_INSTALLED
 fi
 
 

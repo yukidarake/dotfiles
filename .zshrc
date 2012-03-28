@@ -3,8 +3,12 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
+export LESS='-R'
+export GREP_OPTIONS='--color=always'
+
 
 bindkey -e
+stty stop undef
 
 
 # node
@@ -14,13 +18,18 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 
     # 常用npmモジュール
-    _NPM_INSTALLED=`npm ls -g`
-    for x in optimist async jshint nodeunit mocha should node-inspector node-dev; do
-        if ! echo "$_NPM_INSTALLED" | grep "$x@" > /dev/null; then
+    __NPM_INSTALLED=`npm ls -g`
+    __NPM_MODULES=(
+        optimist async jshint nodeunit mocha 
+        should node-inspector node-dev long-stack-traces
+    )
+    for x in ${__NPM_MODULES[@]}; do
+        if ! echo "$__NPM_INSTALLED" | grep "$x@" > /dev/null; then
             npm install -g $x
         fi
     done
-    unset _NPM_INSTALLED
+    unset __NPM_INSTALLED
+    unset __NPM_MODULES
 fi
 
 
@@ -65,22 +74,29 @@ setopt prompt_subst               # 便利なプロント
 alias ls='ls -G'
 alias ll='ls -ahl'
 alias l='ls -al'
+alias mv='mv -i'
+alias rm='rm -i'
 alias tmux='tmux -2'
+alias ack='ack --color'
 
+
+# 補完
+autoload -U compinit && compinit
 
 ## 補完時に大小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
-autoload -U compinit && compinit
 
-## options
-setopt BASH_AUTO_LIST
-setopt LIST_AMBIGUOUS
+
+
+# options
+setopt bash_auto_list
+setopt list_ambiguous
 setopt autopushd
-stty stop undef
 
-## history
+
+# history
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end

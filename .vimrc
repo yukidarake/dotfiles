@@ -1,14 +1,15 @@
 set nocompatible
 
-filetype off " Vundle
-
-set rtp+=~/.vim/vundle.git/
+" Vundle
+filetype off
+set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+Bundle 'gmarik/vundle'
 
 " --------------------------------------------------------------------------------------
-Bundle 'neocomplcache'
+Bundle 'Shougo/neocomplcache'
 let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_quick_match = 1
+let g:neocomplcache_auto_completion_start_length = 2
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 imap <TAB> <Plug>(neocomplcache_snippets_expand)
@@ -16,37 +17,34 @@ smap <TAB> <Plug>(neocomplcache_snippets_expand)
 let g:neocomplcache_snippets_dir = $HOME . '/snippets'
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
- \ 'default' : '',
- \ 'javascript' : $HOME.'/github/vim-node/dict/node.dict'
- \ }
+    \ 'default' : '',
+    \ 'javascript' : $HOME.'/github/vim-node/dict/node.dict'
+    \ }
 
 " --------------------------------------------------------------------------------------
-Bundle 'unite.vim' 
-"Bundle 'tsukkee/unite-tag'
+Bundle 'Shougo/unite.vim'
+let g:unite_enable_start_insert=1
+let g:unite_source_file_rec_ignore_pattern=
+ \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|ba\?k\|sw[po]\|tmp\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|node_modules'
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
 " バッファ一覧
-nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+nnoremap <silent> <space>b :<C-u>Unite buffer<CR>
 " ファイル一覧
-nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> <space>f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 " レジスタ一覧
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> <space>r :<C-u>Unite -buffer-name=register register<CR>
 " 最近使用したファイル一覧
-nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-nnoremap <silent> ,uh :<C-u>Unite file_mru<CR>
+nnoremap <silent> <space>h :<C-u>Unite file_mru<CR>
 " 常用セット
-nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
-" 全部乗せ
-nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+nnoremap <silent> <space>u :<C-u>Unite buffer file_mru<CR>
 " プロジェクト
-nnoremap <silent> ,up :<C-u>call <SID>unite_project('-start-insert')<CR>
+nnoremap <silent> <space>p :<C-u>call <SID>unite_project('-start-insert')<CR>
 function! s:unite_project(...)
     let opts = (a:0 ? join(a:000, ' ') : '')
     let dir = unite#util#path2project_directory(expand('%'))
     execute 'Unite' opts 'file_rec:' . dir
 endfunction
-" tags
-"nnoremap <silent> ,ut :<C-u>Unite tag<CR>
 
 augroup MyUnite
     autocmd!
@@ -58,9 +56,19 @@ augroup MyUnite
     autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 augroup END
 
+Bundle 't9md/vim-unite-ack'
+let g:unite_source_ack_command='ack --color'
+nnoremap <silent> <Space>a  :<C-u>exe "Unite -buffer-name=ack ack::" .  escape(expand('<cword>'),' :\')<CR>
+vnoremap <silent> <Space>a  :<C-u>exe "Unite -buffer-name=ack ack::" .  <SID>visual_unite_arg()<CR>
+nnoremap <silent> <Space>A  :<C-u>UniteResume ack<CR>
+
+
+" --------------------------------------------------------------------------------------
+Bundle 'Shougo/vimproc'
+
 " --------------------------------------------------------------------------------------
 " Bundle 'ZenCoding.vim'
-" let g:user_zen_expandabbr_key = '<c-e>'  
+" let g:user_zen_expandabbr_key = '<c-e>'
 
 " --------------------------------------------------------------------------------------
 Bundle 'surround.vim'
@@ -86,12 +94,12 @@ Bundle 'Lokaltog/vim-powerline'
 
 " --------------------------------------------------------------------------------------
 Bundle 'Syntastic'
-let g:syntastic_enable_signs=1 
+let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 "
 " --------------------------------------------------------------------------------------
-Bundle 'majutsushi/tagbar'
-nnoremap <F8> :TagbarToggle<CR>
+"Bundle 'majutsushi/tagbar'
+"nnoremap <F8> :TagbarToggle<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'quickrun.vim'
@@ -117,7 +125,8 @@ nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
 
-filetype plugin indent on " Vundle
+" /Vundle
+filetype plugin indent on
 
 " color
 syntax on
@@ -143,9 +152,9 @@ set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
 set history=200
 set number
 set backspace=indent,eol,start
-set ruler 
-set showmatch 
-set showmode 
+set ruler
+set showmatch
+set showmode
 set virtualedit+=block " http://vim-users.jp/2010/02/hack125/
 "set showtabline=2 "常にタブ表示
 set title
@@ -158,6 +167,16 @@ set grepprg=grep\ -nHPR\ --exclude='*.svn*'
 
 set fdm=manual
 set nofoldenable
+
+" 独自のキーバインディング
+
+"" .vimrc編集
+nnoremap <silent> <Space>ev  :<C-u>edit $MYVIMRC<CR>
+
+nnoremap ; :
+
+nnoremap <C-M> <C-J>
+
 
 " 「日本語入力固定モード」切替キー
 "inoremap <silent> <C-j> <C-^><C-r>=IMState('FixMode')<CR>
@@ -176,9 +195,10 @@ nnoremap <silent> <C-S> :if expand("%") == ""<CR>browse confirm w<CR>else<CR>con
 
 augroup MyDev
     autocmd!
-    autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/ 
+    autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
     autocmd FileType css set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd BufWritePre * %s/\s\+$//e
 augroup END
 

@@ -18,8 +18,6 @@
     "dojo"          : false,
 
     "predef"        : [  // Extra globals.
-        //"coolVar"
-    "predef": [
         "describe",   // Used by mocha
         "it",         // Used by mocha
         "before",     // Used by mocha

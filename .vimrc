@@ -28,18 +28,23 @@ let g:unite_source_file_rec_ignore_pattern=
  \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|ba\?k\|sw[po]\|tmp\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|node_modules'
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+
+" prefix key
+nnoremap [Unite] <Nop>
+nmap <Space> [Unite]
+
 " バッファ一覧
-nnoremap <silent> <space>b :<C-u>Unite buffer<CR>
+nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 " ファイル一覧
-nnoremap <silent> <space>f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 " レジスタ一覧
-nnoremap <silent> <space>r :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 " 最近使用したファイル一覧
-nnoremap <silent> <space>h :<C-u>Unite file_mru<CR>
+nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 " 常用セット
-nnoremap <silent> <space>u :<C-u>Unite buffer file_mru<CR>
+nnoremap <silent> [Unite]u :<C-u>Unite buffer file_mru<CR>
 " プロジェクト
-nnoremap <silent> <space>p :<C-u>call <SID>unite_project('-start-insert')<CR>
+nnoremap <silent> [Unite]p :<C-u>call <SID>unite_project('-start-insert')<CR>
 function! s:unite_project(...)
     let opts = (a:0 ? join(a:000, ' ') : '')
     let dir = unite#util#path2project_directory(expand('%'))
@@ -58,9 +63,9 @@ augroup END
 
 Bundle 't9md/vim-unite-ack'
 let g:unite_source_ack_command='ack --color'
-nnoremap <silent> <Space>a  :<C-u>exe "Unite -buffer-name=ack ack::" .  escape(expand('<cword>'),' :\')<CR>
-vnoremap <silent> <Space>a  :<C-u>exe "Unite -buffer-name=ack ack::" .  <SID>visual_unite_arg()<CR>
-nnoremap <silent> <Space>A  :<C-u>UniteResume ack<CR>
+nnoremap <silent> [Unite]a  :<C-u>exe "Unite -buffer-name=ack ack::" .  escape(expand('<cword>'),' :\')<CR>
+vnoremap <silent> [Unite]a  :<C-u>exe "Unite -buffer-name=ack ack::" .  <SID>visual_unite_arg()<CR>
+nnoremap <silent> [Unite]A  :<C-u>UniteResume ack<CR>
 
 
 " --------------------------------------------------------------------------------------
@@ -161,9 +166,13 @@ set title
 set wildmenu " コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
 set wildmode=list:longest " コマンドライン補間をシェルっぽく
 set cursorline " カーソル行表示
+set hidden
 
 " grep
-set grepprg=grep\ -nHPR\ --exclude='*.svn*'
+"set grepprg=grep\ -nHPR\ --exclude='*.svn*'
+set grepprg=ack\ -a\ --nocolor
+nmap ;q :Unite qf<CR>
+nmap ;/ :grep  \| Unite qf<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
 set fdm=manual
 set nofoldenable
@@ -173,9 +182,9 @@ set nofoldenable
 "" .vimrc編集
 nnoremap <silent> <Space>ev  :<C-u>edit $MYVIMRC<CR>
 
-nnoremap ; :
+nnoremap <C-J> <C-M>
 
-nnoremap <C-M> <C-J>
+nnoremap <silent> <Space>er  :Errors<CR>
 
 
 " 「日本語入力固定モード」切替キー

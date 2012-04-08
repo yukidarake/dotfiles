@@ -1,4 +1,4 @@
-export LANG=ja_JP.UTF-8 
+export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export PATH=/usr/local/bin:$PATH
@@ -20,7 +20,7 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
     # 常用npmモジュール
     __NPM_INSTALLED=`npm ls -g`
     __NPM_MODULES=(
-        optimist async jshint nodeunit mocha 
+        optimist async jshint nodeunit mocha
         should node-inspector node-dev long-stack-traces
     )
     for x in ${__NPM_MODULES[@]}; do
@@ -53,14 +53,14 @@ case ${UID} in
     PROMPT="%B%{[31m%}%/#%{[m%}%b "
     PROMPT2="%B%{[31m%}%_#%{[m%}%b "
     SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
     ;;
     *)
     PROMPT="%{[31m%}%/%%%{[m%} "
     PROMPT2="%{[31m%}%_%%%{[m%} "
     SPROMPT="%{[31m%}%r is correct? [n,y,a,e]:%{[m%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
     PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
     ;;
 esac
@@ -76,8 +76,10 @@ alias ll='ls -ahl'
 alias l='ls -al'
 alias mv='mv -i'
 alias rm='rm -i'
+alias less='less -R'
 alias tmux='tmux -2'
-alias ack='ack --color'
+alias view='vim -R'
+alias v='vi -'
 
 
 # 補完
@@ -96,12 +98,20 @@ setopt list_ambiguous
 setopt autopushd
 
 
+
+# 単語の単位は/で区切る
+autoload -Uz select-word-style
+select-word-style default
+zstyle ':zle:*' word-chars " _-./;@"
+zstyle ':zle:*' word-style unspecified
+
+
 # history
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end 
+bindkey "^N" history-beginning-search-forward-end
 HISTFILE=~/.zsh_history
 HISTSIZE=16384
 SAVEHIST=16384

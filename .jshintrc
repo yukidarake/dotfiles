@@ -41,7 +41,7 @@
     // The Good Parts.
     "asi"           : false,  // Tolerate Automatic Semicolon Insertion (no semicolons).
     "laxbreak"      : true,   // Tolerate unsafe line breaks e.g. `return [\n] x` without semicolons.
-    "bitwise"       : true,   // Prohibit bitwise operators (&, |, ^, etc.).
+    "bitwise"       : false,   // Prohibit bitwise operators (&, |, ^, etc.).
     "boss"          : false,  // Tolerate assignments inside if, for & while. Usually conditions & loops are for comparison, not assignments.
     "curly"         : true,   // Require {} for every new block or scope.
     "eqeqeq"        : true,   // Require triple equals i.e. `===`.
@@ -57,7 +57,7 @@
     "regexdash"     : false,  // Tolerate unescaped last dash i.e. `[-...]`.
     "scripturl"     : true,   // Tolerate script-targeted URLs.
     "smarttabs"     : true,  // This option suppresses warnings about mixed tabs and spaces when the latter are used for alignmnent only.
-    "shadow"        : false,  // Allows re-define variables later in code e.g. `var x=1; x=2;`.
+    "shadow"        : true,  // Allows re-define variables later in code e.g. `var x=1; x=2;`.
     "supernew"      : true,  // Tolerate `new function () { ... };` and `new Object;`.
     "undef"         : true,   // Require all non-global variables be declared before they are used.
 

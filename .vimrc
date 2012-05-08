@@ -14,11 +14,16 @@ let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 imap <TAB> <Plug>(neocomplcache_snippets_expand)
 smap <TAB> <Plug>(neocomplcache_snippets_expand)
-let g:neocomplcache_snippets_dir = $HOME . '/snippets'
+let g:neocomplcache_snippets_dir = '~/snippets'
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
-    \ 'javascript' : $HOME.'/github/vim-node/dict/node.dict'
+    \ 'javascript' : '~/github/vim-node/dict/node.dict'
+    \ }
+let g:neocomplcache_omni_functions = {
+    \ 'python' : 'pythoncomplete#Complete',
+    \ 'ruby' : 'rubycomplete#Complete',
+    \ 'javascript' : 'javascriptcomplete#CompleteJS',
     \ }
 
 " --------------------------------------------------------------------------------------
@@ -26,8 +31,6 @@ Bundle 'Shougo/unite.vim'
 let g:unite_enable_start_insert=1
 let g:unite_source_file_rec_ignore_pattern=
  \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|ba\?k\|sw[po]\|tmp\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|node_modules'
-" 入力モードで開始する
-let g:unite_enable_start_insert=1
 
 " prefix key
 nnoremap [Unite] <Nop>
@@ -61,11 +64,8 @@ augroup MyUnite
     autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 augroup END
 
-Bundle 't9md/vim-unite-ack'
-let g:unite_source_ack_command='ack --color'
-nnoremap <silent> [Unite]a  :<C-u>exe "Unite -buffer-name=ack ack::" .  escape(expand('<cword>'),' :\')<CR>
-vnoremap <silent> [Unite]a  :<C-u>exe "Unite -buffer-name=ack ack::" .  <SID>visual_unite_arg()<CR>
-nnoremap <silent> [Unite]A  :<C-u>UniteResume ack<CR>
+Bundle 'h1mesuke/unite-outline'
+nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
 
 
 " --------------------------------------------------------------------------------------
@@ -81,9 +81,6 @@ Bundle 'repeat.vim'
 
 " --------------------------------------------------------------------------------------
 Bundle 'molokai'
-
-" --------------------------------------------------------------------------------------
-Bundle 'jamescarr/snipmate-nodejs'
 
 " --------------------------------------------------------------------------------------
 Bundle 'pangloss/vim-javascript'
@@ -116,6 +113,12 @@ let $JS_CMD='node'
 
 " --------------------------------------------------------------------------------------
 Bundle 'open-browser.vim'
+"
+" --------------------------------------------------------------------------------------
+Bundle 'ref.vim'
+nnoremap <silent> <Space>ra  :<C-u>Ref alc<Space>
+
+let g:ref_alc_start_linenumber = 39 " 表示する行数
 
 " --------------------------------------------------------------------------------------
 Bundle 'Markdown'
@@ -171,8 +174,6 @@ set hidden
 " grep
 "set grepprg=grep\ -nHPR\ --exclude='*.svn*'
 set grepprg=ack\ -a\ --nocolor
-nmap ;q :Unite qf<CR>
-nmap ;/ :grep  \| Unite qf<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
 set fdm=manual
 set nofoldenable
@@ -181,10 +182,19 @@ set nofoldenable
 
 "" .vimrc編集
 nnoremap <silent> <Space>ev  :<C-u>edit $MYVIMRC<CR>
-
 nnoremap <C-J> <C-M>
+nnoremap <silent> <Space>ee  :Errors<CR>
+nnoremap <silent> <LEFT>  :bn<CR>
+nnoremap <silent> <RIGHT>  :bp<CR>
+nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
 
-nnoremap <silent> <Space>er  :Errors<CR>
+"" 検索結果を中心に持ってくる
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
 
 
 " 「日本語入力固定モード」切替キー
@@ -207,7 +217,6 @@ augroup MyDev
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
     autocmd FileType css set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
     autocmd BufWritePre * %s/\s\+$//e
 augroup END
 

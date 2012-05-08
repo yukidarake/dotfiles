@@ -14,7 +14,7 @@ stty stop undef
 # node
 if [[ -f ~/.nvm/nvm.sh ]]; then
     source ~/.nvm/nvm.sh
-    nvm use 0.6.14
+    nvm use 0.6.15
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 
     # 常用npmモジュール
@@ -98,12 +98,6 @@ setopt list_ambiguous
 setopt autopushd
 
 
-
-# 単語の単位は/で区切る
-autoload -Uz select-word-style
-select-word-style default
-zstyle ':zle:*' word-chars " _-./;@"
-zstyle ':zle:*' word-style unspecified
 
 
 # history

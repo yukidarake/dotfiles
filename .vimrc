@@ -8,6 +8,7 @@ Bundle 'gmarik/vundle'
 
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplcache-snippets-complete'
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_auto_completion_start_length = 2
 let g:neocomplcache_enable_smart_case = 1
@@ -124,7 +125,10 @@ let g:ref_alc_start_linenumber = 39 " 表示する行数
 Bundle 'Markdown'
 
 " --------------------------------------------------------------------------------------
-Bundle 'https://github.com/thinca/vim-ft-svn_diff.git'
+Bundle 'digitaltoad/vim-jade'
+
+" --------------------------------------------------------------------------------------
+Bundle 'thinca/vim-ft-svn_diff'
 
 " --------------------------------------------------------------------------------------
 Bundle 'othree/eregex.vim'
@@ -187,6 +191,7 @@ nnoremap <silent> <Space>ee  :Errors<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT>  :bp<CR>
 nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
+map <Space>jj !python -m json.tool<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -215,7 +220,7 @@ nnoremap <silent> <C-S> :if expand("%") == ""<CR>browse confirm w<CR>else<CR>con
 augroup MyDev
     autocmd!
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
-    autocmd FileType css set noet | set iskeyword+=-,_,#
+    autocmd FileType css,jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd BufWritePre * %s/\s\+$//e
 augroup END

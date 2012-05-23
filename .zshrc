@@ -47,6 +47,12 @@ if [[ -f /usr/local/maven2/bin/mvn ]]; then
 fi
 
 
+# autojump
+if [ -f `brew --prefix`/etc/autojump ]; then
+    . `brew --prefix`/etc/autojump
+fi
+
+
 # prompt
 case ${UID} in
     0)
@@ -80,6 +86,7 @@ alias less='less -R'
 alias tmux='tmux -2'
 alias view='vim -R'
 alias v='vi -'
+alias j='autojump'
 
 
 # 補完

@@ -14,7 +14,7 @@ stty stop undef
 # node
 if [[ -f ~/.nvm/nvm.sh ]]; then
     source ~/.nvm/nvm.sh
-    nvm use 0.6.15
+    nvm alias default 0.6
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 
     # 常用npmモジュール
@@ -47,9 +47,13 @@ if [[ -f /usr/local/maven2/bin/mvn ]]; then
 fi
 
 
-# autojump
-if [ -f `brew --prefix`/etc/autojump ]; then
-    . `brew --prefix`/etc/autojump
+# z
+if [[ -f ~/z.sh ]]; then
+    _Z_CMD=j
+    source ~/z.sh
+    precmd() {
+        _z --add "$(pwd -P)"
+    }
 fi
 
 
@@ -127,8 +131,7 @@ zshaddhistory() {
     # 以下の条件をすべて満たすものだけをヒストリに追加する
     [[ ${#line} -ge 5
         && ${cmd} != (l|l[sal])
-        && ${cmd} != (c|cd)
-        && ${cmd} != (m|man)
+        && ${cmd} != (man)
         && ${cmd} != (rm) ]]
 }
 

@@ -5,6 +5,7 @@ export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=always'
+export ACK_PAGER=less
 
 
 bindkey -e
@@ -14,7 +15,7 @@ stty stop undef
 # node
 if [[ -f ~/.nvm/nvm.sh ]]; then
     source ~/.nvm/nvm.sh
-    nvm alias default 0.6
+    nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 
     # 常用npmモジュール
@@ -89,8 +90,11 @@ alias rm='rm -i'
 alias less='less -R'
 alias tmux='tmux -2'
 alias view='vim -R'
-alias v='vi -'
+alias v='vim -'
 alias j='autojump'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
 
 # 補完
@@ -117,6 +121,8 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
 HISTFILE=~/.zsh_history
 HISTSIZE=16384
 SAVEHIST=16384
@@ -132,6 +138,7 @@ zshaddhistory() {
     [[ ${#line} -ge 5
         && ${cmd} != (l|l[sal])
         && ${cmd} != (man)
+        && ${cmd} != (say)
         && ${cmd} != (rm) ]]
 }
 

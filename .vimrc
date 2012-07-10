@@ -1,5 +1,8 @@
 set nocompatible
 
+set encoding=utf-8
+set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
+
 " Vundle
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -48,12 +51,7 @@ nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 " 常用セット
 nnoremap <silent> [Unite]u :<C-u>Unite buffer file_mru<CR>
 " プロジェクト
-nnoremap <silent> [Unite]p :<C-u>call <SID>unite_project('-start-insert')<CR>
-function! s:unite_project(...)
-    let opts = (a:0 ? join(a:000, ' ') : '')
-    let dir = unite#util#path2project_directory(expand('%'))
-    execute 'Unite' opts 'file_rec:' . dir
-endfunction
+nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
 
 augroup MyUnite
     autocmd!
@@ -68,6 +66,13 @@ augroup END
 Bundle 'h1mesuke/unite-outline'
 nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
 
+Bundle 'thinca/vim-unite-history'
+nnoremap <silent> [Unite]y :<C-u>Unite history/command<CR>
+
+Bundle 't9md/vim-unite-ack'
+let g:unite_source_ack_enable_print_cmd = 1
+let g:unite_source_ack_command="ack --color --nogroup"
+nnoremap <silent> [Unite]a :<C-u>Unite ack::<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/vimproc'
@@ -190,7 +195,7 @@ nnoremap <C-J> <C-M>
 nnoremap <silent> <Space>ee  :Errors<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT>  :bp<CR>
-nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
+"nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
 map <Space>jj !python -m json.tool<CR>
 
 "" 検索結果を中心に持ってくる
@@ -213,9 +218,6 @@ set laststatus=2
 set statusline=%<%f\ %m%r%h%w
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set statusline+=%=%l/%L,%c%V%8P
-
-" <C-S>でsave
-nnoremap <silent> <C-S> :if expand("%") == ""<CR>browse confirm w<CR>else<CR>confirm w<CR>endif<CR>
 
 augroup MyDev
     autocmd!

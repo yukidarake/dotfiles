@@ -86,7 +86,7 @@ Bundle 'surround.vim'
 Bundle 'repeat.vim'
 
 " --------------------------------------------------------------------------------------
-Bundle 'molokai'
+Bundle 'rickharris/vim-monokai'
 
 " --------------------------------------------------------------------------------------
 Bundle 'pangloss/vim-javascript'
@@ -149,7 +149,7 @@ filetype plugin indent on
 syntax on
 set background=dark
 set t_Co=256
-let scheme = 'molokai'
+let scheme = 'monokai'
 augroup guicolorscheme
 autocmd!
     execute 'autocmd GUIEnter * colorscheme' scheme

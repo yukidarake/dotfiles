@@ -11,14 +11,18 @@ Bundle 'gmarik/vundle'
 
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neocomplcache-snippets-complete'
+Bundle 'Shougo/neosnippet'
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_auto_completion_start_length = 2
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
-imap <TAB> <Plug>(neocomplcache_snippets_expand)
-smap <TAB> <Plug>(neocomplcache_snippets_expand)
-let g:neocomplcache_snippets_dir = '~/snippets'
+imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+let g:neosnippet#snippets_directory = '~/snippets'
+let g:neosnippet#disable_runtime_snippets = {
+    \ 'javascript' : 1,
+    \ }
+
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
@@ -27,7 +31,6 @@ let g:neocomplcache_dictionary_filetype_lists = {
 let g:neocomplcache_omni_functions = {
     \ 'python' : 'pythoncomplete#Complete',
     \ 'ruby' : 'rubycomplete#Complete',
-    \ 'javascript' : 'javascriptcomplete#CompleteJS',
     \ }
 
 " --------------------------------------------------------------------------------------
@@ -35,6 +38,8 @@ Bundle 'Shougo/unite.vim'
 let g:unite_enable_start_insert=1
 let g:unite_source_file_rec_ignore_pattern=
  \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|ba\?k\|sw[po]\|tmp\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|node_modules'
+let g:unite_cursor_line_highlight = 'Error'
+let g:unite_abbr_highlight = 'StatusLine'
 
 " prefix key
 nnoremap [Unite] <Nop>
@@ -52,6 +57,15 @@ nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 nnoremap <silent> [Unite]u :<C-u>Unite buffer file_mru<CR>
 " プロジェクト
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
+" grep
+nnoremap <silent> [Unite]g :<C-u>Unite grep<CR>
+
+" For ack.
+if executable('ack')
+    let g:unite_source_grep_command = 'ack'
+    let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
+    let g:unite_source_grep_recursive_opt = ''
+endif
 
 augroup MyUnite
     autocmd!
@@ -67,12 +81,12 @@ Bundle 'h1mesuke/unite-outline'
 nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
 
 Bundle 'thinca/vim-unite-history'
-nnoremap <silent> [Unite]y :<C-u>Unite history/command<CR>
+nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
+nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
+nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 
-Bundle 't9md/vim-unite-ack'
-let g:unite_source_ack_enable_print_cmd = 1
-let g:unite_source_ack_command="ack --color --nogroup"
-nnoremap <silent> [Unite]a :<C-u>Unite ack::<CR>
+Bundle 'tsukkee/unite-tag'
+nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/vimproc'
@@ -95,9 +109,6 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'JavaScript-syntax'
 
 " --------------------------------------------------------------------------------------
-Bundle 'ack.vim'
-
-" --------------------------------------------------------------------------------------
 Bundle 'Lokaltog/vim-powerline'
 
 " --------------------------------------------------------------------------------------
@@ -107,27 +118,25 @@ let g:syntastic_auto_loc_list=2
 "
 " --------------------------------------------------------------------------------------
 "Bundle 'majutsushi/tagbar'
-"nnoremap <F8> :TagbarToggle<CR>
+"noremap <F8> :TagbarToggle<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'quickrun.vim'
-let g:quickrun_config = {}
-let g:quickrun_config['markdown'] = {
-      \ 'outputter': 'browser'
-      \ }
-let $JS_CMD='node'
+let g:quickrun_config = {
+  \ 'markdown': {
+  \     'outputter': 'browser'
+  \     },
+  \ 'javascript': {
+  \     'command': 'node',
+  \     'tempfile': '{tempname()}.js'
+  \     }
+  \ }
 
 " --------------------------------------------------------------------------------------
-Bundle 'open-browser.vim'
-"
-" --------------------------------------------------------------------------------------
-Bundle 'ref.vim'
-nnoremap <silent> <Space>ra  :<C-u>Ref alc<Space>
-
-let g:ref_alc_start_linenumber = 39 " 表示する行数
+"Bundle 'open-browser.vim'
 
 " --------------------------------------------------------------------------------------
-Bundle 'Markdown'
+"Bundle 'Markdown'
 
 " --------------------------------------------------------------------------------------
 Bundle 'digitaltoad/vim-jade'
@@ -141,6 +150,20 @@ nnoremap / :M/
 nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
+
+" --------------------------------------------------------------------------------------
+Bundle 'Tabular'
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 
 " /Vundle
 filetype plugin indent on
@@ -173,16 +196,11 @@ set ruler
 set showmatch
 set showmode
 set virtualedit+=block " http://vim-users.jp/2010/02/hack125/
-"set showtabline=2 "常にタブ表示
 set title
 set wildmenu " コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
 set wildmode=list:longest " コマンドライン補間をシェルっぽく
 set cursorline " カーソル行表示
 set hidden
-
-" grep
-"set grepprg=grep\ -nHPR\ --exclude='*.svn*'
-set grepprg=ack\ -a\ --nocolor
 
 set fdm=manual
 set nofoldenable
@@ -190,13 +208,14 @@ set nofoldenable
 " 独自のキーバインディング
 
 "" .vimrc編集
-nnoremap <silent> <Space>ev  :<C-u>edit $MYVIMRC<CR>
+nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Space>ee  :Errors<CR>
+nnoremap <silent> <Space>ee :Errors<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
-nnoremap <silent> <RIGHT>  :bp<CR>
+nnoremap <silent> <RIGHT> :bp<CR>
 "nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
 map <Space>jj !python -m json.tool<CR>
+nnoremap <silent>\t :e %:s#s/#test/#<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -219,11 +238,17 @@ set statusline=%<%f\ %m%r%h%w
 set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
 set statusline+=%=%l/%L,%c%V%8P
 
+" 信頼性を犠牲にして高速化
+if has('unix')
+    set nofsync
+    set swapsync=
+endif
+
 augroup MyDev
     autocmd!
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
     autocmd FileType css,jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
-    autocmd BufWritePre * %s/\s\+$//e
+    autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
 augroup END
 

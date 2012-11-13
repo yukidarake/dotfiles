@@ -5,7 +5,7 @@ export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=always'
-export ACK_PAGER=less
+#export ACK_PAGER='less'
 
 
 bindkey -e
@@ -17,21 +17,8 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
     source ~/.nvm/nvm.sh
     nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
-
-    # 常用npmモジュール
-    __NPM_INSTALLED=`npm ls -g`
-    __NPM_MODULES=(
-        optimist async jshint nodeunit mocha
-        should node-inspector node-dev long-stack-traces
-    )
-    for x in ${__NPM_MODULES[@]}; do
-        if ! echo "$__NPM_INSTALLED" | grep "$x@" > /dev/null; then
-            npm install -g $x
-        fi
-    done
-    unset __NPM_INSTALLED
-    unset __NPM_MODULES
 fi
+# npm install -g optimist async jshint nodeunit mocha should node-inspector node-dev long-stack-traces
 
 
 # ruby
@@ -45,16 +32,6 @@ fi
 if [[ -f /usr/local/maven2/bin/mvn ]]; then
     export MAVEN_HOME=/usr/local/maven2
     export PATH=$MAVEN_HOME/bin:$PATH
-fi
-
-
-# z
-if [[ -f ~/z.sh ]]; then
-    _Z_CMD=j
-    source ~/z.sh
-    precmd() {
-        _z --add "$(pwd -P)"
-    }
 fi
 
 
@@ -141,6 +118,20 @@ zshaddhistory() {
         && ${cmd} != (say)
         && ${cmd} != (rm) ]]
 }
+
+# z
+_Z_CMD=j
+source ~/z.sh
+precmd() {
+    _z --add "$(pwd -P)"
+}
+
+show_buffer_stack() {
+    POSTDISPLAY="
+    stack: $LBUFFER"
+    zle push-line-or-edit
+}
+zle -N show_buffer_stack
 
 # 設定ファイルのinclude
 [ -f ~/.zshrc.include ] && source ~/.zshrc.include

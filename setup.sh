@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc)
+DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc .zsh)
 
 for file in ${DOT_FILES[@]}
 do

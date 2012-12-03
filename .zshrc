@@ -5,12 +5,11 @@ export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=always'
-#export ACK_PAGER='less'
-
 
 bindkey -e
 stty stop undef
 
+ZSH_FILES=~/.zsh
 
 # node
 if [[ -f ~/.nvm/nvm.sh ]]; then
@@ -73,24 +72,29 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+# source auto-fu.zsh
+if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
+    source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
+    function zle-line-init () {
+        auto-fu-init
+    }
+    zle -N zle-line-init
+    zstyle ':completion:*' completer _oldlist _complete
+    zstyle ':auto-fu:var' postdisplay ''
+fi
 
 # 補完
+fpath=($ZSH_FILES/plugins/zsh-completions/src $fpath)
 autoload -U compinit && compinit
 
-## 補完時に大小文字を区別しない
+# 補完時に大小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
-
-
-
 
 # options
 setopt bash_auto_list
 setopt list_ambiguous
 setopt autopushd
-
-
-
 
 # history
 autoload history-search-end

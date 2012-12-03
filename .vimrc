@@ -18,7 +18,7 @@ let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:neosnippet#snippets_directory = '~/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets'
 let g:neosnippet#disable_runtime_snippets = {
     \ 'javascript' : 1,
     \ }
@@ -205,6 +205,12 @@ set hidden
 set fdm=manual
 set nofoldenable
 
+" undo
+set undodir=~/.vim/undo
+set undofile
+set undolevels=1000
+set undoreload=4000
+
 " 独自のキーバインディング
 
 "" .vimrc編集
@@ -215,7 +221,7 @@ nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
 "nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
 map <Space>jj !python -m json.tool<CR>
-nnoremap <silent>\t :e %:s#s/#test/#<CR>
+nnoremap <silent>\t :vs %:s#s/#test/#<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -247,7 +253,8 @@ endif
 augroup MyDev
     autocmd!
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
-    autocmd FileType css,jade set noet | set iskeyword+=-,_,#
+    autocmd FileType cs set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=,_,#
+    autocmd FileType jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
 augroup END

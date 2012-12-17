@@ -72,7 +72,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# source auto-fu.zsh
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
     source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
     function zle-line-init () {
@@ -126,9 +125,6 @@ zshaddhistory() {
 # z
 _Z_CMD=j
 source ~/z.sh
-precmd() {
-    _z --add "$(pwd -P)"
-}
 
 show_buffer_stack() {
     POSTDISPLAY="

@@ -45,20 +45,21 @@ let g:unite_abbr_highlight = 'StatusLine'
 nnoremap [Unite] <Nop>
 nmap <Space> [Unite]
 
-" バッファ一覧
+" buffers
 nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
-" ファイル一覧
+" files
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" レジスタ一覧
+" registers 
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
-" 最近使用したファイル一覧
+" history
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-" 常用セット
-nnoremap <silent> [Unite]u :<C-u>Unite buffer file_mru<CR>
-" プロジェクト
+" project
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
+nnoremap <silent> [Unite]<Space> :<C-u>Unite file_rec/async:
 " grep
 nnoremap <silent> [Unite]g :<C-u>Unite grep<CR>
+" line
+nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
 
 " For ack.
 if executable('ack')
@@ -165,6 +166,10 @@ function! s:align()
   endif
 endfunction
 
+" --------------------------------------------------------------------------------------
+"Bundle 'kana/vim-tabpagecd'
+
+
 " /Vundle
 filetype plugin indent on
 
@@ -182,7 +187,6 @@ execute 'colorscheme' scheme
 set nrformats= "<C-A>で8進数の計算をさせない
 set clipboard+=unnamed
 set noswapfile
-"set directory=$HOME/swap
 set backupdir=$HOME/backup
 set incsearch
 set ignorecase | set smartcase
@@ -201,9 +205,9 @@ set wildmenu " コマンドライン補完するときに強化されたもの�
 set wildmode=list:longest " コマンドライン補間をシェルっぽく
 set cursorline " カーソル行表示
 set hidden
-
 set fdm=manual
 set nofoldenable
+set fu
 
 " undo
 set undodir=~/.vim/undo
@@ -219,9 +223,9 @@ nnoremap <C-J> <C-M>
 nnoremap <silent> <Space>ee :Errors<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
-"nnoremap <Space>a :Ack<Space><Space>%<Left><Left>
 map <Space>jj !python -m json.tool<CR>
 nnoremap <silent>\t :vs %:s#s/#test/#<CR>
+nnoremap \m :!mocha %<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -230,7 +234,6 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
-
 
 " 「日本語入力固定モード」切替キー
 "inoremap <silent> <C-j> <C-^><C-r>=IMState('FixMode')<CR>
@@ -257,5 +260,7 @@ augroup MyDev
     autocmd FileType jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
+    autocmd FileType snippet set noet
+    autocmd TabEnter * execute 'cd .'
 augroup END
 

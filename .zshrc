@@ -82,6 +82,11 @@ if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
     zstyle ':auto-fu:var' postdisplay ''
 fi
 
+if [ -f ~/.zsh/plugins/z/z.sh ]; then
+    _Z_CMD=j
+    source ~/.zsh/plugins/z/z.sh
+fi
+
 # 補完
 fpath=($ZSH_FILES/plugins/zsh-completions/src $fpath)
 autoload -U compinit && compinit
@@ -121,10 +126,6 @@ zshaddhistory() {
         && ${cmd} != (say)
         && ${cmd} != (rm) ]]
 }
-
-# z
-_Z_CMD=j
-source ~/z.sh
 
 show_buffer_stack() {
     POSTDISPLAY="

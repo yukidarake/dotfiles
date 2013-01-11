@@ -51,9 +51,7 @@ case ${UID} in
     PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
     ;;
 esac
-RPS1=$'%D'
-RPROMPT="%T"                      # 右側に時間を表示する
-setopt transient_rprompt          # 右側まで入力がきたら時間を消す
+
 setopt prompt_subst               # 便利なプロント
 
 
@@ -61,6 +59,7 @@ setopt prompt_subst               # 便利なプロント
 alias ls='ls -G'
 alias ll='ls -ahl'
 alias l='ls -al'
+alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias less='less -R'

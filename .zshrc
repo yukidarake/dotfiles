@@ -70,6 +70,7 @@ alias j='autojump'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias diff='diff --exclude=".svn"'
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
     source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh

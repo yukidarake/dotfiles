@@ -16,8 +16,10 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_auto_completion_start_length = 2
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
-imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+"imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 let g:neosnippet#snippets_directory = '~/.vim/snippets'
 let g:neosnippet#disable_runtime_snippets = {
     \ 'javascript' : 1,
@@ -101,7 +103,8 @@ Bundle 'surround.vim'
 Bundle 'repeat.vim'
 
 " --------------------------------------------------------------------------------------
-Bundle 'rickharris/vim-monokai'
+" Bundle 'yukidarake/vim-monokai'
+Bundle 'altercation/vim-colors-solarized'
 
 " --------------------------------------------------------------------------------------
 Bundle 'pangloss/vim-javascript'
@@ -166,18 +169,13 @@ function! s:align()
   endif
 endfunction
 
-" --------------------------------------------------------------------------------------
-"Bundle 'kana/vim-tabpagecd'
-
-
 " /Vundle
 filetype plugin indent on
 
 " color
 syntax on
 set background=dark
-set t_Co=256
-let scheme = 'monokai'
+let scheme = 'solarized'
 augroup guicolorscheme
 autocmd!
     execute 'autocmd GUIEnter * colorscheme' scheme

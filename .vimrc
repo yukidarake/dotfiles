@@ -27,12 +27,13 @@ let g:neosnippet#disable_runtime_snippets = {
 
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
+    \ 'default'    : '',
     \ 'javascript' : '~/github/vim-node/dict/node.dict'
     \ }
 let g:neocomplcache_omni_functions = {
-    \ 'python' : 'pythoncomplete#Complete',
-    \ 'ruby' : 'rubycomplete#Complete',
+    \ 'javascript' : 'jscomplete#CompleteJS',
+    \ 'python'     : 'pythoncomplete#Complete',
+    \ 'ruby'       : 'rubycomplete#Complete',
     \ }
 
 " --------------------------------------------------------------------------------------
@@ -110,7 +111,10 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'pangloss/vim-javascript'
 
 " --------------------------------------------------------------------------------------
-Bundle 'JavaScript-syntax'
+Bundle 'jelera/vim-javascript-syntax'
+
+" --------------------------------------------------------------------------------------
+Bundle 'teramako/jscomplete-vim'
 
 " --------------------------------------------------------------------------------------
 Bundle 'Lokaltog/vim-powerline'
@@ -119,7 +123,9 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'Syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
-"
+let g:syntastic_json_checker='jsonlint'
+let g:syntastic_javascript_checker='jshint'
+
 " --------------------------------------------------------------------------------------
 "Bundle 'majutsushi/tagbar'
 "noremap <F8> :TagbarToggle<CR>
@@ -175,7 +181,13 @@ filetype plugin indent on
 " color
 syntax on
 set background=dark
-let scheme = 'solarized'
+if &diff
+    let scheme = 'darkblue'
+else
+    let scheme = 'solarized'
+    "let g:solarized_visibility = 'high'
+    "let g:solarized_contrast = 'high'
+endif
 augroup guicolorscheme
 autocmd!
     execute 'autocmd GUIEnter * colorscheme' scheme
@@ -260,5 +272,6 @@ augroup MyDev
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
     autocmd FileType snippet set noet
     autocmd TabEnter * execute 'cd .'
+    autocmd BufRead,BufNewFile *.json set filetype=json 
 augroup END
 

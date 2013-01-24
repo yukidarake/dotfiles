@@ -135,5 +135,7 @@ show_buffer_stack() {
 zle -N show_buffer_stack
 
 # 設定ファイルのinclude
-[ -f ~/.zshrc.include ] && source ~/.zshrc.include
+if [[ -f ~/.zshrc.include ]]; then
+    source ~/.zshrc.include
+fi
 

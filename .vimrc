@@ -39,8 +39,8 @@ let g:neocomplcache_omni_functions = {
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/unite.vim'
 let g:unite_enable_start_insert=1
-let g:unite_source_file_rec_ignore_pattern=
- \'\%(^\|/\)\.$\|\~$\|\.\%(o\|exe\|dll\|ba\?k\|sw[po]\|tmp\)$\|\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)\|node_modules'
+call unite#custom_source('file_rec', 'ignore_pattern', 
+    \ (unite#sources#file_rec#define()[0]['ignore_pattern']) . '\|node_modules')
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 
@@ -57,8 +57,8 @@ nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 " history
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 " project
-nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
-nnoremap <silent> [Unite]<Space> :<C-u>Unite file_rec/async:
+nnoremap <silent> [Unite]p :<C-u>Unite file_rec<CR>
+nnoremap <silent> [Unite]<Space> :<C-u>Unite file_rec:
 " grep
 nnoremap <silent> [Unite]g :<C-u>Unite grep<CR>
 " line
@@ -92,6 +92,9 @@ nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 Bundle 'tsukkee/unite-tag'
 nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
+Bundle 'ujihisa/unite-colorscheme'
+Bundle 'ujihisa/unite-font'
+
 " --------------------------------------------------------------------------------------
 Bundle 'Shougo/vimproc'
 
@@ -104,8 +107,7 @@ Bundle 'surround.vim'
 Bundle 'repeat.vim'
 
 " --------------------------------------------------------------------------------------
-" Bundle 'yukidarake/vim-monokai'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'nanotech/jellybeans.vim'
 
 " --------------------------------------------------------------------------------------
 Bundle 'pangloss/vim-javascript'
@@ -133,6 +135,9 @@ let g:syntastic_javascript_checker='jshint'
 " --------------------------------------------------------------------------------------
 Bundle 'quickrun.vim'
 let g:quickrun_config = {
+  \ '_': {
+  \     'runner': 'vimproc'
+  \     },
   \ 'markdown': {
   \     'outputter': 'browser'
   \     },
@@ -180,14 +185,9 @@ filetype plugin indent on
 
 " color
 syntax on
+set t_Co=256
 set background=dark
-if &diff
-    let scheme = 'darkblue'
-else
-    let scheme = 'solarized'
-    "let g:solarized_visibility = 'high'
-    "let g:solarized_contrast = 'high'
-endif
+let scheme = 'jellybeans'
 augroup guicolorscheme
 autocmd!
     execute 'autocmd GUIEnter * colorscheme' scheme
@@ -228,13 +228,15 @@ set undoreload=4000
 " 独自のキーバインディング
 
 "" .vimrc編集
-nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
+nnoremap <C-S> :suspend<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Space>ee :Errors<CR>
+nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
+nnoremap <Space>so :so $MYVIMRC<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
 map <Space>jj !python -m json.tool<CR>
-nnoremap <silent>\t :vs %:s#s/#test/#<CR>
+nnoremap <silent>\t :vs %:p:s#/s/#/test/#<CR>
+nnoremap <silent>\e :Errors<CR>
 nnoremap \m :!mocha %<CR>
 
 "" 検索結果を中心に持ってくる

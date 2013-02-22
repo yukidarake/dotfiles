@@ -17,7 +17,8 @@ if [[ -f ~/.nvm/nvm.sh ]]; then
     nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 fi
-# npm install -g optimist async jshint nodeunit mocha should node-inspector node-dev long-stack-traces
+# npm install -g optimist async jshint mocha should
+# npm install -g node-inspector node-dev long-stack-traces jsonlint
 
 
 # ruby

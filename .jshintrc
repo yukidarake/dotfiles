@@ -17,14 +17,14 @@
     "mootools"      : false,
     "dojo"          : false,
 
-    "predef"        : [  // Extra globals.
-        "describe",   // Used by mocha
-        "it",         // Used by mocha
-        "before",     // Used by mocha
-        "beforeEach", // Used by mocha
-        "after",      // Used by mocha
-        "afterEach"   // Used by mocha
-    ],
+    "globals"        : {  
+        "describe": false,   // Used by mocha
+        "it": false,         // Used by mocha
+        "before": false,     // Used by mocha
+        "beforeEach": false, // Used by mocha
+        "after": false,      // Used by mocha
+        "afterEach": false   // Used by mocha
+    },
 
 
     // Development.
@@ -73,5 +73,12 @@
     "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
     "trailing"      : true,   // Prohibit trailing whitespaces.
     "unused"        : true,   // Prohibit unused variables.
-    "white"         : false   // Check against strict whitespace and indentation rules.
+    "white"         : false,   // Check against strict whitespace and indentation rules.
+    "laxcomma"      : true,
+    "unused"        : true,
+    "maxparams"     : 5,
+    "maxdepth"      : 6,
+    "maxstatements" : 23,
+    "maxcomplexity" : 10,
+    "maxlen"        : 170
 }

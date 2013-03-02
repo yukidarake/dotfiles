@@ -72,6 +72,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias diff='diff --exclude=".svn"'
+alias ag='ag --nogroup --nocolor'
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
     source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh

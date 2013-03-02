@@ -10,6 +10,9 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " --------------------------------------------------------------------------------------
+Bundle 'Shougo/vimproc'
+
+" --------------------------------------------------------------------------------------
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neosnippet'
 let g:neocomplcache_enable_at_startup = 1
@@ -61,15 +64,13 @@ nnoremap <silent> [Unite]p :<C-u>Unite file_rec<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>Unite file_rec:
 " grep
 nnoremap <silent> [Unite]g :<C-u>Unite grep<CR>
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_grep_max_candidates = 200
+
 " line
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
-
-" For ack.
-if executable('ack')
-    let g:unite_source_grep_command = 'ack'
-    let g:unite_source_grep_default_opts = '--no-heading --no-color -a'
-    let g:unite_source_grep_recursive_opt = ''
-endif
 
 augroup MyUnite
     autocmd!
@@ -94,9 +95,6 @@ nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
 Bundle 'ujihisa/unite-colorscheme'
 Bundle 'ujihisa/unite-font'
-
-" --------------------------------------------------------------------------------------
-Bundle 'Shougo/vimproc'
 
 " --------------------------------------------------------------------------------------
 " Bundle 'ZenCoding.vim'

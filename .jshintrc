@@ -72,10 +72,9 @@
     "plusplus"      : false,  // Prohibit use of `++` & `--`.
     "sub"           : false,  // Tolerate all forms of subscript notation besides dot notation e.g. `dict['key']` instead of `dict.key`.
     "trailing"      : true,   // Prohibit trailing whitespaces.
-    "unused"        : true,   // Prohibit unused variables.
-    "white"         : false,   // Check against strict whitespace and indentation rules.
+    "unused"        : "vars", // Prohibit unused variables.
+    "white"         : false,  // Check against strict whitespace and indentation rules.
     "laxcomma"      : true,
-    "unused"        : true,
     "maxparams"     : 5,
     "maxdepth"      : 6,
     "maxstatements" : 23,

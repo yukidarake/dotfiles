@@ -50,6 +50,8 @@ let g:unite_abbr_highlight = 'StatusLine'
 " prefix key
 nnoremap [Unite] <Nop>
 nmap <Space> [Unite]
+imap <C-c> <Plug>(unite_exit)
+nmap <C-c> <Plug>(unite_exit)
 
 " buffers
 nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
@@ -61,13 +63,17 @@ nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 " project
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec<CR>
-nnoremap <silent> [Unite]<Space> :<C-u>Unite file_rec:
+nnoremap <silent> [Unite]<Space> :<C-u>Unite buffer file file_mru<CR>
 " grep
-nnoremap <silent> [Unite]g :<C-u>Unite grep<CR>
+nnoremap <silent> [Unite]g :<C-u>Unite grep -winheight=15 -no-quit<CR>
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
 let g:unite_source_grep_max_candidates = 200
+
+" " 選択した文字列をunite-grep
+" " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
+vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
 " line
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
@@ -83,7 +89,7 @@ augroup MyUnite
 augroup END
 
 Bundle 'h1mesuke/unite-outline'
-nnoremap <silent> [Unite]o :<C-u>Unite outline<CR>
+nnoremap <silent> [Unite]o :<C-u>Unite outline -winheight=15<CR>
 
 Bundle 'thinca/vim-unite-history'
 nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
@@ -94,7 +100,6 @@ Bundle 'tsukkee/unite-tag'
 nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
 Bundle 'ujihisa/unite-colorscheme'
-Bundle 'ujihisa/unite-font'
 
 " --------------------------------------------------------------------------------------
 " Bundle 'ZenCoding.vim'
@@ -125,10 +130,6 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_json_checker='jsonlint'
 let g:syntastic_javascript_checker='jshint'
-
-" --------------------------------------------------------------------------------------
-"Bundle 'majutsushi/tagbar'
-"noremap <F8> :TagbarToggle<CR>
 
 " --------------------------------------------------------------------------------------
 Bundle 'quickrun.vim'
@@ -216,6 +217,7 @@ set hidden
 set fdm=manual
 set nofoldenable
 set fu
+set ambiwidth=double
 
 " undo
 set undodir=~/.vim/undo
@@ -271,7 +273,6 @@ augroup MyDev
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
     autocmd FileType snippet set noet
-    autocmd TabEnter * execute 'cd .'
     autocmd BufRead,BufNewFile *.json set filetype=json 
 augroup END
 

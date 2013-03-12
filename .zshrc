@@ -73,6 +73,17 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias diff='diff --exclude=".svn"'
 alias ag='ag --nogroup --nocolor'
+alias f='open .'
+ 
+# cd to the path of the front Finder window
+cdf() {
+  target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
+  if [ "$target" != "" ]; then
+    cd "$target"; pwd
+  else
+    echo 'No Finder window found' >&2
+  fi
+}
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
     source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh

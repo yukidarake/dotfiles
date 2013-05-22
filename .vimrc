@@ -2,6 +2,13 @@ set nocompatible
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
 
+augroup MyFileType
+    autocmd!
+    autocmd BufRead,BufNewFile *.json set filetype=json
+    autocmd BufRead,BufNewFile *.jade set filetype=jade
+    autocmd BufRead,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -38,10 +45,6 @@ let g:neosnippet#disable_runtime_snippets = {
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default'    : '',
     \ 'javascript' : '~/github/vim-node/dict/node.dict'
-    \ }
-let g:neocomplcache_omni_functions = {
-    \ 'python'     : 'pythoncomplete#Complete',
-    \ 'ruby'       : 'rubycomplete#Complete',
     \ }
 
 NeoBundle 'Shougo/unite.vim'
@@ -111,9 +114,6 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'teramako/jscomplete-vim'
 NeoBundle 'Lokaltog/vim-powerline'
 
 NeoBundle 'Syntastic'
@@ -138,7 +138,7 @@ let g:quickrun_config = {
 
 "NeoBundle 'open-browser.vim'
 "NeoBundle 'Markdown'
-NeoBundle 'digitaltoad/vim-jade'
+NeoBundleLazy 'digitaltoad/vim-jade', {'autoload' : { 'filetypes' : ['jade'] }}
 NeoBundle 'thinca/vim-ft-svn_diff'
 
 NeoBundle 'othree/eregex.vim'
@@ -161,13 +161,14 @@ function! s:align()
   endif
 endfunction
 
-NeoBundle 'maksimr/vim-jsbeautify'
-
-NeoBundle 'heavenshell/vim-jsdoc'
+NeoBundleLazy 'heavenshell/vim-jsdoc'        ,{'autoload' : { 'filetypes' : ['javascript'] }}
 nnoremap <silent> <C-T> :JsDoc<CR>
 nnoremap <buffer> <C-l> <C-l>
 
-"NeoBundle 'marijnh/tern_for_vim', {
+NeoBundleLazy 'pangloss/vim-javascript'      ,{'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'jelera/vim-javascript-syntax' ,{'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'teramako/jscomplete-vim'      ,{'autoload' : { 'filetypes' : ['javascript'] }}
+"NeoBundleLazy 'marijnh/tern_for_vim', {
 "  \ 'build': {
 "  \   'others': 'npm install'
 "  \}}
@@ -182,8 +183,10 @@ set t_Co=256
 set background=dark
 let scheme = 'jellybeans'
 augroup guicolorscheme
-autocmd!
-    execute 'autocmd GUIEnter * colorscheme' scheme
+augroup MyColorScheme
+    autocmd!
+        execute 'autocmd GUIEnter * colorscheme' scheme
+    augroup END
 augroup END
 execute 'colorscheme' scheme
 
@@ -263,14 +266,25 @@ if has('kaoriya')
     "let $PYTHON_DLL='/usr/local//Cellar/python/2.7.4/Frameworks/Python.framework/Versions/2.7/Python'
 endif
 
+" Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
+augroup vimrc-auto-mkdir  " {{{
+  autocmd!
+  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+  function! s:auto_mkdir(dir, force)  " {{{
+    if !isdirectory(a:dir) && (a:force ||
+          \    input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
+      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+    endif
+  endfunction  " }}}
+augroup END  " }}}
+
 augroup MyDev
     autocmd!
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
     autocmd FileType cs set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=,_,#
+    autocmd FileType snippet set noet
     autocmd FileType jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
-    autocmd FileType snippet set noet
-    autocmd BufRead,BufNewFile *.json set filetype=json 
 augroup END
 

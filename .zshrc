@@ -5,6 +5,7 @@ export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=always'
+export GIT_MERGE_AUTOEDIT=no
 
 bindkey -e
 stty stop undef

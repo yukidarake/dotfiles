@@ -13,7 +13,7 @@ stty stop undef
 ZSH_FILES=~/.zsh
 
 # node
-if [[ -f ~/.nvm/nvm.sh ]]; then
+if [ -f ~/.nvm/nvm.sh ]; then
     source ~/.nvm/nvm.sh
     nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
@@ -23,14 +23,14 @@ fi
 
 
 # ruby
-if [[ -f ~/.rvm/scripts/rvm ]]; then
+if [ -f ~/.rvm/scripts/rvm ]; then
     source ~/.rvm/scripts/rvm
     rvm use 1.9.3
 fi
 
 
 # java
-if [[ -f /usr/local/maven2/bin/mvn ]]; then
+if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2
     export PATH=$MAVEN_HOME/bin:$PATH
 fi

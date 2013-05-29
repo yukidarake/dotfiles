@@ -2,13 +2,6 @@ set nocompatible
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
 
-augroup MyFileType
-    autocmd!
-    autocmd BufRead,BufNewFile *.json set filetype=json
-    autocmd BufRead,BufNewFile *.jade set filetype=jade
-    autocmd BufRead,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
-
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -85,16 +78,6 @@ vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 " line
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
 
-augroup MyUnite
-    autocmd!
-    " ウィンドウを分割して開く
-    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
-    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
-    " ウィンドウを縦に分割して開く
-    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
-    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
-augroup END
-
 NeoBundle 'h1mesuke/unite-outline'
 nnoremap <silent> [Unite]o :<C-u>Unite outline -winheight=15<CR>
 
@@ -161,34 +144,25 @@ function! s:align()
   endif
 endfunction
 
-NeoBundleLazy 'heavenshell/vim-jsdoc'        ,{'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'heavenshell/vim-jsdoc'       , {'autoload' : { 'filetypes' : ['javascript'] }}
 nnoremap <silent> <C-T> :JsDoc<CR>
 nnoremap <buffer> <C-l> <C-l>
 
-NeoBundleLazy 'pangloss/vim-javascript'      ,{'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'jelera/vim-javascript-syntax' ,{'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'teramako/jscomplete-vim'      ,{'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'teramako/jscomplete-vim'     , {'autoload' : { 'filetypes' : ['javascript'] }}
 "NeoBundleLazy 'marijnh/tern_for_vim', {
-"  \ 'build': {
-"  \   'others': 'npm install'
-"  \}}
+"  \   'autoload' : {
+"  \     'filetypes' : ['javascript']
+"  \   },
+"  \   'build': {
+"  \     'others': 'npm install'
+"  \   }
+"  \ }
 "let g:tern_show_argument_hints=1
 
 filetype plugin indent on
 NeoBundleCheck
-
-" color
-syntax on
-set t_Co=256
-set background=dark
-let scheme = 'jellybeans'
-augroup guicolorscheme
-augroup MyColorScheme
-    autocmd!
-        execute 'autocmd GUIEnter * colorscheme' scheme
-    augroup END
-augroup END
-execute 'colorscheme' scheme
 
 set nrformats= "<C-A>で8進数の計算をさせない
 set clipboard+=unnamed
@@ -266,25 +240,43 @@ if has('kaoriya')
     "let $PYTHON_DLL='/usr/local//Cellar/python/2.7.4/Frameworks/Python.framework/Versions/2.7/Python'
 endif
 
-" Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
-augroup vimrc-auto-mkdir  " {{{
-  autocmd!
-  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-  function! s:auto_mkdir(dir, force)  " {{{
-    if !isdirectory(a:dir) && (a:force ||
-          \    input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
-      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-    endif
-  endfunction  " }}}
-augroup END  " }}}
+" color
+syntax on
+set t_Co=256
+set background=dark
+let scheme = 'jellybeans'
+execute 'colorscheme' scheme
 
 augroup MyDev
     autocmd!
+
+    " ウィンドウを分割して開く
+    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
+    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
+    " ウィンドウを縦に分割して開く
+    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+
+    autocmd BufRead,BufNewFile *.json set filetype=json
+    autocmd BufRead,BufNewFile *.jade set filetype=jade
+    autocmd BufRead,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
     autocmd FileType cs set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=,_,#
     autocmd FileType snippet set noet
     autocmd FileType jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
+    autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+
+    " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
+    function! s:auto_mkdir(dir, force)  " {{{
+        if !isdirectory(a:dir) && (a:force ||
+            \    input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
+        call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
+        endif
+    endfunction  " }}}
+
+    execute 'autocmd GUIEnter * colorscheme' scheme
 augroup END
 

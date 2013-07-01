@@ -78,7 +78,7 @@ vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 " line
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
 
-NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'Shougo/unite-outline'
 nnoremap <silent> [Unite]o :<C-u>Unite outline -winheight=15<CR>
 
 NeoBundle 'thinca/vim-unite-history'
@@ -91,12 +91,13 @@ nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
 NeoBundle 'ujihisa/unite-colorscheme'
 
-" NeoBundle 'ZenCoding.vim'
-" let g:user_zen_expandabbr_key = '<c-e>'
+NeoBundleLazy 'ZenCoding.vim', {'autoload' : { 'filetypes' : ['html', 'htm'] }}
+let g:user_zen_expandabbr_key = '<c-e>'
 
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'Lokaltog/vim-powerline'
 
 NeoBundle 'Syntastic'
@@ -144,9 +145,9 @@ function! s:align()
   endif
 endfunction
 
-NeoBundleLazy 'heavenshell/vim-jsdoc'       , {'autoload' : { 'filetypes' : ['javascript'] }}
-nnoremap <silent> <C-T> :JsDoc<CR>
-nnoremap <buffer> <C-l> <C-l>
+"NeoBundleLazy 'heavenshell/vim-jsdoc'       , {'autoload' : { 'filetypes' : ['javascript'] }}
+"map <silent> <C-T> :JsDoc<CR>
+"map <buffer> <C-l> <C-l>
 
 NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload' : { 'filetypes' : ['javascript'] }}
@@ -159,7 +160,7 @@ NeoBundleLazy 'teramako/jscomplete-vim'     , {'autoload' : { 'filetypes' : ['ja
 "  \     'others': 'npm install'
 "  \   }
 "  \ }
-"let g:tern_show_argument_hints=1
+"let g:tern_show_argument_hints='on_hold'
 
 filetype plugin indent on
 NeoBundleCheck
@@ -244,7 +245,7 @@ endif
 syntax on
 set t_Co=256
 set background=dark
-let scheme = 'jellybeans'
+let scheme = 'Tomorrow-night-bright'
 execute 'colorscheme' scheme
 
 augroup MyDev
@@ -268,6 +269,7 @@ augroup MyDev
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
     autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+    autocmd FileType javascript :setl omnifunc=jscomplete#CompleteJS
 
     " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
     function! s:auto_mkdir(dir, force)  " {{{

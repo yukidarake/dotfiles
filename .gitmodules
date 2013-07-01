@@ -7,3 +7,6 @@
 [submodule ".zsh/plugins/z"]
 	path = .zsh/plugins/z
 	url = git://github.com/rupa/z
+[submodule ".zsh/plugins/pure"]
+	path = .zsh/plugins/pure
+	url = git://github.com/sindresorhus/pure.git

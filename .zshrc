@@ -21,41 +21,23 @@ fi
 # npm install -g optimist async jshint mocha should
 # npm install -g node-inspector node-dev long-stack-traces jsonlint
 
-
 # ruby
 if [ -f ~/.rvm/scripts/rvm ]; then
     source ~/.rvm/scripts/rvm
     rvm use 1.9.3
 fi
 
+# python
+if [ -d ~/.pyenv/bin ]; then
+    export PATH=~/.pyenv/bin:$PATH
+    eval "$(SHELL=zsh pyenv init -)"
+fi
 
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2
     export PATH=$MAVEN_HOME/bin:$PATH
 fi
-
-
-# prompt
-case ${UID} in
-    0)
-    PROMPT="%B%{[31m%}%/#%{[m%}%b "
-    PROMPT2="%B%{[31m%}%_#%{[m%}%b "
-    SPROMPT="%B%{[31m%}%r is correct? [n,y,a,e]:%{[m%}%b "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-    *)
-    PROMPT="%{[31m%}%/%%%{[m%} "
-    PROMPT2="%{[31m%}%_%%%{[m%} "
-    SPROMPT="%{[31m%}%r is correct? [n,y,a,e]:%{[m%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{[37m%}${HOST%%.*} ${PROMPT}"
-    ;;
-esac
-
-setopt prompt_subst               # 便利なプロント
-
 
 # alias
 alias ls='ls -G'
@@ -99,6 +81,10 @@ fi
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j
     source ~/.zsh/plugins/z/z.sh
+fi
+
+if [ -f ~/.zsh/plugins/pure/prompt.zsh ]; then
+    source ~/.zsh/plugins/pure/prompt.zsh
 fi
 
 # 補完
@@ -149,7 +135,7 @@ show_buffer_stack() {
 zle -N show_buffer_stack
 
 # 設定ファイルのinclude
-if [[ -f ~/.zshrc.include ]]; then
+if [ -f ~/.zshrc.include ]; then
     source ~/.zshrc.include
 fi
 

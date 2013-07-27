@@ -15,7 +15,7 @@ ZSH_FILES=~/.zsh
 # node
 if [ -f ~/.nvm/nvm.sh ]; then
     source ~/.nvm/nvm.sh
-    nvm alias default 0.8
+    nvm alias default 0.10
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 fi
 # npm install -g optimist async jshint mocha should
@@ -31,6 +31,12 @@ fi
 if [ -d ~/.pyenv/bin ]; then
     export PATH=~/.pyenv/bin:$PATH
     eval "$(SHELL=zsh pyenv init -)"
+fi
+
+# perl
+if [ -d ~/.plenv/bin ]; then
+    export PATH=~/.plenv/bin:$PATH
+    eval "$(SHELL=zsh plenv init -)"
 fi
 
 # java

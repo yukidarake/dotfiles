@@ -98,6 +98,7 @@ NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1

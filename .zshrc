@@ -3,14 +3,13 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
+export SVN_EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=always'
 export GIT_MERGE_AUTOEDIT=no
 
 bindkey -e
 stty stop undef
-
-ZSH_FILES=~/.zsh
 
 # node
 if [ -f ~/.nvm/nvm.sh ]; then
@@ -88,7 +87,7 @@ if [ -f ~/.zsh/plugins/pure/prompt.zsh ]; then
 fi
 
 # 補完
-fpath=($ZSH_FILES/plugins/zsh-completions/src $fpath)
+fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
 autoload -U compinit && compinit
 
 # 補完時に大小文字を区別しない
@@ -111,6 +110,7 @@ bindkey '^S' history-incremental-pattern-search-forward
 HISTFILE=~/.zsh_history
 HISTSIZE=16384
 SAVEHIST=16384
+LISTMAX=1000
 setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 setopt share_history

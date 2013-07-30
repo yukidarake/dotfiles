@@ -97,8 +97,11 @@ let g:user_zen_expandabbr_key = '<c-e>'
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'chriskempson/vim-tomorrow-theme'
-NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+NeoBundle 'bling/vim-airline'
+let g:airline_theme='laederon'
+let g:airline_powerline_fonts=1
+
 
 NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1
@@ -131,6 +134,8 @@ nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
 
+NeoBundle 'tpope/vim-fugitive'
+
 " --------------------------------------------------------------------------------------
 NeoBundle 'Tabular'
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
@@ -149,9 +154,15 @@ endfunction
 "map <silent> <C-T> :JsDoc<CR>
 "map <buffer> <C-l> <C-l>
 
-NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
+"NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload' : { 'filetypes' : ['javascript'] }}
 NeoBundleLazy 'teramako/jscomplete-vim'     , {'autoload' : { 'filetypes' : ['javascript'] }}
+NeoBundleLazy 'myhere/vim-nodejs-complete'     , {'autoload' : { 'filetypes' : ['javascript'] }}
+let g:nodejs_complete_config = {
+    \  'js_compl_fn': 'jscomplete#CompleteJS',
+    \  'max_node_compl_len': 15
+    \}
+
 "NeoBundleLazy 'marijnh/tern_for_vim', {
 "  \   'autoload' : {
 "  \     'filetypes' : ['javascript']
@@ -245,7 +256,7 @@ endif
 syntax on
 set t_Co=256
 set background=dark
-let scheme = 'Tomorrow-night-bright'
+let scheme = 'jellybeans'
 execute 'colorscheme' scheme
 
 augroup MyDev

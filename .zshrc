@@ -32,6 +32,12 @@ if [ -d ~/.pyenv/bin ]; then
     eval "$(SHELL=zsh pyenv init -)"
 fi
 
+# perl
+if [ -d ~/.plenv/bin ]; then
+    export PATH=~/.plenv/bin:$PATH
+    eval "$(SHELL=zsh plenv init -)"
+fi
+
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2

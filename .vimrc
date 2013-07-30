@@ -98,10 +98,11 @@ NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+NeoBundle 'thinca/vim-visualstar'
+
 NeoBundle 'bling/vim-airline'
 let g:airline_theme='laederon'
 let g:airline_powerline_fonts=1
-
 
 NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1

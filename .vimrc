@@ -104,6 +104,7 @@ NeoBundle 'bling/vim-airline'
 let g:airline_theme='laederon'
 let g:airline_powerline_fonts=1
 
+
 NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2

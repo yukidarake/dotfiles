@@ -14,7 +14,7 @@ stty stop undef
 # node
 if [ -f ~/.nvm/nvm.sh ]; then
     source ~/.nvm/nvm.sh
-    nvm alias default 0.10
+    nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
 fi
 # npm install -g optimist async jshint mocha should

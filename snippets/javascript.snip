@@ -1,0 +1,223 @@
+snippet prototype
+alias p
+options word
+	prototype.${0} = function() {
+		//TODO
+	};
+
+snippet callback
+alias c
+options word
+	function(err, result) {
+		if (err) {
+			return callback(err);
+		}
+		callback(null, result);
+	}
+
+snippet function
+alias f
+options word
+	function() {
+	}${0}
+
+snippet var
+	var ${0} = ${1};
+
+snippet function_execute_immediately
+alias (f
+	(function() {
+		${0}
+	})();
+
+snippet if
+	if (${0}) {
+	}
+
+snippet ifelse
+	if (${0}) {
+	} else {
+	}
+
+snippet iferr
+	if (err) {
+		return callback(err);
+	}
+
+snippet for
+	for (var i = 0, l = ${0}; i < l; i++) {
+	}
+
+snippet forin
+	for (var key in ${0}) {
+	}
+
+snippet forfor
+	for (var i = 0, l1 = ${0}; i < l1; i++) {
+		for (var j = 0, l2 = ${1}; j < l2; j++) {
+		}
+	}
+
+snippet forEach
+options word
+	forEach(function(item) {
+		${0}
+	});
+
+snippet map
+options word
+	map(function(item) {
+		return ${0};
+	});
+
+snippet some
+options word
+	some(function(item) {
+		return ${0};
+	});
+
+snippet every
+options word
+	every(function(item) {
+		return ${0};
+	});
+
+snippet reduce
+options word
+	reduce(function(${1}, ${0}) {
+		return $1;
+	});
+
+snippet d
+	debugger;
+
+snippet {}
+	{
+		${1}: ${0},
+	}
+
+snippet []
+	[
+		${0},
+	]
+
+snippet setTimeout
+	setTimeout(function() {
+		${0}
+	}, 1000);
+
+snippet setInterval
+	setInterval(function() {
+		${0}
+	}, 1000);
+
+snippet try
+alias t
+	try {
+		${0}
+	} catch(e) {
+	}
+
+snippet finally
+	try {
+		${0}
+	} catch(e) {
+		console.error(e);
+	} finally {
+	}
+
+snippet argv
+	process.argv
+
+snippet log
+	console.log(${0});
+
+snippet error
+	console.error(${0});
+
+snippet trace
+	console.trace(${0});
+
+snippet dir
+	console.dir(${0});
+
+snippet time
+	console.time(${0});
+
+snippet timeEnd
+	console.timeEnd(${0});
+
+snippet require
+alias r
+	var ${1} = require('$1${0}');
+
+snippet now
+options word
+	Date.now()
+
+snippet comment
+alias /*
+	/**
+	 * ${0}
+	 */
+
+snippet series
+options word
+	async.series([
+		function(next) {
+		},
+		function(next) {
+		},
+	], function(err) {
+		if(err) {
+		}
+	});
+
+snippet waterfall
+options word
+	async.waterfall([
+		function(next) {
+		},
+		function(next) {
+		},
+	], function(err) {
+		if(err) {
+		}
+	});
+
+snippet describe
+	describe('${1}', function() {
+		it('${0}', function(done) {
+			done();
+		});
+	});
+
+snippet it
+	it('${1}', function(done) {
+		${0}
+		done();
+	});
+
+snippet before
+	before(function(done) {
+		${0}
+		done();
+	});
+
+snippet beforeEach
+	before(function(done) {
+		${0}
+		done();
+	});
+
+snippet after
+	after(function(done) {
+		${0}
+		done();
+	});
+
+snippet afterEach
+	afterEach(function(done) {
+		${0}
+		done();
+	});

@@ -15,7 +15,7 @@ stty stop undef
 if [ -f ~/.nvm/nvm.sh ]; then
     source ~/.nvm/nvm.sh
     nvm alias default 0.8
-    export NODE_PATH=${NVM_PATH}_modules:/usr/local/lib/jsctags/
+    export NODE_PATH=${NVM_PATH}_modules
 fi
 # npm install -g optimist async jshint mocha should
 # npm install -g node-inspector node-dev long-stack-traces jsonlint

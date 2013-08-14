@@ -82,7 +82,7 @@ nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
-nnoremap <silent> [Unite]<Space> :<C-u>Unite buffer file file_mru<CR>
+nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]g :<C-u>Unite grep::-i -winheight=10 -no-quit<C-F><S-F>:,i
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup'

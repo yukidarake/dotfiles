@@ -11,39 +11,63 @@ call neobundle#rc()
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
+    \ 'build' : {
+    \     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac' : 'make -f make_mac.mak',
+    \     'unix' : 'make -f make_unix.mak',
+    \ }}
 
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_auto_completion_start_length = 2
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_underbar_completion = 1
-"imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-"smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+NeoBundleLazy 'Shougo/neocomplete', {
+    \ 'depends' : 'Shougo/context_filetype.vim',
+    \ 'vim_version' : '7.3.885',
+    \ 'autoload' : {
+    \     'insert' : 1,
+    \ }}
+
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'avascript' : '~/github/vim-node/dict/node.dict'
+    \ }
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+
+"NeoBundle 'Shougo/neocomplcache'
+"let g:neocomplcache_enable_at_startup = 1
+"let g:neocomplcache_auto_completion_start_length = 2
+"let g:neocomplcache_enable_smart_case = 1
+"let g:neocomplcache_enable_underbar_completion = 1
+"" Define dictionary.
+"let g:neocomplcache_dictionary_filetype_lists = {
+"    \ 'default'    : '',
+"    \ 'javascript' : '~/github/vim-node/dict/node.dict'
+"    \ }
+
+NeoBundleLazy 'Shougo/neosnippet', {
+    \ 'autoload' : {
+    \     'insert' : 1,
+    \ }}
+
 imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:neosnippet#snippets_directory = '~/.vim/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets,~/github/dotfiles/snippets'
 let g:neosnippet#disable_runtime_snippets = {
     \ 'javascript' : 1,
     \ }
 
-" Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default'    : '',
-    \ 'javascript' : '~/github/vim-node/dict/node.dict'
-    \ }
-
 NeoBundle 'Shougo/unite.vim'
 let g:unite_enable_start_insert=1
-call unite#custom_source('file_rec', 'ignore_pattern', 
-    \ (unite#sources#file_rec#define()[0]['ignore_pattern']) . '\|node_modules')
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 
@@ -53,19 +77,13 @@ nmap <Space> [Unite]
 imap <C-c> <Plug>(unite_exit)
 nmap <C-c> <Plug>(unite_exit)
 
-" buffers
-nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
-" files
+nnoremap <silent> [Unite]b :<C-u>Unite buffer -quick-match<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" registers 
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
-" history
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-" project
-nnoremap <silent> [Unite]p :<C-u>Unite file_rec<CR>
+nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>Unite buffer file file_mru<CR>
-" grep
-nnoremap <silent> [Unite]g :<C-u>Unite grep -winheight=10 -no-quit<CR>
+nnoremap <silent> [Unite]g :<C-u>Unite grep::-i -winheight=10 -no-quit<C-F><S-F>:,i
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
@@ -89,23 +107,28 @@ nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 NeoBundle 'tsukkee/unite-tag'
 nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
-NeoBundle 'ujihisa/unite-colorscheme'
-
-NeoBundleLazy 'ZenCoding.vim', {'autoload' : { 'filetypes' : ['html', 'htm'] }}
+NeoBundleLazy 'ZenCoding.vim', {
+    \ 'autoload' : {
+    \     'filetypes' : ['html', 'htm']
+    \ }}
 let g:user_zen_expandabbr_key = '<c-e>'
 
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+"NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'bling/vim-airline'
 let g:airline_theme='simple'
 let g:airline_powerline_fonts=1
 
+NeoBundle 'tpope/vim-fugitive'
 
-NeoBundle 'Syntastic'
+NeoBundleLazy 'Syntastic', {
+    \ 'autoload' : {
+    \     'insert' : 1,
+    \ }}
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_json_checker='jsonlint'
@@ -113,21 +136,23 @@ let g:syntastic_javascript_checker='jshint'
 
 NeoBundle 'quickrun.vim'
 let g:quickrun_config = {
-  \ '_': {
-  \     'runner': 'vimproc'
-  \     },
-  \ 'markdown': {
-  \     'outputter': 'browser'
-  \     },
-  \ 'javascript': {
-  \     'command': 'node',
-  \     'tempfile': '{tempname()}.js'
-  \     }
-  \ }
+    \ '_': {
+    \     'runner': 'vimproc'
+    \ },
+    \ 'markdown': {
+    \     'outputter': 'browser'
+    \ },
+    \ 'javascript': {
+    \     'command': 'node',
+    \     'tempfile': '{tempname()}.js'
+    \ }}
 
 "NeoBundle 'open-browser.vim'
 "NeoBundle 'Markdown'
-NeoBundleLazy 'digitaltoad/vim-jade', {'autoload' : { 'filetypes' : ['jade'] }}
+NeoBundleLazy 'digitaltoad/vim-jade', {
+    \ 'autoload' : {
+    \     'filetypes' : 'jade'
+    \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
 
 NeoBundle 'othree/eregex.vim'
@@ -136,10 +161,10 @@ nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
 
-NeoBundle 'tpope/vim-fugitive'
-
-" --------------------------------------------------------------------------------------
-NeoBundle 'Tabular'
+NeoBundleLazy 'Tabular', {
+    \ 'autoload' : {
+    \     'insert' : 1,
+    \ }}
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 function! s:align()
   let p = '^\s*|\s.*\s|\s*$'
@@ -152,28 +177,30 @@ function! s:align()
   endif
 endfunction
 
-"NeoBundleLazy 'heavenshell/vim-jsdoc'       , {'autoload' : { 'filetypes' : ['javascript'] }}
-"map <silent> <C-T> :JsDoc<CR>
-"map <buffer> <C-l> <C-l>
-
 "NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'teramako/jscomplete-vim'     , {'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'myhere/vim-nodejs-complete'     , {'autoload' : { 'filetypes' : ['javascript'] }}
-let g:nodejs_complete_config = {
-    \  'js_compl_fn': 'jscomplete#CompleteJS',
-    \  'max_node_compl_len': 15
-    \}
-
-"NeoBundleLazy 'marijnh/tern_for_vim', {
-"  \   'autoload' : {
-"  \     'filetypes' : ['javascript']
-"  \   },
-"  \   'build': {
-"  \     'others': 'npm install'
-"  \   }
-"  \ }
+NeoBundleLazy 'jelera/vim-javascript-syntax', {
+    \ 'autoload' : {
+    \     'filetypes' : 'javascript'
+    \ }}
+"NeoBundle 'marijnh/tern_for_vim', {
+"    \ 'autoload' : {
+"    \     'filetypes' : 'javascript',
+"    \ },
+"    \ 'build': {
+"    \     'others': 'npm install'
+"    \ }}
+"let g:tern_map_keys=1
 "let g:tern_show_argument_hints='on_hold'
+
+NeoBundle 'myhere/vim-nodejs-complete', {
+    \ 'autoload' : {
+    \     'filetypes' : 'javascript',
+    \ }}
+
+NeoBundleLazy 'moll/vim-node', {
+    \ 'autoload' : {
+    \     'filetypes' : 'javascript',
+    \ }}
 
 filetype plugin indent on
 NeoBundleCheck
@@ -201,7 +228,6 @@ set cursorline " カーソル行表示
 set hidden
 set fdm=manual
 set nofoldenable
-set fu
 set ambiwidth=double
 
 " undo
@@ -251,7 +277,7 @@ if has('unix')
 endif
 
 if has('kaoriya')
-    "let $PYTHON_DLL='/usr/local//Cellar/python/2.7.4/Frameworks/Python.framework/Versions/2.7/Python'
+    let $PYTHON_DLL='/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Python'
 endif
 
 " color
@@ -280,9 +306,10 @@ augroup MyDev
     autocmd FileType snippet set noet
     autocmd FileType jade set noet | set iskeyword+=-,_,#
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
-    autocmd FileType javascript autocmd BufWritePre <buffer> :%s/\s\+$//e
+    autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
     autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-    autocmd FileType javascript :setl omnifunc=jscomplete#CompleteJS
+    "autocmd FileType javascript :setl omnifunc=nodejscomplete#CompleteJS
+
 
     " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
     function! s:auto_mkdir(dir, force)  " {{{
@@ -293,5 +320,15 @@ augroup MyDev
     endfunction  " }}}
 
     execute 'autocmd GUIEnter * colorscheme' scheme
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+    if !exists('g:neocomplcache_omni_functions')
+        let g:neocomplcache_omni_functions = {}
+    endif
+
+    let g:neocomplcache_omni_functions.javascript = [
+        \ 'nodejscomplete#CompleteJS',
+        \ 'javascriptcomplete#CompleteJS'
+        \ ]
 augroup END
 

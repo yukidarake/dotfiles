@@ -13,7 +13,7 @@ stty stop undef
 
 # node
 if [ -f ~/.nvm/nvm.sh ]; then
-    source ~/.nvm/nvm.sh
+    . ~/.nvm/nvm.sh
     nvm alias default 0.8
     export NODE_PATH=${NVM_PATH}_modules
 fi
@@ -22,7 +22,7 @@ fi
 
 # ruby
 if [ -f ~/.rvm/scripts/rvm ]; then
-    source ~/.rvm/scripts/rvm
+    . ~/.rvm/scripts/rvm
     rvm use 1.9.3
 fi
 
@@ -74,7 +74,7 @@ cdf() {
 }
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
-    source ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
+    . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
     function zle-line-init () {
         auto-fu-init
     }
@@ -85,11 +85,11 @@ fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j
-    source ~/.zsh/plugins/z/z.sh
+    . ~/.zsh/plugins/z/z.sh
 fi
 
 if [ -f ~/.zsh/plugins/pure/prompt.zsh ]; then
-    source ~/.zsh/plugins/pure/prompt.zsh
+    . ~/.zsh/plugins/pure/prompt.zsh
 fi
 
 # 補完
@@ -140,8 +140,16 @@ show_buffer_stack() {
 }
 zle -N show_buffer_stack
 
+function alc() {
+    if [ $ != 0 ]; then
+        w3m "http://eow.alc.co.jp/$*/UTF-8/?ref=sa"
+    else
+        w3m 'http://www.alc.co.jp/'
+    fi
+}
+
 # 設定ファイルのinclude
 if [ -f ~/.zshrc.include ]; then
-    source ~/.zshrc.include
+    . ~/.zshrc.include
 fi
 

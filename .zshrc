@@ -140,7 +140,7 @@ show_buffer_stack() {
 }
 zle -N show_buffer_stack
 
-function alc() {
+alc() {
     if [ $ != 0 ]; then
         w3m "http://eow.alc.co.jp/$*/UTF-8/?ref=sa"
     else

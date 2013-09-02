@@ -67,6 +67,7 @@ NeoBundle 'Shougo/unite.vim'
 let g:unite_enable_start_insert=1
 let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
 call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
@@ -107,6 +108,12 @@ nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 NeoBundle 'tsukkee/unite-tag'
 nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
 
+NeoBundle 'osyo-manga/unite-quickfix'
+nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -direction=botright -winheight=10 location_list<CR>
+
+NeoBundle 'hrsh7th/vim-versions'
+nnoremap <silent> [Unite]v :<C-u>UniteVersions
+
 NeoBundleLazy 'ZenCoding.vim', {
     \ 'autoload' : {
     \     'filetypes' : ['html', 'htm']
@@ -116,7 +123,8 @@ let g:user_zen_expandabbr_key = '<c-e>'
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
-"NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'bling/vim-airline'
@@ -125,12 +133,10 @@ let g:airline_powerline_fonts=1
 
 NeoBundle 'tpope/vim-fugitive'
 
-NeoBundleLazy 'Syntastic', {
-    \ 'autoload' : {
-    \     'insert' : 1,
-    \ }}
+NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
+let g:syntastic_always_populate_loc_list=1
 let g:syntastic_json_checker='jsonlint'
 let g:syntastic_javascript_checker='jshint'
 
@@ -155,6 +161,8 @@ NeoBundleLazy 'digitaltoad/vim-jade', {
     \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
 
+NeoBundle 'terryma/vim-multiple-cursors'
+
 NeoBundle 'othree/eregex.vim'
 nnoremap / :M/
 nnoremap ? :M?
@@ -177,27 +185,37 @@ function! s:align()
   endif
 endfunction
 
-"NeoBundleLazy 'pangloss/vim-javascript'     , {'autoload' : { 'filetypes' : ['javascript'] }}
-NeoBundleLazy 'jelera/vim-javascript-syntax', {
+NeoBundleLazy 'pangloss/vim-javascript', {
     \ 'autoload' : {
     \     'filetypes' : 'javascript'
     \ }}
-"NeoBundle 'marijnh/tern_for_vim', {
+"NeoBundleLazy 'jelera/vim-javascript-syntax', {
 "    \ 'autoload' : {
-"    \     'filetypes' : 'javascript',
-"    \ },
-"    \ 'build': {
-"    \     'others': 'npm install'
+"    \     'filetypes' : 'javascript'
 "    \ }}
-"let g:tern_map_keys=1
-"let g:tern_show_argument_hints='on_hold'
-
-NeoBundle 'myhere/vim-nodejs-complete', {
+NeoBundleLazy 'marijnh/tern_for_vim', {
     \ 'autoload' : {
     \     'filetypes' : 'javascript',
+    \ },
+    \ 'build': {
+    \     'others': 'npm install'
     \ }}
+let g:tern_map_keys=1
+let g:tern_show_argument_hints='on_hold'
 
-NeoBundleLazy 'moll/vim-node', {
+nnoremap ,td :TernDef<CR>
+nnoremap ,tdp :TernDefPreview<CR>
+nnoremap ,tr :TernRefs<CR>
+nnoremap ,tdo :TernDoc<CR>
+nnoremap ,tre :TernRename<CR>
+nnoremap ,tt :TernType<CR>
+
+"NeoBundleLazy 'myhere/vim-nodejs-complete', {
+"    \ 'autoload' : {
+"    \     'filetypes' : 'javascript',
+"    \ }}
+
+NeoBundle 'moll/vim-node', {
     \ 'autoload' : {
     \     'filetypes' : 'javascript',
     \ }}
@@ -285,6 +303,8 @@ syntax on
 set t_Co=256
 set background=dark
 let scheme = 'jellybeans'
+"let scheme = 'hybrid'
+"let scheme = 'Tomorrow-night-bright'
 execute 'colorscheme' scheme
 
 augroup MyDev
@@ -298,7 +318,9 @@ augroup MyDev
     autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 
     autocmd BufRead,BufNewFile *.json set filetype=json
+    autocmd BufRead,BufNewFile .jshintrc set filetype=json
     autocmd BufRead,BufNewFile *.jade set filetype=jade
+    autocmd BufRead,BufNewFile *.js set filetype=javascript
     autocmd BufRead,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 
     autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
@@ -308,7 +330,6 @@ augroup MyDev
     autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
     autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
     autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-    "autocmd FileType javascript :setl omnifunc=nodejscomplete#CompleteJS
 
 
     " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
@@ -320,15 +341,16 @@ augroup MyDev
     endfunction  " }}}
 
     execute 'autocmd GUIEnter * colorscheme' scheme
-    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+    "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
     if !exists('g:neocomplcache_omni_functions')
         let g:neocomplcache_omni_functions = {}
     endif
 
-    let g:neocomplcache_omni_functions.javascript = [
-        \ 'nodejscomplete#CompleteJS',
-        \ 'javascriptcomplete#CompleteJS'
-        \ ]
+    "let g:neocomplcache_omni_functions.javascript = [
+    "    \ 'nodejscomplete#CompleteJS',
+    "    \ 'javascriptcomplete#CompleteJS'
+    "    \ ]
 augroup END
 

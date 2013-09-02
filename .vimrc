@@ -153,10 +153,13 @@ let g:quickrun_config = {
       \   'tempfile': '{tempname()}.js'
       \ }}
 
-NeoBundleLazy 'open-browser.vim', {
+NeoBundleLazy "tyru/open-browser.vim", {
       \ 'autoload' : {
+      \   'functions' : "OpenBrowser",
+      \   'commands'  : ["OpenBrowser", "OpenBrowserSearch"],
+      \   'mappings'  : "<Plug>(openbrowser-smart-search)",
       \   'filetypes' : ['markdown']
-      \ }}
+      \ }},
 NeoBundleLazy 'kannokanno/previm', {
       \ 'autoload' : {
       \   'commands' : ['PrevimOpen'],
@@ -221,17 +224,7 @@ nnoremap ,tt :TernType<CR>
 "    \     'filetypes' : 'javascript',
 "    \ }}
 
-NeoBundleLazy 'moll/vim-node', {
-      \ 'autoload' : {
-      \   'commands' : [
-      \     'NodeGotoFile',
-      \     'NodeSplitGotoFile',
-      \     'NodeVSplitGotoFile',
-      \     'NodeTabGotoFile',
-      \     'Nedit',
-      \     'Nopen',
-      \   ]
-      \ }}
+NeoBundle 'moll/vim-node'
 
 filetype plugin indent on
 NeoBundleCheck

@@ -12,17 +12,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
-      \     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
+      \   'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
+      \   'cygwin' : 'make -f make_cygwin.mak',
+      \   'mac' : 'make -f make_mac.mak',
+      \   'unix' : 'make -f make_unix.mak',
       \ }}
 
 NeoBundleLazy 'Shougo/neocomplete', {
       \ 'depends' : 'Shougo/context_filetype.vim',
       \ 'vim_version' : '7.3.885',
       \ 'autoload' : {
-      \     'insert' : 1,
+      \   'insert' : 1,
       \ }}
 
 let g:neocomplete#enable_at_startup = 1
@@ -116,7 +116,7 @@ nnoremap <silent> [Unite]v :<C-u>UniteVersions
 
 NeoBundleLazy 'ZenCoding.vim', {
       \ 'autoload' : {
-      \     'filetypes' : ['html', 'htm']
+      \   'filetypes' : ['html', 'htm']
       \ }}
 let g:user_zen_expandabbr_key = '<c-e>'
 
@@ -143,27 +143,27 @@ let g:syntastic_javascript_checker='jshint'
 NeoBundle 'quickrun.vim'
 let g:quickrun_config = {
       \ '_': {
-      \     'runner': 'vimproc'
+      \   'runner': 'vimproc'
       \ },
       \ 'markdown': {
-      \     'outputter': 'browser'
+      \   'outputter': 'browser'
       \ },
       \ 'javascript': {
-      \     'command': 'node',
-      \     'tempfile': '{tempname()}.js'
+      \   'command': 'node',
+      \   'tempfile': '{tempname()}.js'
       \ }}
 
 NeoBundleLazy 'open-browser.vim', {
       \ 'autoload' : {
-      \     'filetypes' : ['markdown']
+      \   'filetypes' : ['markdown']
       \ }}
 NeoBundleLazy 'kannokanno/previm', {
       \ 'autoload' : {
-      \     'commands' : ['PrevimOpen'],
+      \   'commands' : ['PrevimOpen'],
       \ }}
 NeoBundleLazy 'digitaltoad/vim-jade', {
       \ 'autoload' : {
-      \     'filetypes' : ['jade']
+      \   'filetypes' : ['jade']
       \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
 
@@ -177,7 +177,7 @@ nnoremap ,? ?
 
 NeoBundleLazy 'Tabular', {
       \ 'autoload' : {
-      \     'insert' : 1,
+      \   'insert' : 1,
       \ }}
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 function! s:align()
@@ -193,18 +193,18 @@ endfunction
 
 NeoBundleLazy 'pangloss/vim-javascript', {
       \ 'autoload' : {
-      \     'filetypes' : 'javascript'
+      \   'filetypes' : 'javascript'
       \ }}
 "NeoBundleLazy 'jelera/vim-javascript-syntax', {
 "    \ 'autoload' : {
-"    \     'filetypes' : 'javascript'
+"    \    filetypes' : 'javascript'
 "    \ }}
 NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload' : {
-      \     'filetypes' : 'javascript',
+      \   'filetypes' : 'javascript',
       \ },
       \ 'build': {
-      \     'others': 'npm install'
+      \   'others': 'npm install'
       \ }}
 let g:tern_map_keys=1
 let g:tern_show_argument_hints='on_hold'
@@ -221,14 +221,16 @@ nnoremap ,tt :TernType<CR>
 "    \     'filetypes' : 'javascript',
 "    \ }}
 
-NeoBundle 'moll/vim-node', {
+NeoBundleLazy 'moll/vim-node', {
       \ 'autoload' : {
-      \     'commands' : [
-      \           'NodeGotoFile',
-      \           'NodeSplitGotoFile',
-      \           'NodeSplitGotoFile',
-      \           'NodeTabGotoFile',
-      \      ]
+      \   'commands' : [
+      \     'NodeGotoFile',
+      \     'NodeSplitGotoFile',
+      \     'NodeVSplitGotoFile',
+      \     'NodeTabGotoFile',
+      \     'Nedit',
+      \     'Nopen',
+      \   ]
       \ }}
 
 filetype plugin indent on
@@ -366,5 +368,11 @@ augroup MyDev
   "    \ 'nodejscomplete#CompleteJS',
   "    \ 'javascriptcomplete#CompleteJS'
   "    \ ]
+
+  autocmd User Node
+    \ if &filetype == "javascript" |
+    \   nmap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
+    \   nmap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
+    \ endif
 augroup END
 

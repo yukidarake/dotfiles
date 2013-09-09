@@ -45,17 +45,11 @@ snippet iferr
 	}
 
 snippet for
-	for (var i = 0, l = ${0}; i < l; i++) {
+	for (var i = 0; i < ${0}; i++) {
 	}
 
 snippet forin
 	for (var key in ${0}) {
-	}
-
-snippet forfor
-	for (var i = 0, l1 = ${0}; i < l1; i++) {
-		for (var j = 0, l2 = ${1}; j < l2; j++) {
-		}
 	}
 
 snippet forEach
@@ -86,7 +80,7 @@ snippet reduce
 options word
 	reduce(function(${1}, ${0}) {
 		return $1;
-	});
+	}, ${2});
 
 snippet d
 	debugger;

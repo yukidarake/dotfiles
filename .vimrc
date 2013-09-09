@@ -234,8 +234,8 @@ set clipboard+=unnamed
 set noswapfile
 set backupdir=$HOME/backup
 set incsearch
-set ignorecase | set smartcase
-set ts=4 | set sw=4 | set sts=0 | set sr | set et | set ai
+set ignorecase smartcase
+set ts=4 sw=4 sts=0 sr et ai
 set list
 set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
 set history=200
@@ -266,8 +266,8 @@ set undoreload=4000
 "" .vimrc編集
 nnoremap <C-S> :suspend<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Space>ev :<C-u>edit $MYVIMRC<CR>
-nnoremap <Space>so :so $MYVIMRC<CR>
+nnoremap <silent> <Space>ev :<C-u>vs $MYVIMRC<CR>
+nnoremap <silent> <Space>so :so $MYVIMRC<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
 map <Space>jj !python -m json.tool<CR>
@@ -306,15 +306,6 @@ if has('kaoriya')
   let $PYTHON_DLL='/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Python'
 endif
 
-" color
-syntax on
-set t_Co=256
-set background=dark
-let scheme = 'jellybeans'
-"let scheme = 'hybrid'
-"let scheme = 'Tomorrow-night-bright'
-execute 'colorscheme' scheme
-
 augroup MyDev
   autocmd!
 
@@ -325,18 +316,17 @@ augroup MyDev
   autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
   autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 
-  autocmd BufRead,BufNewFile *.json set filetype=json
-  autocmd BufRead,BufNewFile .jshintrc set filetype=json
-  autocmd BufRead,BufNewFile *.jade set filetype=jade
-  autocmd BufRead,BufNewFile *.js set filetype=javascript
-  autocmd BufRead,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+  autocmd BufReadPost,BufNewFile *.json,.jshintrc setl filetype=json
+  autocmd BufReadPost,BufNewFile *.jade setl filetype=jade
+  autocmd BufReadPost,BufNewFile *.js setl filetype=javascript
+  autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
 
-  autocmd FileType html,htm set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=/
-  autocmd FileType cs set sw=2 | set ts=2 | set sts=2 | set et | set iskeyword+=,_,#
-  autocmd FileType vim set sw=2 | set ts=2 | set sts=2 | set et
-  autocmd FileType snippet set noet
-  autocmd FileType jade set noet | set iskeyword+=-,_,#
-  autocmd FileType javascript set sw=4 | set ts=4 | set sts=4 | set et
+  autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
+  autocmd FileType cs setl sw=2 ts=2 sts=2 et iskeyword+=,_,#
+  autocmd FileType vim setl sw=2 ts=2 sts=2 et
+  autocmd FileType snippet setl noet
+  autocmd FileType jade setl noet iskeyword+=-,_,#
+  autocmd FileType javascript setl sw=4 ts=4 sts=4 et
   autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 
@@ -349,6 +339,14 @@ augroup MyDev
     endif
   endfunction  " }}}
 
+  " color
+  syntax on
+  set t_Co=256
+  set background=dark
+  let scheme = 'jellybeans'
+  "let scheme = 'hybrid'
+  "let scheme = 'Tomorrow-night-bright'
+  execute 'colorscheme' scheme
   execute 'autocmd GUIEnter * colorscheme' scheme
 
   "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -364,8 +362,8 @@ augroup MyDev
 
   autocmd User Node
     \ if &filetype == "javascript" |
-    \   nmap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
-    \   nmap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
+    \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
+    \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
     \ endif
 augroup END
 

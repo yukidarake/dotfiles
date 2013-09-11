@@ -73,6 +73,8 @@ let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 
 " prefix key
+let mapleader = '\'
+let maplocalleader = ','
 nnoremap [Unite] <Nop>
 nmap <Space> [Unite]
 imap <C-c> <Plug>(unite_exit)
@@ -105,11 +107,8 @@ nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
 nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
 nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 
-NeoBundle 'tsukkee/unite-tag'
-nnoremap <silent> [Unite]t :<C-u>Unite tag<CR>
-
 NeoBundle 'osyo-manga/unite-quickfix'
-nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -direction=botright -winheight=10 location_list<CR>
+nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
 
 NeoBundle 'hrsh7th/vim-versions'
 nnoremap <silent> [Unite]v :<C-u>UniteVersions
@@ -162,15 +161,13 @@ NeoBundleLazy "tyru/open-browser.vim", {
       \ }},
 NeoBundleLazy 'kannokanno/previm', {
       \ 'autoload' : {
-      \   'commands' : ['PrevimOpen'],
+      \   'filetypes' : ['markdown']
       \ }}
 NeoBundleLazy 'digitaltoad/vim-jade', {
       \ 'autoload' : {
       \   'filetypes' : ['jade']
       \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
-
-NeoBundle 'terryma/vim-multiple-cursors'
 
 NeoBundle 'othree/eregex.vim'
 nnoremap / :M/
@@ -202,6 +199,7 @@ NeoBundleLazy 'pangloss/vim-javascript', {
 "    \ 'autoload' : {
 "    \    filetypes' : 'javascript'
 "    \ }}
+
 NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript',
@@ -209,20 +207,14 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'build': {
       \   'others': 'npm install'
       \ }}
-let g:tern_map_keys=1
+nnoremap <LocalLeader>tt :TernType<CR>
+nnoremap <LocalLeader>td :TernDef<CR>
+nnoremap <LocalLeader>tpd :TernDefPreview<CR>
+nnoremap <LocalLeader>tsd :TernDefSplit<CR>
+nnoremap <LocalLeader>ttd :TernDefTab<CR>
+nnoremap <LocalLeader>tr :TernRefs:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR><CR>
+nnoremap <LocalLeader>tR :TernRename<CR>'
 let g:tern_show_argument_hints='on_hold'
-
-nnoremap ,td :TernDef<CR>
-nnoremap ,tdp :TernDefPreview<CR>
-nnoremap ,tr :TernRefs<CR>
-nnoremap ,tdo :TernDoc<CR>
-nnoremap ,tre :TernRename<CR>
-nnoremap ,tt :TernType<CR>
-
-"NeoBundleLazy 'myhere/vim-nodejs-complete', {
-"    \ 'autoload' : {
-"    \     'filetypes' : 'javascript',
-"    \ }}
 
 NeoBundle 'moll/vim-node'
 
@@ -235,7 +227,7 @@ set noswapfile
 set backupdir=$HOME/backup
 set incsearch
 set ignorecase smartcase
-set ts=4 sw=4 sts=0 sr et ai
+set ts=2 sw=2 sts=0 sr et ai
 set list
 set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
 set history=200
@@ -266,15 +258,15 @@ set undoreload=4000
 "" .vimrc編集
 nnoremap <C-S> :suspend<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Space>ev :<C-u>vs $MYVIMRC<CR>
-nnoremap <silent> <Space>so :so $MYVIMRC<CR>
+nnoremap <silent> <Leader>ev :<C-u>vs $MYVIMRC<CR>
+nnoremap <silent> <Leader>so :so $MYVIMRC<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
-map <Space>jj !python -m json.tool<CR>
-nnoremap <silent>\t :vs %:p:s#/s/#/test/#<CR>
-nnoremap <silent>\e :Errors<CR>
-nnoremap \m :!mocha %<CR>
+nnoremap <silent> <Leader>e :Errors<CR>
 nnoremap gv :vertical wincmd f<CR>
+nnoremap ga ggVG<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -326,8 +318,12 @@ augroup MyDev
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
   autocmd FileType snippet setl noet
   autocmd FileType jade setl noet iskeyword+=-,_,#
-  autocmd FileType javascript setl sw=4 ts=4 sts=4 et
   autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript
+        \ setl sw=4 ts=4 sts=4 et |
+        \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
+        \ nnoremap <Leader>m :!mocha %<CR>
+
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 
 
@@ -349,16 +345,14 @@ augroup MyDev
   execute 'colorscheme' scheme
   execute 'autocmd GUIEnter * colorscheme' scheme
 
-  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-
   if !exists('g:neocomplcache_omni_functions')
     let g:neocomplcache_omni_functions = {}
   endif
 
-  "let g:neocomplcache_omni_functions.javascript = [
-  "    \ 'nodejscomplete#CompleteJS',
-  "    \ 'javascriptcomplete#CompleteJS'
-  "    \ ]
+  let g:neocomplcache_omni_functions.javascript = [
+      \ 'tern#Complete',
+      \ 'javascriptcomplete#CompleteJS'
+      \ ]
 
   autocmd User Node
     \ if &filetype == "javascript" |

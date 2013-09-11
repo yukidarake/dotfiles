@@ -212,7 +212,7 @@ nnoremap <LocalLeader>td :TernDef<CR>
 nnoremap <LocalLeader>tpd :TernDefPreview<CR>
 nnoremap <LocalLeader>tsd :TernDefSplit<CR>
 nnoremap <LocalLeader>ttd :TernDefTab<CR>
-nnoremap <LocalLeader>tr :TernRefs:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR><CR>
+nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
 nnoremap <LocalLeader>tR :TernRename<CR>'
 let g:tern_show_argument_hints='on_hold'
 
@@ -258,8 +258,8 @@ set undoreload=4000
 "" .vimrc編集
 nnoremap <C-S> :suspend<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Leader>ev :<C-u>vs $MYVIMRC<CR>
-nnoremap <silent> <Leader>so :so $MYVIMRC<CR>
+nnoremap <silent> <Leader>v :<C-u>vs $MYVIMRC<CR>
+nnoremap <silent> <Leader>s :so $MYVIMRC<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
 nnoremap <silent> <Leader>e :Errors<CR>

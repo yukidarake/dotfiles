@@ -122,8 +122,8 @@ let g:user_zen_expandabbr_key = '<c-e>'
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
 NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+"NeoBundle 'w0ng/vim-hybrid'
+"NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'bling/vim-airline'
@@ -262,6 +262,8 @@ nnoremap <silent> <Leader>v :<C-u>vs $MYVIMRC<CR>
 nnoremap <silent> <Leader>s :so $MYVIMRC<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
+nnoremap <silent> <C-N>  :bn<CR>
+nnoremap <silent> <C-P> :bp<CR>
 nnoremap <silent> <Leader>e :Errors<CR>
 nnoremap gv :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>

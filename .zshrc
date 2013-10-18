@@ -5,7 +5,7 @@ export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LESS='-R'
-export GREP_OPTIONS='--color=always'
+export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 
 bindkey -e

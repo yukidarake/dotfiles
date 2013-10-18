@@ -136,8 +136,8 @@ NeoBundle 'Syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_always_populate_loc_list=1
-let g:syntastic_json_checker='jsonlint'
-let g:syntastic_javascript_checker='jshint'
+let g:syntastic_json_checkers=['jsonlint']
+let g:syntastic_javascript_checkers=['jshint']
 
 NeoBundle 'quickrun.vim'
 let g:quickrun_config = {
@@ -217,6 +217,8 @@ nnoremap <LocalLeader>tR :TernRename<CR>'
 let g:tern_show_argument_hints='on_hold'
 
 NeoBundle 'moll/vim-node'
+
+NeoBundle 'tpope/vim-commentary'
 
 filetype plugin indent on
 NeoBundleCheck

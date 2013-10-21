@@ -88,9 +88,14 @@ if [ -f ~/.zsh/plugins/z/z.sh ]; then
     . ~/.zsh/plugins/z/z.sh
 fi
 
-if [ -f ~/.zsh/plugins/pure/prompt.zsh ]; then
-    . ~/.zsh/plugins/pure/prompt.zsh
+if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
+    if [ ! -h /usr/local/share/zsh/site-functions/prompt_pure_setup ]; then
+        ln -s ~/.zsh/plugins/pure/pure.zsh \
+          /usr/local/share/zsh/site-functions/prompt_pure_setup
+    fi
 fi
+autoload -U promptinit && promptinit
+prompt pure
 
 # 補完
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)

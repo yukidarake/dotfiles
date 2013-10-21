@@ -85,6 +85,7 @@ fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j
+    _Z_DATA=~/.z/.z
     . ~/.zsh/plugins/z/z.sh
 fi
 

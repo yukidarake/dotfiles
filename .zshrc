@@ -55,13 +55,16 @@ alias less='less -R'
 alias tmux='tmux -2'
 alias view='vim -R'
 alias v='vim -'
-alias j='autojump'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias diff='diff --exclude=".svn"'
 alias ag='ag --nogroup --nocolor'
 alias f='open .'
+alias L='less'
+alias h='history'
+alias H='history 0'
  
 # cd to the path of the front Finder window
 cdf() {
@@ -133,10 +136,7 @@ zshaddhistory() {
 
     # 以下の条件をすべて満たすものだけをヒストリに追加する
     [[ ${#line} -ge 5
-        && ${cmd} != (l|l[sal])
-        && ${cmd} != (man)
-        && ${cmd} != (say)
-        && ${cmd} != (rm) ]]
+      && ! ( ${cmd} =~ [[:\<:]](cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
 show_buffer_stack() {

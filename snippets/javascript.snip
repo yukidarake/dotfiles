@@ -41,7 +41,8 @@ snippet ifelse
 
 snippet iferr
 	if (err) {
-		return callback(err);
+		callback(err);
+		return;
 	}
 
 snippet for
@@ -116,8 +117,9 @@ snippet finally
 	try {
 		${0}
 	} catch(e) {
-		console.error(e);
+		${1}
 	} finally {
+		${2}
 	}
 
 snippet argv

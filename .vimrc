@@ -40,17 +40,6 @@ if !exists('g:neocomplete#keyword_patterns')
   let g:neocomplete#keyword_patterns = {}
 endif
 
-"NeoBundle 'Shougo/neocomplcache'
-"let g:neocomplcache_enable_at_startup = 1
-"let g:neocomplcache_auto_completion_start_length = 2
-"let g:neocomplcache_enable_smart_case = 1
-"let g:neocomplcache_enable_underbar_completion = 1
-"" Define dictionary.
-"let g:neocomplcache_dictionary_filetype_lists = {
-"    \ 'default'    : '',
-"    \ 'javascript' : '~/github/vim-node/dict/node.dict'
-"    \ }
-
 NeoBundleLazy 'Shougo/neosnippet', {
       \ 'autoload' : {
       \     'insert' : 1,
@@ -71,6 +60,7 @@ call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_p
 call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
+let g:unite_source_rec_max_cache_files=10000
 
 " prefix key
 let mapleader = '\'
@@ -152,13 +142,17 @@ let g:quickrun_config = {
       \   'tempfile': '{tempname()}.js'
       \ }}
 
-NeoBundleLazy "tyru/open-browser.vim", {
+NeoBundleLazy 'tyru/open-browser.vim', {
       \ 'autoload' : {
-      \   'functions' : "OpenBrowser",
-      \   'commands'  : ["OpenBrowser", "OpenBrowserSearch"],
-      \   'mappings'  : "<Plug>(openbrowser-smart-search)",
+      \   'functions' : 'OpenBrowser',
+      \   'commands'  : ['OpenBrowser', 'OpenBrowserSearch'],
+      \   'mappings'  : '<Plug>(openbrowser-smart-search)',
       \   'filetypes' : ['markdown']
-      \ }},
+      \ }}
+NeoBundleLazy 'tpope/vim-markdown', {
+      \ 'autoload' : {
+      \   'filetypes' : ['markdown']
+      \ }}
 NeoBundleLazy 'kannokanno/previm', {
       \ 'autoload' : {
       \   'filetypes' : ['markdown']
@@ -330,7 +324,6 @@ augroup MyDev
 
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
 
-
   " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
   function! s:auto_mkdir(dir, force)  " {{{
     if !isdirectory(a:dir) && (a:force ||
@@ -349,19 +342,19 @@ augroup MyDev
   execute 'colorscheme' scheme
   execute 'autocmd GUIEnter * colorscheme' scheme
 
-  if !exists('g:neocomplcache_omni_functions')
-    let g:neocomplcache_omni_functions = {}
+  if !exists('g:neocomplete#sources#omni#functions')
+    let g:neocomplete#sources#omni#functions = {}
   endif
 
-  let g:neocomplcache_omni_functions.javascript = [
-      \ 'tern#Complete',
-      \ 'javascriptcomplete#CompleteJS'
-      \ ]
+  let g:neocomplete#sources#omni#functions.javascript = [
+        \ 'tern#Complete',
+        \ 'javascriptcomplete#CompleteJS'
+        \ ]
 
   autocmd User Node
-    \ if &filetype == "javascript" |
-    \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
-    \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
-    \ endif
+        \ if &filetype == "javascript" |
+        \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
+        \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
+        \ endif
 augroup END
 

@@ -20,22 +20,19 @@ fi
 # npm install -g optimist async jshint mocha should
 # npm install -g node-inspector node-dev long-stack-traces jsonlint
 
-# ruby
-if [ -f ~/.rvm/scripts/rvm ]; then
-    . ~/.rvm/scripts/rvm
-    rvm use 1.9.3
-fi
-
 # python
-if [ -d ~/.pyenv/bin ]; then
-    export PATH=~/.pyenv/bin:$PATH
+if builtin command -v pyenv > /dev/null; then
     eval "$(SHELL=zsh pyenv init -)"
 fi
 
 # perl
-if [ -d ~/.plenv/bin ]; then
-    export PATH=~/.plenv/bin:$PATH
+if builtin command -v plenv > /dev/null; then
     eval "$(SHELL=zsh plenv init -)"
+fi
+
+# ruby
+if builtin command -v rbenv > /dev/null; then
+  eval "$(SHELL=zsh rbenv init -)"
 fi
 
 # java
@@ -48,6 +45,7 @@ fi
 alias ls='ls -G'
 alias ll='ls -ahl'
 alias l='ls -al'
+alias ltr='ls -ltr'
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
@@ -113,6 +111,7 @@ zstyle ':completion:*' menu select=1
 setopt bash_auto_list
 setopt list_ambiguous
 setopt autopushd
+setopt auto_cd
 
 # history
 autoload history-search-end

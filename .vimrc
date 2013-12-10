@@ -128,6 +128,7 @@ let g:syntastic_auto_loc_list=2
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
 
 NeoBundle 'quickrun.vim'
 let g:quickrun_config = {
@@ -194,21 +195,21 @@ NeoBundleLazy 'pangloss/vim-javascript', {
 "    \    filetypes' : 'javascript'
 "    \ }}
 
-NeoBundleLazy 'marijnh/tern_for_vim', {
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript',
-      \ },
-      \ 'build': {
-      \   'others': 'npm install'
-      \ }}
-nnoremap <LocalLeader>tt :TernType<CR>
-nnoremap <LocalLeader>td :TernDef<CR>
-nnoremap <LocalLeader>tpd :TernDefPreview<CR>
-nnoremap <LocalLeader>tsd :TernDefSplit<CR>
-nnoremap <LocalLeader>ttd :TernDefTab<CR>
-nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
-nnoremap <LocalLeader>tR :TernRename<CR>'
-let g:tern_show_argument_hints='on_hold'
+" NeoBundleLazy 'marijnh/tern_for_vim', {
+"       \ 'autoload' : {
+"       \   'filetypes' : 'javascript',
+"       \ },
+"       \ 'build': {
+"       \   'others': 'npm install'
+"       \ }}
+" nnoremap <LocalLeader>tt :TernType<CR>
+" nnoremap <LocalLeader>td :TernDef<CR>
+" nnoremap <LocalLeader>tpd :TernDefPreview<CR>
+" nnoremap <LocalLeader>tsd :TernDefSplit<CR>
+" nnoremap <LocalLeader>ttd :TernDefTab<CR>
+" nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
+" nnoremap <LocalLeader>tR :TernRename<CR>'
+" let g:tern_show_argument_hints='on_hold'
 
 NeoBundle 'moll/vim-node'
 
@@ -280,12 +281,6 @@ nnoremap g# g#zz
 "let IM_CtrlMode = 4
 set noimdisable
 
-"ステータス表示系
-set laststatus=2
-set statusline=%<%f\ %m%r%h%w
-set statusline+=%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}
-set statusline+=%=%l/%L,%c%V%8P
-
 " 信頼性を犠牲にして高速化
 if has('unix')
   set nofsync
@@ -312,11 +307,10 @@ augroup MyDev
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
 
   autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
-  autocmd FileType cs setl sw=2 ts=2 sts=2 et iskeyword+=,_,#
+  autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
   autocmd FileType snippet setl noet
-  autocmd FileType jade setl noet iskeyword+=-,_,#
-  autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,vim,jade autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
@@ -346,9 +340,9 @@ augroup MyDev
     let g:neocomplete#sources#omni#functions = {}
   endif
 
+  " 'tern#Complete',
   let g:neocomplete#sources#omni#functions.javascript = [
-        \ 'tern#Complete',
-        \ 'javascriptcomplete#CompleteJS'
+        \ 'javascriptcomplete#CompleteJS',
         \ ]
 
   autocmd User Node

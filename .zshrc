@@ -32,7 +32,7 @@ fi
 
 # ruby
 if builtin command -v rbenv > /dev/null; then
-  eval "$(SHELL=zsh rbenv init -)"
+  eval "$(SHELL=zsh rbenv init - --no-rehash)"
 fi
 
 # java

@@ -1,7 +1,6 @@
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
-export PATH=/usr/local/bin:$PATH
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LESS='-R'
@@ -10,6 +9,9 @@ export GIT_MERGE_AUTOEDIT=no
 
 bindkey -e
 stty stop undef
+
+typeset -U path
+path=(/usr/local/bin(N-/) ${path})
 
 # node
 if [ -f ~/.nvm/nvm.sh ]; then
@@ -38,7 +40,7 @@ fi
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2
-    export PATH=$MAVEN_HOME/bin:$PATH
+    path=(${path} $MAVEN_HOME/bin)
 fi
 
 # alias

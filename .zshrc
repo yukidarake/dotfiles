@@ -65,6 +65,7 @@ alias f='open .'
 alias L='less'
 alias h='history'
 alias H='history 0'
+alias -g V=' | v'
  
 # cd to the path of the front Finder window
 cdf() {
@@ -138,21 +139,6 @@ zshaddhistory() {
     # 以下の条件をすべて満たすものだけをヒストリに追加する
     [[ ${#line} -ge 5
       && ! ( ${cmd} =~ [[:\<:]](cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
-}
-
-show_buffer_stack() {
-    POSTDISPLAY="
-    stack: $LBUFFER"
-    zle push-line-or-edit
-}
-zle -N show_buffer_stack
-
-alc() {
-    if [ $ != 0 ]; then
-        w3m "http://eow.alc.co.jp/$*/UTF-8/?ref=sa"
-    else
-        w3m 'http://www.alc.co.jp/'
-    fi
 }
 
 # 設定ファイルのinclude

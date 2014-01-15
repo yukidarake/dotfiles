@@ -3,6 +3,7 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export EDITOR=vim
 export SVN_EDITOR=vim
+export SHELL=zsh
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -41,6 +42,10 @@ fi
 if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2
     path=(${path} $MAVEN_HOME/bin)
+fi
+
+if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
+  . ~/.tmuxinator/scripts/tmuxinator
 fi
 
 # alias

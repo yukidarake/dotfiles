@@ -3,7 +3,6 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export EDITOR=vim
 export SVN_EDITOR=vim
-export SHELL=zsh
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -15,33 +14,32 @@ typeset -U path
 path=(/usr/local/bin(N-/) ${path})
 
 # node
-if [ -f ~/.nvm/nvm.sh ]; then
-    . ~/.nvm/nvm.sh
-    nvm alias default 0.8
-    export NODE_PATH=${NVM_PATH}_modules
+if [ -f ~/.nodebrew/nodebrew ]; then
+    path=(~/.nodebrew/current/bin $path)
+    fpath=(~/.nodebrew/completions/zsh $fpath)
+    nodebrew use v0.8
 fi
-# npm install -g optimist async jshint mocha should
-# npm install -g node-inspector node-dev long-stack-traces jsonlint
+# npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint
 
 # python
-if builtin command -v pyenv > /dev/null; then
+if [ $+commands[pyenv] ]; then
     eval "$(SHELL=zsh pyenv init -)"
 fi
 
 # perl
-if builtin command -v plenv > /dev/null; then
+if [ $+commands[plenv] ]; then
     eval "$(SHELL=zsh plenv init -)"
 fi
 
 # ruby
-if builtin command -v rbenv > /dev/null; then
+if [ $+commands[rbenv] ]; then
   eval "$(SHELL=zsh rbenv init - --no-rehash)"
 fi
 
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
     export MAVEN_HOME=/usr/local/maven2
-    path=(${path} $MAVEN_HOME/bin)
+    path=($path $MAVEN_HOME/bin)
 fi
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
@@ -103,13 +101,15 @@ if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
         ln -s ~/.zsh/plugins/pure/pure.zsh \
           /usr/local/share/zsh/site-functions/prompt_pure_setup
     fi
+    autoload -Uz promptinit && promptinit
+    prompt pure
 fi
-autoload -U promptinit && promptinit
-prompt pure
 
 # 補完
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -C
+
+compdef mosh=ssh
 
 # 補完時に大小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -143,7 +143,7 @@ zshaddhistory() {
 
     # 以下の条件をすべて満たすものだけをヒストリに追加する
     [[ ${#line} -ge 5
-      && ! ( ${cmd} =~ [[:\<:]](cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
+      && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
 # 設定ファイルのinclude
@@ -151,3 +151,6 @@ if [ -f ~/.zshrc.include ]; then
     . ~/.zshrc.include
 fi
 
+#if (which zprof > /dev/null) ;then
+#  zprof | less
+#fi

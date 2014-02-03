@@ -17,14 +17,14 @@ fi
 
 npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint
 
-if [ -d ~/github ]; then
+if [ ! -d ~/github ]; then
   mkdir ~/github
 fi
 
-if [ -d ~/github/powerline-fonts ]; then
+if [ ! -d ~/github/powerline-fonts ]; then
   git clone git@github.com:Lokaltog/powerline-fonts.git
 fi
 
-if [ -d ~/github/tomorrow-theme ]; then
+if [ ! -d ~/github/tomorrow-theme ]; then
   git clone git@github.com:chriskempson/tomorrow-theme.git
 fi

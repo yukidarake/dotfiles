@@ -14,6 +14,7 @@ typeset -U path
 path=(/usr/local/bin(N-/) ${path})
 
 # node
+# curl -L git.io/nodebrew | perl - setup
 if [ -f ~/.nodebrew/nodebrew ]; then
     path=(~/.nodebrew/current/bin $path)
     fpath=(~/.nodebrew/completions/zsh $fpath)

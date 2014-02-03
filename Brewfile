@@ -26,13 +26,9 @@ install ngrep
 install phantomjs
 install plenv
 install pyenv
-install python
-install python3
 install rbenv
 install readline
 install reattach-to-user-namespace
-install ruby
-install serf
 install subversion
 install the_silver_searcher
 install tig
@@ -42,12 +38,25 @@ install wget
 install zsh
 
 # .dmg
-cask install google-chrome
-cask install firefox
+cask install alfred
+cask install bettertouchtool
 cask install chromium
+cask install firefox
+cask install google-chrome
+cask install hipchat
+cask install keyremap4macbook
+cask install mou
 cask install skype
+cask install sourcetree
+cask install thunderbird
+cask install waterroof
 #cask install virtualbox
 #cask install vagrant
+# original
+cask install google-japanese-input
+cask install macvim-kaoriya
+
+#cask alfred link || true
 
 # Remove outdated versions
 cleanup

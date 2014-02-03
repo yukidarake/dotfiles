@@ -8,7 +8,7 @@ update
 tap Homebrew/homebrew-versions || true
 tap phinze/homebrew-cask || true
 tap homebrew/binary || true
-tap yukidarake/homebrew-mycask || true
+tap yukidarake/homebrew-793 || true
 
 # Packages
 install brew-cask

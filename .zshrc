@@ -14,13 +14,11 @@ typeset -U path
 path=(/usr/local/bin(N-/) ${path})
 
 # node
-# curl -L git.io/nodebrew | perl - setup
 if [ -f ~/.nodebrew/nodebrew ]; then
     path=(~/.nodebrew/current/bin $path)
     fpath=(~/.nodebrew/completions/zsh $fpath)
     nodebrew use v0.8
 fi
-# npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint
 
 # python
 if [ $+commands[pyenv] ]; then

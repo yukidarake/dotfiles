@@ -103,11 +103,11 @@ nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
 NeoBundle 'hrsh7th/vim-versions'
 nnoremap <silent> [Unite]v :<C-u>UniteVersions
 
-NeoBundleLazy 'ZenCoding.vim', {
+NeoBundleLazy 'mattn/emmet-vim.git', {
       \ 'autoload' : {
       \   'filetypes' : ['html', 'htm']
       \ }}
-let g:user_zen_expandabbr_key = '<c-e>'
+"let g:user_emmet_leader_key='<C-E>'
 
 NeoBundle 'surround.vim'
 NeoBundle 'repeat.vim'
@@ -122,12 +122,15 @@ let g:airline_powerline_fonts=1
 
 NeoBundle 'tpope/vim-fugitive'
 
-NeoBundle 'Syntastic'
+NeoBundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_json_checkers=['jsonlint']
-let g:syntastic_javascript_checkers=['jshint']
+let g:syntastic_javascript_checkers=[
+      \ 'jshint',
+      \ 'jscs',
+      \ ]
 let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
 
 NeoBundle 'quickrun.vim'
@@ -310,7 +313,7 @@ augroup MyDev
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
   autocmd FileType snippet setl noet
-  autocmd FileType javascript,vim,jade autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |

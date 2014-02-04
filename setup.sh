@@ -8,10 +8,10 @@ if [ ! -d ~/.vim/bundle ]; then
 fi
 
 for file in ${DOT_FILES[@]}; do
-    ln -s $HOME/github/dotfiles/$file $HOME/$file
+    ln -s ~/github/dotfiles/$file ~/$file
 done
 
-if [ -f ~/.nodebrew/nodebrew ]; then
+if [ ! -f ~/.nodebrew/nodebrew ]; then
   curl -L git.io/nodebrew | perl - setup
 fi
 
@@ -22,9 +22,19 @@ if [ ! -d ~/github ]; then
 fi
 
 if [ ! -d ~/github/powerline-fonts ]; then
-  git clone git@github.com:Lokaltog/powerline-fonts.git
+  git clone git@github.com:Lokaltog/powerline-fonts.git ~/github/powerline-fonts
 fi
 
 if [ ! -d ~/github/tomorrow-theme ]; then
-  git clone git@github.com:chriskempson/tomorrow-theme.git
+  git clone git@github.com:chriskempson/tomorrow-theme.git ~/github/tommorow-theme
+fi
+
+# key binding
+if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
+  cat << _EOT_ >> ~/Library/KeyBindings/DefaultKeyBinding.dict 2>&1
+{
+  "^w"="deleteWordBackward:";
+  "^u"="deleteToBeginningOfParagraph";
+}
+_EOT_
 fi

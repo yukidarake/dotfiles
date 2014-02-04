@@ -7,20 +7,20 @@ update
 # Add Repository
 tap Homebrew/homebrew-versions || true
 tap phinze/homebrew-cask || true
-tap homebrew/binary || true
 tap yukidarake/homebrew-793 || true
 
 # Packages
 install brew-cask
 install casperjs
 install coreutils
+install curl
 install git
 install go
 install hub
 install lua
 install lua52
 install luajit
-#install mongodb
+install mongodb22
 install mobile-shell
 install ngrep
 install phantomjs
@@ -52,7 +52,8 @@ cask install thunderbird
 cask install waterroof
 #cask install virtualbox
 #cask install vagrant
-# original
+
+# 793
 cask install google-japanese-input
 cask install macvim-kaoriya
 

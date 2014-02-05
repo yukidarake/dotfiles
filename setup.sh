@@ -22,15 +22,16 @@ if [ ! -d ~/github ]; then
 fi
 
 if [ ! -d ~/github/powerline-fonts ]; then
-  git clone git@github.com:Lokaltog/powerline-fonts.git ~/github/powerline-fonts
+  git clone https://github.com:Lokaltog/powerline-fonts.git ~/github/powerline-fonts
 fi
 
 if [ ! -d ~/github/tomorrow-theme ]; then
-  git clone git@github.com:chriskempson/tomorrow-theme.git ~/github/tommorow-theme
+  git clone https://github.com:chriskempson/tomorrow-theme.git ~/github/tommorow-theme
 fi
 
 # key binding
 if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
+  mkdir ~/Library/KeyBindings
   cat << _EOT_ >> ~/Library/KeyBindings/DefaultKeyBinding.dict 2>&1
 {
   "^w"="deleteWordBackward:";
@@ -38,3 +39,16 @@ if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
 }
 _EOT_
 fi
+
+
+# タブでボタンを選択できるようにする
+#システム環境設定→キーボード→キーボードショートカット→すべてのコントロール
+
+#ダブルタップでドラッグにする
+#システム環境設定→アクセシビリティ→マウスとトラックパッド→トラックパッドオプション→ドラッグを有効にする
+
+# dashboardを無効にする
+# defaults write com.apple.dashboard mcx-disabled -boolean true
+# killall Dock
+
+

@@ -39,6 +39,7 @@ install zsh
 
 # .dmg
 cask install alfred
+cask install appcleaner
 cask install bettertouchtool
 cask install chromium
 cask install firefox
@@ -50,6 +51,8 @@ cask install skype
 cask install sourcetree
 cask install thunderbird
 cask install waterroof
+cask install xmarks-safari
+cask install xtrafinder
 #cask install virtualbox
 #cask install vagrant
 

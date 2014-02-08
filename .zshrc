@@ -86,8 +86,6 @@ if [ -f ~/.zsh/plugins/zsh-autosuggestions/autosuggestions.zsh ]; then
   zle -N zle-line-init
   # use ctrl+t to toggle autosuggestions(hopefully this wont be needed)
   bindkey '^T' autosuggest-toggle
-  # use ctrl+f to accept a suggested word
-  bindkey '^F' autosuggest-accept-suggested-word
 fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then

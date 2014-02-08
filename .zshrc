@@ -2,7 +2,6 @@ export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export EDITOR=vim
-export SVN_EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -79,14 +78,16 @@ cdf() {
   fi
 }
 
-if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
-    . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
-    function zle-line-init () {
-        auto-fu-init
-    }
-    zle -N zle-line-init
-    zstyle ':completion:*' completer _oldlist _complete
-    zstyle ':auto-fu:var' postdisplay ''
+if [ -f ~/.zsh/plugins/zsh-autosuggestions/autosuggestions.zsh ]; then
+  . ~/.zsh/plugins/zsh-autosuggestions/autosuggestions.zsh
+  zle-line-init() {
+    zle autosuggest-start
+  }
+  zle -N zle-line-init
+  # use ctrl+t to toggle autosuggestions(hopefully this wont be needed)
+  bindkey '^T' autosuggest-toggle
+  # use ctrl+f to accept a suggested word
+  bindkey '^F' autosuggest-accept-suggested-word
 fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then

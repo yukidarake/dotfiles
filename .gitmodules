@@ -1,12 +1,12 @@
 [submodule ".zsh/plugins/zsh-completions"]
 	path = .zsh/plugins/zsh-completions
 	url = git://github.com/zsh-users/zsh-completions.git
-[submodule ".zsh/plugins/auto-fu.zsh"]
-	path = .zsh/plugins/auto-fu.zsh
-	url = git://github.com/hchbaw/auto-fu.zsh.git
 [submodule ".zsh/plugins/z"]
 	path = .zsh/plugins/z
 	url = git://github.com/rupa/z
 [submodule ".zsh/plugins/pure"]
 	path = .zsh/plugins/pure
 	url = git://github.com/sindresorhus/pure.git
+[submodule ".zsh/plugins/zsh-autosuggestions"]
+	path = .zsh/plugins/zsh-autosuggestions
+	url = git://github.com/tarruda/zsh-autosuggestions.git

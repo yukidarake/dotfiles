@@ -20,9 +20,9 @@ install hub
 install lua
 install lua52
 install luajit
-install mongodb22
+#install mongodb22
 install mobile-shell
-install ngrep
+#install ngrep
 install phantomjs
 install plenv
 install pyenv
@@ -38,19 +38,19 @@ install wget
 install zsh
 
 # .dmg
-cask install alfred
+#cask install alfred
 cask install appcleaner
 cask install bettertouchtool
 cask install chromium
-cask install firefox
+#cask install firefox
 cask install google-chrome
-cask install hipchat
-cask install keyremap4macbook
+#cask install hipchat
+#cask install keyremap4macbook
 cask install mou
 cask install skype
 cask install sourcetree
-cask install thunderbird
-cask install waterroof
+#cask install thunderbird
+#cask install waterroof
 cask install xmarks-safari
 cask install xtrafinder
 #cask install virtualbox

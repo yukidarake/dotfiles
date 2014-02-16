@@ -193,10 +193,16 @@ NeoBundleLazy 'pangloss/vim-javascript', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript'
       \ }}
-"NeoBundleLazy 'jelera/vim-javascript-syntax', {
-"    \ 'autoload' : {
-"    \    filetypes' : 'javascript'
-"    \ }}
+
+NeoBundleLazy 'jelera/vim-javascript-syntax', {
+      \ 'autoload' : {
+      \    'filetypes' : 'javascript'
+      \ }}
+
+NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
+      \ 'autoload' : {
+      \    'filetypes' : 'javascript'
+      \ }}
 
 " NeoBundleLazy 'marijnh/tern_for_vim', {
 "       \ 'autoload' : {

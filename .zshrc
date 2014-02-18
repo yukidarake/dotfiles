@@ -16,6 +16,10 @@ path=(/usr/local/bin(N-/) ${path})
 if [ -f ~/.nodebrew/nodebrew ]; then
     path=(~/.nodebrew/current/bin $path)
     fpath=(~/.nodebrew/completions/zsh $fpath)
+    if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
+        ln -s ~/.nodebrew/completions/zsh/_nodebrew \
+          /usr/local/share/zsh/site-functions/
+    fi
     export NODE_PATH=~/.nodebrew/current/lib/node_modules
     nodebrew use v0.8
 fi
@@ -106,7 +110,7 @@ fi
 
 # 補完
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
-autoload -U compinit && compinit -C
+autoload -U compinit && compinit
 compdef mosh=ssh
 
 # 補完時に大小文字を区別しない

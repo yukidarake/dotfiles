@@ -16,6 +16,7 @@ path=(/usr/local/bin(N-/) ${path})
 if [ -f ~/.nodebrew/nodebrew ]; then
     path=(~/.nodebrew/current/bin $path)
     fpath=(~/.nodebrew/completions/zsh $fpath)
+    export NODE_PATH=~/.nodebrew/current/lib/node_modules
     nodebrew use v0.8
 fi
 
@@ -78,14 +79,14 @@ cdf() {
   fi
 }
 
-if [ -f ~/.zsh/plugins/zsh-autosuggestions/autosuggestions.zsh ]; then
-  . ~/.zsh/plugins/zsh-autosuggestions/autosuggestions.zsh
-  zle-line-init() {
-    zle autosuggest-start
-  }
-  zle -N zle-line-init
-  # use ctrl+t to toggle autosuggestions(hopefully this wont be needed)
-  bindkey '^T' autosuggest-toggle
+if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
+    . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
+    function zle-line-init () {
+        auto-fu-init
+    }
+    zle -N zle-line-init
+    zstyle ':completion:*' completer _oldlist _complete
+    zstyle ':auto-fu:var' postdisplay ''
 fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
@@ -99,14 +100,13 @@ if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
         ln -s ~/.zsh/plugins/pure/pure.zsh \
           /usr/local/share/zsh/site-functions/prompt_pure_setup
     fi
-    autoload -Uz promptinit && promptinit
+    autoload -U promptinit && promptinit
     prompt pure
 fi
 
 # 補完
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
 autoload -U compinit && compinit -C
-
 compdef mosh=ssh
 
 # 補完時に大小文字を区別しない

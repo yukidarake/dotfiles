@@ -7,6 +7,6 @@
 [submodule ".zsh/plugins/pure"]
 	path = .zsh/plugins/pure
 	url = git://github.com/sindresorhus/pure.git
-[submodule ".zsh/plugins/zsh-autosuggestions"]
-	path = .zsh/plugins/zsh-autosuggestions
-	url = git://github.com/tarruda/zsh-autosuggestions.git
+[submodule ".zsh/plugins/auto-fu.zsh"]
+	path = .zsh/plugins/auto-fu.zsh
+	url = git://git@github.com:hchbaw/auto-fu.zsh.git

@@ -10,6 +10,7 @@ tap phinze/homebrew-cask || true
 tap yukidarake/homebrew-793 || true
 
 # Packages
+#install boot2docker
 install brew-cask
 install casperjs
 install coreutils
@@ -29,6 +30,7 @@ install pyenv
 install rbenv
 install readline
 install reattach-to-user-namespace
+install sqlite
 install subversion
 install the_silver_searcher
 install tig
@@ -42,10 +44,15 @@ install zsh
 cask install appcleaner
 cask install bettertouchtool
 cask install chromium
+cask install day-o
 #cask install firefox
 cask install google-chrome
+cask install google-japanese-input
 #cask install hipchat
+cask install iterm2
 #cask install keyremap4macbook
+cask install limechat
+cask install macvim-kaoriya
 cask install mou
 cask install skype
 cask install sourcetree

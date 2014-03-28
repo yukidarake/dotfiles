@@ -44,7 +44,6 @@ NeoBundleLazy 'Shougo/neosnippet', {
       \ 'autoload' : {
       \     'insert' : 1,
       \ }}
-
 imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 let g:neosnippet#snippets_directory = '~/.vim/snippets,~/github/dotfiles/snippets'
@@ -53,6 +52,7 @@ let g:neosnippet#disable_runtime_snippets = {
       \ }
 
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neomru.vim'
 let g:unite_enable_start_insert=1
 let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
 call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
@@ -100,8 +100,11 @@ nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 NeoBundle 'osyo-manga/unite-quickfix'
 nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
 
-NeoBundle 'hrsh7th/vim-versions'
-nnoremap <silent> [Unite]v :<C-u>UniteVersions
+NeoBundleLazy 'tsukkee/unite-tag', {
+      \ 'autoload' : {
+      \   'filetypes' : ['javascript']
+      \ }}
+noremap <silent> <C-]> :<C-u>Unite -immediately tag:<C-r>=expand('<cword>')<CR><CR>
 
 NeoBundleLazy 'mattn/emmet-vim.git', {
       \ 'autoload' : {
@@ -204,21 +207,25 @@ NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
       \    'filetypes' : 'javascript'
       \ }}
 
-" NeoBundleLazy 'marijnh/tern_for_vim', {
-"       \ 'autoload' : {
-"       \   'filetypes' : 'javascript',
-"       \ },
-"       \ 'build': {
-"       \   'others': 'npm install'
-"       \ }}
-" nnoremap <LocalLeader>tt :TernType<CR>
-" nnoremap <LocalLeader>td :TernDef<CR>
-" nnoremap <LocalLeader>tpd :TernDefPreview<CR>
-" nnoremap <LocalLeader>tsd :TernDefSplit<CR>
-" nnoremap <LocalLeader>ttd :TernDefTab<CR>
-" nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
-" nnoremap <LocalLeader>tR :TernRename<CR>'
-" let g:tern_show_argument_hints='on_hold'
+NeoBundleLazy 'marijnh/tern_for_vim', {
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript',
+      \ },
+      \ 'build': {
+      \   'others': 'npm install'
+      \ }}
+let s:bundle = neobundle#get('tern_for_vim')
+function! s:bundle.hooks.on_source(bundle)
+  nnoremap <LocalLeader>tt :TernType<CR>
+  nnoremap <LocalLeader>td :TernDef<CR>
+  nnoremap <LocalLeader>tpd :TernDefPreview<CR>
+  nnoremap <LocalLeader>tsd :TernDefSplit<CR>
+  nnoremap <LocalLeader>ttd :TernDefTab<CR>
+  nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
+  nnoremap <LocalLeader>tR :TernRename<CR>'
+  let g:tern_show_argument_hints='on_hold'
+endfunction
+unlet s:bundle
 
 NeoBundle 'moll/vim-node'
 

@@ -49,6 +49,8 @@ fi
 
 # dashboardを無効にする
 # defaults write com.apple.dashboard mcx-disabled -boolean true
+# アニメーション高速化
+# defaults write com.apple.dock expose-animation-duration -float 0.15
 # killall Dock
 
 

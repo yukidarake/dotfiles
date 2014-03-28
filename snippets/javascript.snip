@@ -41,8 +41,7 @@ snippet ifelse
 
 snippet iferr
 	if (err) {
-		callback(err);
-		return;
+		return callback(err);
 	}
 
 snippet for
@@ -201,7 +200,7 @@ snippet before
 	});
 
 snippet beforeEach
-	before(function(done) {
+	beforeEach(function(done) {
 		${0}
 		done();
 	});

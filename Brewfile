@@ -48,20 +48,20 @@ cask install day-o
 #cask install firefox
 cask install google-chrome
 cask install google-japanese-input
-#cask install hipchat
+cask install hipchat
 cask install iterm2
-#cask install keyremap4macbook
+cask install keyremap4macbook
 cask install limechat
 cask install macvim-kaoriya
-cask install mou
+cask install nosleep
 cask install skype
 cask install sourcetree
 #cask install thunderbird
 #cask install waterroof
 cask install xmarks-safari
 cask install xtrafinder
-#cask install virtualbox
-#cask install vagrant
+cask install virtualbox
+cask install vagrant
 
 # 793
 cask install google-japanese-input

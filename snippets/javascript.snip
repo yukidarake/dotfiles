@@ -1,7 +1,11 @@
+snippet module
+alias m
+	module.exports = ${0};
+
 snippet prototype
 alias p
 options word
-	prototype.${0} = function() {
+	prototype.${1} = function(${0}) {
 		//TODO
 	};
 
@@ -22,7 +26,8 @@ options word
 	}${0}
 
 snippet var
-	var ${0} = ${1};
+alias v
+	var ${1} = ${0};
 
 snippet function_execute_immediately
 alias (f
@@ -31,12 +36,15 @@ alias (f
 	})();
 
 snippet if
-	if (${0}) {
+	if (${1}) {
+    ${0}
 	}
 
 snippet ifelse
-	if (${0}) {
+	if (${1}) {
+
 	} else {
+
 	}
 
 snippet iferr
@@ -45,42 +53,45 @@ snippet iferr
 	}
 
 snippet for
-	for (var i = 0; i < ${0}; i++) {
+	for (var i = 0; i < ${1}; i++) {
+    ${0}
 	}
 
 snippet forin
-	for (var key in ${0}) {
+	for (var key in ${1}) {
+    ${0}
 	}
 
 snippet forEach
 options word
-	forEach(function(item) {
+	forEach(function(${1:item}) {
 		${0}
 	});
 
 snippet map
 options word
-	map(function(item) {
+	map(function(${1:item}) {
 		return ${0};
 	});
 
 snippet some
 options word
-	some(function(item) {
+	some(function(${1:item}) {
 		return ${0};
 	});
 
 snippet every
 options word
-	every(function(item) {
+	every(function(${1:item}) {
 		return ${0};
 	});
 
 snippet reduce
 options word
-	reduce(function(${1}, ${0}) {
+	reduce(function(${2:acc}, ${1:cur}) {
+		${0}
 		return $1;
-	}, ${2});
+	}${3:#: ,[]});
 
 snippet d
 	debugger;
@@ -109,13 +120,13 @@ snippet try
 alias t
 	try {
 		${0}
-	} catch(e) {
+	} catch (e) {
 	}
 
 snippet finally
 	try {
 		${0}
-	} catch(e) {
+	} catch (e) {
 		${1}
 	} finally {
 		${2}
@@ -182,36 +193,68 @@ options word
 
 snippet describe
 	describe('${1}', function() {
+		it('${2}', function() {
+			${0}
+		});
+	});
+
+snippet adescribe
+	describe('${1}', function() {
 		it('${0}', function(done) {
 			done();
 		});
 	});
 
 snippet it
+	it('${1}', function() {
+		${0}
+	});
+
+snippet ait
 	it('${1}', function(done) {
 		${0}
 		done();
 	});
 
 snippet before
+	before(function() {
+		${0}
+	});
+
+snippet abefore
 	before(function(done) {
 		${0}
 		done();
 	});
 
 snippet beforeEach
+	beforeEach(function() {
+		${0}
+	});
+
+snippet abeforeEach
 	beforeEach(function(done) {
 		${0}
 		done();
 	});
 
 snippet after
+	after(function() {
+		${0}
+	});
+
+snippet aafter
 	after(function(done) {
 		${0}
 		done();
 	});
 
 snippet afterEach
+	afterEach(function() {
+		${0}
+	});
+
+snippet aafterEach
 	afterEach(function(done) {
 		${0}
 		done();

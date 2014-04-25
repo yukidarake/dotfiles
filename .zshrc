@@ -12,30 +12,30 @@ stty stop undef
 
 typeset -U path PATH fpath
 path=(
-  /usr/local/bin(N-/) 
-  ${path}
+/usr/local/bin(N-/) 
+${path}
 )
 
 # node
 if [ -f ~/.nodebrew/nodebrew ]; then
-    path=(~/.nodebrew/current/bin $path)
-    fpath=(~/.nodebrew/completions/zsh $fpath)
-    if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
-        ln -s ~/.nodebrew/completions/zsh/_nodebrew \
-          /usr/local/share/zsh/site-functions/
-    fi
-    export NODE_PATH=~/.nodebrew/current/lib/node_modules
-    nodebrew use v0.8
+  path=(~/.nodebrew/current/bin $path)
+  fpath=(~/.nodebrew/completions/zsh $fpath)
+  if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
+    ln -s ~/.nodebrew/completions/zsh/_nodebrew \
+      /usr/local/share/zsh/site-functions/
+  fi
+  export NODE_PATH=~/.nodebrew/current/lib/node_modules
+  nodebrew use v0.8
 fi
 
 # python
 if [ $+commands[pyenv] ]; then
-    eval "$(SHELL=zsh pyenv init -)"
+  eval "$(SHELL=zsh pyenv init -)"
 fi
 
 # perl
 if [ $+commands[plenv] ]; then
-    eval "$(SHELL=zsh plenv init -)"
+  eval "$(SHELL=zsh plenv init -)"
 fi
 
 # ruby
@@ -45,8 +45,8 @@ fi
 
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
-    export MAVEN_HOME=/usr/local/maven2
-    path=($path $MAVEN_HOME/bin)
+  export MAVEN_HOME=/usr/local/maven2
+  path=($path $MAVEN_HOME/bin)
 fi
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
@@ -88,13 +88,13 @@ cdf() {
 }
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
-    . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
-    function zle-line-init () {
-        auto-fu-init
-    }
-    zle -N zle-line-init
-    zstyle ':completion:*' completer _oldlist _complete
-    zstyle ':auto-fu:var' postdisplay ''
+  . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
+  function zle-line-init () {
+      auto-fu-init
+  }
+  zle -N zle-line-init
+  zstyle ':completion:*' completer _oldlist _complete
+  zstyle ':auto-fu:var' postdisplay ''
 fi
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
@@ -104,12 +104,12 @@ if [ -f ~/.zsh/plugins/z/z.sh ]; then
 fi
 
 if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
-    if [ ! -h /usr/local/share/zsh/site-functions/prompt_pure_setup ]; then
-        ln -s ~/.zsh/plugins/pure/pure.zsh \
-          /usr/local/share/zsh/site-functions/prompt_pure_setup
-    fi
-    autoload -U promptinit && promptinit
-    prompt pure
+  if [ ! -h /usr/local/share/zsh/site-functions/prompt_pure_setup ]; then
+      ln -s ~/.zsh/plugins/pure/pure.zsh \
+        /usr/local/share/zsh/site-functions/prompt_pure_setup
+  fi
+  autoload -U promptinit && promptinit
+  prompt pure
 
   # display svn branch info
   zstyle ':vcs_info:*' enable git svn
@@ -117,8 +117,7 @@ if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
   zstyle ':vcs_info:svn*' branchformat '%b:r%r'
   zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
   +vi-svn-hook() {
-    hook_com[branch]=`svn info | perl -ne 's/^Relative URL+: // && print'`
-    #ret=1
+    hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
   }
 fi
 
@@ -154,17 +153,17 @@ setopt hist_reduce_blanks
 setopt share_history
 
 zshaddhistory() {
-    local line=${1%%$'\n'}
-    local cmd=${line%% *}
+  local line=${1%%$'\n'}
+  local cmd=${line%% *}
 
-    # 以下の条件をすべて満たすものだけをヒストリに追加する
-    [[ ${#line} -ge 5
-      && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
+  # 以下の条件をすべて満たすものだけをヒストリに追加する
+  [[ ${#line} -ge 5
+    && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
 # 設定ファイルのinclude
 if [ -f ~/.zshrc.include ]; then
-    . ~/.zshrc.include
+  . ~/.zshrc.include
 fi
 
 #if (which zprof > /dev/null) ;then

@@ -5,12 +5,16 @@ export EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
+export GOPATH=~/.go
 
 bindkey -e
 stty stop undef
 
-typeset -U path
-path=(/usr/local/bin(N-/) ${path})
+typeset -U path PATH fpath
+path=(
+  /usr/local/bin(N-/) 
+  ${path}
+)
 
 # node
 if [ -f ~/.nodebrew/nodebrew ]; then
@@ -106,6 +110,16 @@ if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
     fi
     autoload -U promptinit && promptinit
     prompt pure
+
+  # display svn branch info
+  zstyle ':vcs_info:*' enable git svn
+  zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
+  zstyle ':vcs_info:svn*' branchformat '%b:r%r'
+  zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
+  +vi-svn-hook() {
+    hook_com[branch]=`svn info | perl -ne 's/^Relative URL+: // && print'`
+    #ret=1
+  }
 fi
 
 # 補完

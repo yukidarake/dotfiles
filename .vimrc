@@ -3,7 +3,7 @@ set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
 
 if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 
 call neobundle#rc()
@@ -54,13 +54,15 @@ let g:neosnippet#disable_runtime_snippets = {
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 let g:unite_enable_start_insert=1
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
+" let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+" call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+" call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+" call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 let g:unite_source_rec_max_cache_files=10000
+let g:unite_source_rec_min_cache_files=50
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
 
 " prefix key
 let mapleader = '\'
@@ -135,17 +137,23 @@ let g:syntastic_javascript_checkers=[
       \ 'jscs',
       \ ]
 let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
+let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
 NeoBundle 'quickrun.vim'
 let g:quickrun_config = {
       \ '_': {
-      \   'runner': 'vimproc'
+      \   'runner': 'vimproc',
+      \   'runner/vimproc/updatetime': 10,
       \ },
       \ 'markdown': {
       \   'outputter': 'browser'
       \ },
       \ 'javascript': {
       \   'command': 'node',
+      \   'tempfile': '{tempname()}.js'
+      \ },
+      \ 'javascript/mocha': {
+      \   'command': 'mocha',
       \   'tempfile': '{tempname()}.js'
       \ }}
 
@@ -170,11 +178,22 @@ NeoBundleLazy 'digitaltoad/vim-jade', {
       \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
 
+" NeoBundleLazy 'junegunn/fzf', {
+"       \ 'autoload' : {
+"       \   'commands'  : ['FZF'],
+"       \ }}
+
 NeoBundle 'othree/eregex.vim'
 nnoremap / :M/
 nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
+
+NeoBundleLazy 'Blackrush/vim-gocode', {
+      \ 'rtp': 'vim/',
+      \ 'autoload' : {
+      \   'filetypes' : ['go']
+      \ }}
 
 NeoBundleLazy 'Tabular', {
       \ 'autoload' : {
@@ -206,6 +225,17 @@ NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
       \ 'autoload' : {
       \    'filetypes' : 'javascript'
       \ }}
+
+NeoBundleLazy 'heavenshell/vim-jsdoc', {
+      \ 'autoload' : {
+      \    'filetypes' : 'javascript'
+      \ }}
+let s:bundle = neobundle#get('vim-jsdoc')
+function! s:bundle.hooks.on_source(bundle)
+  let g:jsdoc_default_mapping=0
+endfunction
+unlet s:bundle
+
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload' : {
@@ -325,14 +355,15 @@ augroup MyDev
   autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
-  autocmd FileType snippet setl noet
+  autocmd FileType go,neosnippet setl noet noci nopi
   autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
-        \ nnoremap <Leader>m :!mocha %<CR>
+        \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
 
   autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+  autocmd BufWritePre *.go Fmt
 
   " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
   function! s:auto_mkdir(dir, force)  " {{{
@@ -358,6 +389,7 @@ augroup MyDev
 
   " 'tern#Complete',
   let g:neocomplete#sources#omni#functions.javascript = [
+        \ 'tern#Complete',
         \ 'javascriptcomplete#CompleteJS',
         \ ]
 
@@ -367,4 +399,24 @@ augroup MyDev
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
         \ endif
 augroup END
+
+let s:unite_source = {
+\   'name': 'fzf',
+\ }
+
+function! s:unite_source.gather_candidates(args, context)
+  let lines = split(unite#util#system('ag -l -g ""'), '\n')
+  let path = expand('#:p')
+  let format = '%' . strlen(len(lines)) . 'd: %s'
+  return map(lines, '{
+  \   "word": printf(format, v:key + 1, v:val),
+  \   "source": "fzf",
+  \   "kind": "jump_list",
+  \   "action__path": path,
+  \   "action__line": v:key + 1,
+  \ }')
+endfunction
+
+call unite#define_source(s:unite_source)
+unlet s:unite_source
 

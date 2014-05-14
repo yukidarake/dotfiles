@@ -54,15 +54,15 @@ let g:neosnippet#disable_runtime_snippets = {
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 let g:unite_enable_start_insert=1
-" let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-" call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-" call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
-" call unite#custom#source('grep', 'ignore_pattern', s:file_rec_ignore_pattern)
+"let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+"call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+"call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 let g:unite_source_rec_max_cache_files=10000
 let g:unite_source_rec_min_cache_files=50
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#source('line', 'matchers', 'matcher_regexp')
 
 " prefix key
 let mapleader = '\'
@@ -78,9 +78,9 @@ nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]g :<C-u>Unite grep::-i -winheight=10 -no-quit<C-F><S-F>:,i
+nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 -grep:<CR>
 let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
 let g:unite_source_grep_max_candidates = 200
 
@@ -88,11 +88,11 @@ let g:unite_source_grep_max_candidates = 200
 " " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
 vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
-" line
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
+nnoremap <silent> [Unite]j :<C-u>Unite jump<CR>
 
 NeoBundle 'Shougo/unite-outline'
-nnoremap <silent> [Unite]o :<C-u>Unite outline -winheight=15<CR>
+nnoremap <silent> [Unite]o :<C-u>Unite -winheight=15 outline<CR>
 
 NeoBundle 'thinca/vim-unite-history'
 nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
@@ -114,8 +114,8 @@ NeoBundleLazy 'mattn/emmet-vim.git', {
       \ }}
 "let g:user_emmet_leader_key='<C-E>'
 
-NeoBundle 'surround.vim'
-NeoBundle 'repeat.vim'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
 NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'w0ng/vim-hybrid'
 "NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
@@ -139,23 +139,31 @@ let g:syntastic_javascript_checkers=[
 let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
 let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
-NeoBundle 'quickrun.vim'
-let g:quickrun_config = {
-      \ '_': {
-      \   'runner': 'vimproc',
-      \   'runner/vimproc/updatetime': 10,
-      \ },
-      \ 'markdown': {
-      \   'outputter': 'browser'
-      \ },
-      \ 'javascript': {
-      \   'command': 'node',
-      \   'tempfile': '{tempname()}.js'
-      \ },
-      \ 'javascript/mocha': {
-      \   'command': 'mocha',
-      \   'tempfile': '{tempname()}.js'
+NeoBundleLazy 'thinca/vim-quickrun', {
+      \ 'autoload': {
+      \   'mappings': [['nxo', '<Plug>(quickrun)']]
       \ }}
+nmap <Leader>r <Plug>(quickrun)
+let s:hooks = neobundle#get_hooks('vim-quickrun')
+function! s:hooks.on_source(bundle)
+  let g:quickrun_config = {
+        \ '_': {
+        \   'runner': 'vimproc',
+        \   'runner/vimproc/updatetime': 10,
+        \ },
+        \ 'markdown': {
+        \   'outputter': 'browser'
+        \ },
+        \ 'javascript': {
+        \   'command': 'node',
+        \   'tempfile': '{tempname()}.js'
+        \ },
+        \ 'javascript/mocha': {
+        \   'command': 'mocha',
+        \   'tempfile': '{tempname()}.js'
+        \ }}
+endfunction
+unlet s:hooks
 
 NeoBundleLazy 'tyru/open-browser.vim', {
       \ 'autoload' : {
@@ -177,11 +185,6 @@ NeoBundleLazy 'digitaltoad/vim-jade', {
       \   'filetypes' : ['jade']
       \ }}
 NeoBundle 'thinca/vim-ft-svn_diff'
-
-" NeoBundleLazy 'junegunn/fzf', {
-"       \ 'autoload' : {
-"       \   'commands'  : ['FZF'],
-"       \ }}
 
 NeoBundle 'othree/eregex.vim'
 nnoremap / :M/
@@ -230,11 +233,11 @@ NeoBundleLazy 'heavenshell/vim-jsdoc', {
       \ 'autoload' : {
       \    'filetypes' : 'javascript'
       \ }}
-let s:bundle = neobundle#get('vim-jsdoc')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('vim-jsdoc')
+function! s:hooks.on_source(bundle)
   let g:jsdoc_default_mapping=0
 endfunction
-unlet s:bundle
+unlet s:hooks
 
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
@@ -244,8 +247,8 @@ NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'build': {
       \   'others': 'npm install'
       \ }}
-let s:bundle = neobundle#get('tern_for_vim')
-function! s:bundle.hooks.on_source(bundle)
+let s:hooks = neobundle#get_hooks('tern_for_vim')
+function! s:hooks.on_source(bundle)
   nnoremap <LocalLeader>tt :TernType<CR>
   nnoremap <LocalLeader>td :TernDef<CR>
   nnoremap <LocalLeader>tpd :TernDefPreview<CR>
@@ -255,7 +258,7 @@ function! s:bundle.hooks.on_source(bundle)
   nnoremap <LocalLeader>tR :TernRename<CR>'
   let g:tern_show_argument_hints='on_hold'
 endfunction
-unlet s:bundle
+unlet s:hooks
 
 NeoBundle 'moll/vim-node'
 
@@ -399,24 +402,4 @@ augroup MyDev
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
         \ endif
 augroup END
-
-let s:unite_source = {
-\   'name': 'fzf',
-\ }
-
-function! s:unite_source.gather_candidates(args, context)
-  let lines = split(unite#util#system('ag -l -g ""'), '\n')
-  let path = expand('#:p')
-  let format = '%' . strlen(len(lines)) . 'd: %s'
-  return map(lines, '{
-  \   "word": printf(format, v:key + 1, v:val),
-  \   "source": "fzf",
-  \   "kind": "jump_list",
-  \   "action__path": path,
-  \   "action__line": v:key + 1,
-  \ }')
-endfunction
-
-call unite#define_source(s:unite_source)
-unlet s:unite_source
 

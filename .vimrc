@@ -78,7 +78,7 @@ nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
 nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 -grep:<CR>
+nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
@@ -102,11 +102,11 @@ nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 NeoBundle 'osyo-manga/unite-quickfix'
 nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
 
-NeoBundleLazy 'tsukkee/unite-tag', {
-      \ 'autoload' : {
-      \   'filetypes' : ['javascript']
-      \ }}
-noremap <silent> <C-]> :<C-u>Unite -immediately tag:<C-r>=expand('<cword>')<CR><CR>
+" NeoBundleLazy 'tsukkee/unite-tag', {
+"       \ 'autoload' : {
+"       \   'filetypes' : ['javascript']
+"       \ }}
+" noremap <silent> <C-]> :<C-u>Unite -immediately tag:<C-r>=expand('<cword>')<CR><CR>
 
 NeoBundleLazy 'mattn/emmet-vim.git', {
       \ 'autoload' : {
@@ -354,6 +354,7 @@ augroup MyDev
   autocmd BufReadPost,BufNewFile *.jade setl filetype=jade
   autocmd BufReadPost,BufNewFile *.js setl filetype=javascript
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
+  autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
 
   autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#

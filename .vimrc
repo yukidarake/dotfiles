@@ -51,7 +51,15 @@ let g:neosnippet#disable_runtime_snippets = {
       \ 'javascript' : 1,
       \ }
 
-NeoBundle 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim', {
+      \ 'autoload': {
+      \   'commands' : [
+      \     {'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'},
+      \     {'name' : 'UniteWithBufferDir', 'complete' : 'customlist,unite#complete_source'},
+      \     {'name' : 'UniteWithCursorWord', 'complete' : 'customlist,unite#complete_source'},
+      \     {'name' : 'UniteWithWithInput', 'complete' : 'customlist,unite#complete_source'}]
+      \ }}
+
 NeoBundle 'Shougo/neomru.vim'
 let g:unite_enable_start_insert=1
 "let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
@@ -91,16 +99,43 @@ vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
 nnoremap <silent> [Unite]j :<C-u>Unite jump<CR>
 
-NeoBundle 'Shougo/unite-outline'
+NeoBundleLazy 'Shougo/unite-outline', {
+      \ 'autoload': {
+      \   'unite_sources' : [
+      \     'outline',
+      \   ],
+      \ }}
 nnoremap <silent> [Unite]o :<C-u>Unite -winheight=15 outline<CR>
 
-NeoBundle 'thinca/vim-unite-history'
+NeoBundleLazy 'thinca/vim-unite-history', {
+      \ 'autoload': {
+      \   'unite_sources' : [
+      \     'history/command',
+      \     'history/search',
+      \     'history/yank',
+      \   ],
+      \ }}
 nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
 nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
 nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
 
-NeoBundle 'osyo-manga/unite-quickfix'
+NeoBundleLazy 'osyo-manga/unite-quickfix', {
+      \ 'autoload': {
+      \   'unite_sources' : [
+      \     'location_list',
+      \   ],
+      \ }}
 nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
+
+NeoBundleLazy 'rhysd/unite-codic.vim', {
+      \ 'depends' : [
+      \   'koron/codic-vim',
+      \ ],
+      \ 'autoload': {
+      \   'unite_sources' : [
+      \     'codic',
+      \   ],
+      \ }}
 
 " NeoBundleLazy 'tsukkee/unite-tag', {
 "       \ 'autoload' : {
@@ -141,7 +176,8 @@ let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
 NeoBundleLazy 'thinca/vim-quickrun', {
       \ 'autoload': {
-      \   'mappings': [['nxo', '<Plug>(quickrun)']]
+      \   'mappings': [['nxo', '<Plug>(quickrun)']],
+      \   'commands': ['QuickRun'],
       \ }}
 nmap <Leader>r <Plug>(quickrun)
 let s:hooks = neobundle#get_hooks('vim-quickrun')
@@ -242,8 +278,10 @@ unlet s:hooks
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload' : {
-      \   'filetypes' : 'javascript',
+      \   'functions' : ['tern#Complete', 'tern#Enable'],
+      \   'filetypes' : 'javascript'
       \ },
+      \ 'commands' : ['TernDef', 'TernDoc', 'TernType', 'TernRefs', 'TernRename'],
       \ 'build': {
       \   'others': 'npm install'
       \ }}

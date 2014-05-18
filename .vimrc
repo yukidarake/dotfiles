@@ -51,16 +51,22 @@ let g:neosnippet#disable_runtime_snippets = {
       \ 'javascript' : 1,
       \ }
 
-NeoBundleLazy 'Shougo/unite.vim', {
+NeoBundle 'Shougo/unite.vim', {
       \ 'autoload': {
       \   'commands' : [
-      \     {'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'},
-      \     {'name' : 'UniteWithBufferDir', 'complete' : 'customlist,unite#complete_source'},
-      \     {'name' : 'UniteWithCursorWord', 'complete' : 'customlist,unite#complete_source'},
-      \     {'name' : 'UniteWithWithInput', 'complete' : 'customlist,unite#complete_source'}]
+      \     'Unite',
+      \     'UniteWithBufferDir',
+      \     'UniteWithCursorWord',
+      \     'UniteWithWithInput',
+      \   ],
       \ }}
 
-NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'Shougo/neomru.vim', {
+      \ 'autoload': {
+      \   'unite_sources': [
+      \     'file_mru', 'directory_mru', 'neomru/file', 'neomru/directory'
+      \   ],
+      \ }}
 let g:unite_enable_start_insert=1
 "let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
 "call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)

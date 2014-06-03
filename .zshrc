@@ -2,10 +2,13 @@ export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
 export EDITOR=vim
+export SVN_EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 export GOPATH=~/.go
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_DEFAULT_OPTS='-x +s'
 
 bindkey -e
 stty stop undef
@@ -13,6 +16,7 @@ stty stop undef
 typeset -U path PATH fpath
 path=(
 /usr/local/bin(N-/) 
+$GOPATH/bin(N-/) 
 ${path}
 )
 
@@ -76,6 +80,7 @@ alias L='less'
 alias h='history'
 alias H='history 0'
 alias -g V=' | v'
+alias vf='vi `fzf`'
  
 # cd to the path of the front Finder window
 cdf() {
@@ -85,6 +90,98 @@ cdf() {
   else
     echo 'No Finder window found' >&2
   fi
+}
+
+sssh() {
+  tmux new-window -n $@ "exec ssh $@"
+}
+
+moshx() {
+  SSHX_COMMAND=mosh sshx $@
+}
+
+sshx() {
+  local SSH=${SSHX_COMMAND:-ssh}
+
+  if [ -n "$SESSION_NAME" ]; then
+    session=$SESSION_NAME
+  else
+    session=${SSH}x-`date +%s`
+  fi
+
+  window=${SSH}x
+
+  tmux new-session -d -n $window -s $session
+  
+  tmux send-keys "$SSH $1" C-m
+  shift
+
+  for h in $*; do
+    tmux split-window
+    tmux select-layout tiled
+    tmux send-keys "$SSH $h" C-m
+  done
+
+  tmux select-pane -t 0
+
+  tmux set-window-option synchronize-panes on
+
+  tmux attach-session -t $session
+}
+
+# fzf 
+## Open the selected file with the default editor
+fe() {
+  local file=$(fzf --query="$1")
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+}
+
+## fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+## fhistory - repeat history
+fhistory() {
+  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
+}
+
+## fkill - kill process
+fkill() {
+  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
+}
+
+_fh() {
+  grep -E '[0-9]' /etc/hosts | fzf +s
+}
+
+_fh-ip() {
+  _fh | perl -pe 's/^[# ]*([0-9.]+)\s+.+/$1/'
+}
+
+_fh-host() {
+  _fh | perl -pe 's/^[# ]*[0-9.]+\s+(\S+).*$/$1/'
+}
+
+fh() {
+  _fh | tee >(pbcopy)
+}
+
+fh-ip() {
+  _fh-ip | tee >(pbcopy)
+}
+
+fh-host() {
+  _fh-host | tee >(pbcopy)
+}
+
+fh-open() {
+  local h   
+  h=$(_fh-host)
+  open "http://${h}"
 }
 
 if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
@@ -161,6 +258,8 @@ zshaddhistory() {
     && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
+
+
 # 設定ファイルのinclude
 if [ -f ~/.zshrc.include ]; then
   . ~/.zshrc.include
@@ -169,3 +268,5 @@ fi
 #if (which zprof > /dev/null) ;then
 #  zprof | less
 #fi
+
+. ~/.fzf.zsh

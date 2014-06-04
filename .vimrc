@@ -182,7 +182,6 @@ let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
 NeoBundleLazy 'thinca/vim-quickrun', {
       \ 'autoload': {
-      \   'mappings': [['nxo', '<Plug>(quickrun)']],
       \   'commands': ['QuickRun'],
       \ }}
 nmap <Leader>r <Plug>(quickrun)
@@ -299,7 +298,8 @@ function! s:hooks.on_source(bundle)
   nnoremap <LocalLeader>tsd :TernDefSplit<CR>
   nnoremap <LocalLeader>ttd :TernDefTab<CR>
   nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
-  nnoremap <LocalLeader>tR :TernRename<CR>'
+  nnoremap <LocalLeader>tR :TernRename<CR>
+  nnoremap <LocalLeader>j :TernDef<CR>f'gf
   let g:tern_show_argument_hints='on_hold'
 endfunction
 unlet s:hooks

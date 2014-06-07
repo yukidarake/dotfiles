@@ -181,9 +181,10 @@ let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
 let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
 NeoBundleLazy 'thinca/vim-quickrun', {
-      \ 'autoload': {
-      \   'commands': ['QuickRun'],
-      \ }}
+      \ 'commands' : 'QuickRun',
+      \ 'mappings' : [
+      \   ['nxo', '<Plug>(quickrun)']],
+      \ }
 nmap <Leader>r <Plug>(quickrun)
 let s:hooks = neobundle#get_hooks('vim-quickrun')
 function! s:hooks.on_source(bundle)
@@ -191,6 +192,10 @@ function! s:hooks.on_source(bundle)
         \ '_': {
         \   'runner': 'vimproc',
         \   'runner/vimproc/updatetime': 10,
+        \ },
+        \ 'go': {
+        \   'command': 'go',
+        \   'exec': ['%c run %s'],
         \ },
         \ 'markdown': {
         \   'outputter': 'browser'
@@ -233,11 +238,38 @@ nnoremap ? :M?
 nnoremap ,/ /
 nnoremap ,? ?
 
-NeoBundleLazy 'Blackrush/vim-gocode', {
-      \ 'rtp': 'vim/',
+NeoBundleLazy 'fatih/vim-go', {
       \ 'autoload' : {
       \   'filetypes' : ['go']
       \ }}
+let s:hooks = neobundle#get_hooks('tern_for_vim')
+function! s:hooks.on_source(bundle)
+  let g:go_bin_path = expand("~/.go/bin")
+  let g:go_disable_autoinstall = 1
+  let g:go_fmt_autosave = 0
+  let g:go_fmt_command = "gofmt"
+  let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
+  let g:go_play_open_browser = 0
+  let g:go_snippet_engine = 'neosnippet'
+  let g:gofmt_command = 'goimports'
+  let g:neosnippet#snippets_directory .= ',~/.vim/bundle/vim-go/gosnippets/snippets/go.snippets'
+
+  augroup MyGoAutocmd
+    autocmd!
+    autocmd FileType go nmap <Leader>i <Plug>(go-info)
+    autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+    autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+    autocmd FileType go nmap <leader>gb <Plug>(go-build)
+    autocmd FileType go nmap <leader>gt <Plug>(go-test)
+    autocmd FileType go nmap gd <Plug>(go-def)
+    autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
+    autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+    autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+    autocmd FileType go nmap <Leader>gl :GoLint<CR>
+    autocmd BufWritePre *.go Fmt
+  augroup END
+endfunction
+unlet s:hooks
 
 NeoBundleLazy 'Tabular', {
       \ 'autoload' : {
@@ -254,6 +286,8 @@ function! s:align()
     call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
+
+NeoBundle 'mopp/autodirmake.vim'
 
 NeoBundleLazy 'pangloss/vim-javascript', {
       \ 'autoload' : {
@@ -374,17 +408,11 @@ nnoremap g# g#zz
 "let IM_CtrlMode = 4
 set noimdisable
 
-" 信頼性を犠牲にして高速化
-if has('unix')
-  set nofsync
-  set swapsync=
-endif
-
 if has('kaoriya')
   let $PYTHON_DLL='/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Python'
 endif
 
-augroup MyDev
+augroup MyAutocmd
   autocmd!
 
   " ウィンドウを分割して開く
@@ -410,17 +438,6 @@ augroup MyDev
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
 
-  autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
-  autocmd BufWritePre *.go Fmt
-
-  " Vimで存在しないフォルダを指定してファイル保存した時に自動で作成する。
-  function! s:auto_mkdir(dir, force)  " {{{
-    if !isdirectory(a:dir) && (a:force ||
-          \    input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
-      call mkdir(iconv(a:dir, &encoding, &termencoding), 'p')
-    endif
-  endfunction  " }}}
-
   " color
   syntax on
   set t_Co=256
@@ -440,6 +457,12 @@ augroup MyDev
         \ 'tern#Complete',
         \ 'javascriptcomplete#CompleteJS',
         \ ]
+
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+
+  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
 
   autocmd User Node
         \ if &filetype == "javascript" |

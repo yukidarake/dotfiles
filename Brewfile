@@ -51,7 +51,6 @@ cask install chromium
 cask install day-o
 cask install firefox
 cask install google-chrome
-cask install google-japanese-input
 # cask install hipchat
 cask install iterm2
 cask install keyremap4macbook

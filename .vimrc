@@ -133,16 +133,6 @@ NeoBundleLazy 'osyo-manga/unite-quickfix', {
       \ }}
 nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
 
-NeoBundleLazy 'rhysd/unite-codic.vim', {
-      \ 'depends' : [
-      \   'koron/codic-vim',
-      \ ],
-      \ 'autoload': {
-      \   'unite_sources' : [
-      \     'codic',
-      \   ],
-      \ }}
-
 " NeoBundleLazy 'tsukkee/unite-tag', {
 "       \ 'autoload' : {
 "       \   'filetypes' : ['javascript']

@@ -8,6 +8,7 @@ update
 tap Homebrew/homebrew-versions || true
 tap phinze/homebrew-cask || true
 tap yukidarake/homebrew-793 || true
+tap lestrrat/peco || true
 
 # Packages
 #install boot2docker
@@ -25,6 +26,7 @@ install luajit
 # install mongodb22
 install mobile-shell
 install ngrep
+install peco
 install phantomjs
 install plenv
 install pyenv

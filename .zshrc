@@ -7,8 +7,6 @@ export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 export GOPATH=~/.go
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_DEFAULT_OPTS='-x +s'
 
 bindkey -e
 stty stop undef
@@ -80,7 +78,10 @@ alias L='less'
 alias h='history'
 alias H='history 0'
 alias -g V=' | v'
-alias vf='vi `fzf`'
+
+if (( ! $+commands[tac] )); then
+  alias tac="tail -r"
+fi
  
 # cd to the path of the front Finder window
 cdf() {
@@ -129,33 +130,8 @@ sshx() {
   tmux attach-session -t $session
 }
 
-# fzf 
-## Open the selected file with the default editor
-fe() {
-  local file=$(fzf --query="$1")
-  [ -n "$file" ] && ${EDITOR:-vim} "$file"
-}
-
-## fd - cd to selected directory
-fd() {
-  local dir
-  dir=$(find ${1:-*} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
-}
-
-## fhistory - repeat history
-fhistory() {
-  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
-}
-
-## fkill - kill process
-fkill() {
-  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
-}
-
 _fh() {
-  grep -E '[0-9]' /etc/hosts | fzf +s
+  grep -E '[0-9]' /etc/hosts | peco
 }
 
 _fh-ip() {
@@ -184,15 +160,40 @@ fh-open() {
   open "http://${h}"
 }
 
-if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
-  . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
-  function zle-line-init () {
-      auto-fu-init
-  }
-  zle -N zle-line-init
-  zstyle ':completion:*' completer _oldlist _complete
-  zstyle ':auto-fu:var' postdisplay ''
-fi
+# peco
+peco_find() {
+  LBUFFER="$LBUFFER$(ag -l -g "" | peco)"
+  BUFFER="$LBUFFER$RBUFFER"
+  CURSOR=$#LBUFFER
+  zle -R -c 
+}
+zle -N peco_find
+bindkey "^X^F" peco_find
+
+peco_kill() {
+  ps -ef | sed 1d | peco | awk '{print $2}' | xargs kill -${1:-9}
+}
+bindkey "^X^K" peco_kill
+
+peco_change_directory() {
+  local dest=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
+  if [ -n "${dest}" ]; then
+    cd ${dest}
+  fi
+  zle reset-prompt
+}
+zle -N peco_change_directory
+bindkey "^X^J" peco_change_directory
+bindkey "^J" peco_change_directory
+
+peco_select_history() {
+  BUFFER=$(fc -l -n 1 | tac | peco --query "$LBUFFER")
+  CURSOR=$#BUFFER             # move cursor
+  zle -R -c                   # refresh
+}
+zle -N peco_select_history
+bindkey '^X^R' peco_select_history
+bindkey '^R' peco_select_history
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j
@@ -218,6 +219,16 @@ if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
   }
 fi
 
+if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
+  . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
+  function zle-line-init () {
+      auto-fu-init
+  }
+  zle -N zle-line-init
+  zstyle ':completion:*' completer _oldlist _complete
+  zstyle ':auto-fu:var' postdisplay ''
+fi
+
 # 補完
 fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
 autoload -U compinit && compinit
@@ -239,13 +250,14 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
-bindkey '^R' history-incremental-pattern-search-backward
-bindkey '^S' history-incremental-pattern-search-forward
+# bindkey '^R' history-incremental-pattern-search-backward
+# bindkey '^S' history-incremental-pattern-search-forward
 HISTFILE=~/.zsh_history
 HISTSIZE=16384
 SAVEHIST=16384
 LISTMAX=1000
 setopt hist_ignore_all_dups
+setopt hist_ignore_space
 setopt hist_reduce_blanks
 setopt share_history
 
@@ -258,8 +270,6 @@ zshaddhistory() {
     && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
-
-
 # 設定ファイルのinclude
 if [ -f ~/.zshrc.include ]; then
   . ~/.zshrc.include
@@ -268,6 +278,4 @@ fi
 #if (which zprof > /dev/null) ;then
 #  zprof | less
 #fi
-
-. ~/.fzf.zsh
 

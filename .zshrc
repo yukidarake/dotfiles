@@ -13,15 +13,15 @@ stty stop undef
 
 typeset -U path PATH fpath
 path=(
-/usr/local/bin(N-/) 
-$GOPATH/bin(N-/) 
-${path}
+/usr/local/bin(N-/)
+$GOPATH/bin(N-/)
+$path
 )
 
 # node
 if [ -f ~/.nodebrew/nodebrew ]; then
-  path=(~/.nodebrew/current/bin $path)
-  fpath=(~/.nodebrew/completions/zsh $fpath)
+  path+=(~/.nodebrew/current/bin)
+  fpath+=(~/.nodebrew/completions/zsh)
   if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
     ln -s ~/.nodebrew/completions/zsh/_nodebrew \
       /usr/local/share/zsh/site-functions/
@@ -78,11 +78,9 @@ alias L='less'
 alias h='history'
 alias H='history 0'
 alias -g V=' | v'
+alias man='vs man'
+alias p='peco'
 
-if (( ! $+commands[tac] )); then
-  alias tac="tail -r"
-fi
- 
 # cd to the path of the front Finder window
 cdf() {
   target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
@@ -91,6 +89,17 @@ cdf() {
   else
     echo 'No Finder window found' >&2
   fi
+}
+
+# tmux
+function() {
+
+vs() {
+  tmux split-window -h "$*"
+}
+
+sp() {
+  tmux split-window -v "$*"
 }
 
 sssh() {
@@ -113,7 +122,7 @@ sshx() {
   window=${SSH}x
 
   tmux new-session -d -n $window -s $session
-  
+
   tmux send-keys "$SSH $1" C-m
   shift
 
@@ -129,6 +138,9 @@ sshx() {
 
   tmux attach-session -t $session
 }
+
+}
+# tmux end
 
 _fh() {
   grep -E '[0-9]' /etc/hosts | peco
@@ -155,45 +167,70 @@ fh-host() {
 }
 
 fh-open() {
-  local h   
+  local h
   h=$(_fh-host)
   open "http://${h}"
 }
 
 # peco
-peco_find() {
-  LBUFFER="$LBUFFER$(ag -l -g "" | peco)"
+function() {
+
+if (( ! $+commands[tac] )); then
+  alias tac='tail -r'
+fi
+
+peco-find() {
+  LBUFFER="$LBUFFER$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)"
   BUFFER="$LBUFFER$RBUFFER"
   CURSOR=$#LBUFFER
-  zle -R -c 
+  zle -R -c
 }
-zle -N peco_find
-bindkey "^X^F" peco_find
+zle -N peco-find
+bindkey "^X^F" peco-find
 
-peco_kill() {
+peco-jump-dir() {
+  local DIR=${BUFFER#cd }
+  local DEST=$(find -E ${DIR:-.} -regex '.*\.(git|svn).*' -prune -o -type d 2> /dev/null | peco)
+  if [ -n $DEST ]; then
+    BUFFER="cd $DEST"
+    zle accept-line
+  fi
+  zle -R -c
+}
+zle -N peco-jump-dir
+bindkey "^X^D" peco-jump-dir
+
+peco-kill() {
   ps -ef | sed 1d | peco | awk '{print $2}' | xargs kill -${1:-9}
 }
-bindkey "^X^K" peco_kill
+zle -N peco-kill
+bindkey "^X^K" peco-kill
 
-peco_change_directory() {
-  local dest=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
-  if [ -n "${dest}" ]; then
-    cd ${dest}
+peco-change-dir() {
+  local DEST=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
+  if [ -n "$DEST" ]; then
+    BUFFER="cd $DEST"
+    zle accept-line
   fi
-  zle reset-prompt
+  #zle reset-prompt
+  #zle clear-screen
+  zle -R -c
 }
-zle -N peco_change_directory
-bindkey "^X^J" peco_change_directory
-bindkey "^J" peco_change_directory
+zle -N peco-change-dir
+bindkey "^X^J" peco-change-dir
+bindkey "^J" peco-change-dir
 
-peco_select_history() {
+peco-select-history() {
   BUFFER=$(fc -l -n 1 | tac | peco --query "$LBUFFER")
-  CURSOR=$#BUFFER             # move cursor
-  zle -R -c                   # refresh
+  CURSOR=$#BUFFER
+  zle -R -c
 }
-zle -N peco_select_history
-bindkey '^X^R' peco_select_history
-bindkey '^R' peco_select_history
+zle -N peco-select-history
+bindkey '^X^R' peco-select-history
+bindkey '^R' peco-select-history
+
+}
+# peco end
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j
@@ -230,7 +267,7 @@ if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
 fi
 
 # 補完
-fpath=(~/.zsh/plugins/zsh-completions/src $fpath)
+fpath+=(~/.zsh/plugins/zsh-completions/src)
 autoload -U compinit && compinit
 compdef mosh=ssh
 

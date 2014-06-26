@@ -6,7 +6,7 @@ export SVN_EDITOR=vim
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
-export GOPATH=~/.go
+export GOPATH=$HOME
 
 bindkey -e
 stty stop undef
@@ -77,7 +77,6 @@ alias f='open .'
 alias L='less'
 alias h='history'
 alias H='history 0'
-alias -g V=' | v'
 alias man='vs man'
 alias p='peco'
 
@@ -95,11 +94,11 @@ cdf() {
 function() {
 
 vs() {
-  tmux split-window -h "$*"
+  tmux split-window -h "exec $*"
 }
 
 sp() {
-  tmux split-window -v "$*"
+  tmux split-window -v "exec $*"
 }
 
 sssh() {
@@ -179,6 +178,14 @@ if (( ! $+commands[tac] )); then
   alias tac='tail -r'
 fi
 
+peco-writeback() {
+  BUFFER=$($LBUFFER | peco)
+  CURSOR=$#BUFFER
+  zle -R -c
+}
+zle -N peco-writeback
+bindkey '^X^X' peco-writeback
+
 peco-find() {
   LBUFFER="$LBUFFER$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)"
   BUFFER="$LBUFFER$RBUFFER"
@@ -229,6 +236,16 @@ zle -N peco-select-history
 bindkey '^X^R' peco-select-history
 bindkey '^R' peco-select-history
 
+peco-src() {
+  local SELECTED_DIR=$(ghq list --full-path | peco --query "$LBUFFER")
+  if [ -n "$SELECTED_DIR" ]; then
+    BUFFER="cd $SELECTED_DIR"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^G' peco-src
 }
 # peco end
 
@@ -282,11 +299,11 @@ setopt autopushd
 setopt auto_cd
 
 # history
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
+# autoload history-search-end
+# zle -N history-beginning-search-backward-end history-search-end
+# zle -N history-beginning-search-forward-end history-search-end
+# bindkey "^P" history-beginning-search-backward-end
+# bindkey "^N" history-beginning-search-forward-end
 # bindkey '^R' history-incremental-pattern-search-backward
 # bindkey '^S' history-incremental-pattern-search-forward
 HISTFILE=~/.zsh_history

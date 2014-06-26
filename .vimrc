@@ -20,22 +20,17 @@ NeoBundle 'Shougo/vimproc', {
 
 NeoBundleLazy 'Shougo/neocomplete', {
       \ 'depends' : 'Shougo/context_filetype.vim',
-      \ 'vim_version' : '7.3.885',
       \ 'autoload' : {
       \   'insert' : 1,
       \ }}
 
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-" Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
       \ 'default' : '',
-      \ 'avascript' : '~/github/vim-node/dict/node.dict'
+      \ 'javascript' : '~/github/vim-node-dict/dict/node.dict'
       \ }
-" Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
   let g:neocomplete#keyword_patterns = {}
 endif
@@ -68,13 +63,13 @@ NeoBundle 'Shougo/neomru.vim', {
       \   ],
       \ }}
 let g:unite_enable_start_insert=1
-"let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-"call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-"call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
-let g:unite_source_rec_max_cache_files=10000
-let g:unite_source_rec_min_cache_files=50
+let g:unite_source_rec_max_cache_files=20000
+let g:unite_source_rec_min_cache_files=100
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#source('line', 'matchers', 'matcher_regexp')
 
@@ -90,7 +85,7 @@ nnoremap <silent> [Unite]b :<C-u>Unite buffer -quick-match<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
+nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async -sync<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
 let g:unite_source_grep_command = 'ag'
@@ -232,7 +227,7 @@ NeoBundleLazy 'fatih/vim-go', {
       \ 'autoload' : {
       \   'filetypes' : ['go']
       \ }}
-let s:hooks = neobundle#get_hooks('tern_for_vim')
+let s:hooks = neobundle#get_hooks('vim-go')
 function! s:hooks.on_source(bundle)
   let g:go_bin_path = expand("~/.go/bin")
   let g:go_disable_autoinstall = 1
@@ -242,7 +237,7 @@ function! s:hooks.on_source(bundle)
   let g:go_play_open_browser = 0
   let g:go_snippet_engine = 'neosnippet'
   let g:gofmt_command = 'goimports'
-  let g:neosnippet#snippets_directory .= ',~/.vim/bundle/vim-go/gosnippets/snippets/go.snippets'
+  let g:neosnippet#snippets_directory .= ',~/.vim/bundle/vim-go/gosnippets/snippets'
 
   augroup MyGoAutocmd
     autocmd!
@@ -256,7 +251,7 @@ function! s:hooks.on_source(bundle)
     autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
     autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
     autocmd FileType go nmap <Leader>gl :GoLint<CR>
-    autocmd BufWritePre *.go Fmt
+    autocmd BufWritePre *.go GoFmt
   augroup END
 endfunction
 unlet s:hooks
@@ -422,7 +417,7 @@ augroup MyAutocmd
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
   autocmd FileType go,neosnippet setl noet noci nopi
-  autocmd FileType javascript,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,vim,zsh autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |

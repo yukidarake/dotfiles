@@ -1,8 +1,7 @@
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
-export EDITOR=vim
-export SVN_EDITOR=vim
+export EDITOR=vi
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -56,6 +55,10 @@ if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
 fi
 
 # alias
+alias vim='env LANG=ja_JP.UTF-8 ~/Applications/MacVim.app/Contents/MacOS/Vim -u $HOME/.vimrc "$@"'
+alias vi=vim
+alias view='vim -R'
+alias v='vim -'
 alias ls='ls -G'
 alias ll='ls -ahl'
 alias l='ls -al'
@@ -65,8 +68,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias less='less -R'
 alias tmux='tmux -2'
-alias view='vim -R'
-alias v='vim -'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'

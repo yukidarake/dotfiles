@@ -299,6 +299,15 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
+NeoBundleLazy 'alpaca-tc/beautify.vim', {
+      \ 'autoload' : {
+      \   'commands' : [
+      \     {
+      \       'name' : 'Beautify',
+      \       'complete' : 'customlist,beautify#complete_options'
+      \     }
+      \ ]
+      \ }}
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
       \ 'autoload' : {

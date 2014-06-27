@@ -55,8 +55,11 @@ if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
 fi
 
 # alias
-git config --global core.editor ~/Applications/MacVim.app/Contents/MacOS/Vim
-alias vim='env LANG=ja_JP.UTF-8 ~/Applications/MacVim.app/Contents/MacOS/Vim -u $HOME/.vimrc'
+function() {
+local VIM='~/Applications/MacVim.app/Contents/MacOS/Vim'
+
+git config --global core.editor "$VIM"
+alias vim="env LANG=ja_JP.UTF-8 $VIM -u $HOME/.vimrc"
 alias vi=vim
 alias view='vim -R'
 alias v='vim -'
@@ -81,6 +84,7 @@ alias h='history'
 alias H='history 0'
 alias man='vs man'
 alias p='peco'
+}
 
 # cd to the path of the front Finder window
 cdf() {

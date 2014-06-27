@@ -1,7 +1,7 @@
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
-export EDITOR=vi
+export EDITOR='~/Applications/MacVim.app/Contents/MacOS/Vim'
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -54,12 +54,11 @@ if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
 fi
 
-# alias
-function() {
-local VIM='~/Applications/MacVim.app/Contents/MacOS/Vim'
+# git
+git config --global core.editor "$EDITOR"
 
-git config --global core.editor "$VIM"
-alias vim="env LANG=ja_JP.UTF-8 $VIM -u $HOME/.vimrc"
+# alias
+alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
 alias view='vim -R'
 alias v='vim -'
@@ -84,7 +83,6 @@ alias h='history'
 alias H='history 0'
 alias man='vs man'
 alias p='peco'
-}
 
 # cd to the path of the front Finder window
 cdf() {

@@ -63,15 +63,15 @@ NeoBundle 'Shougo/neomru.vim', {
       \   ],
       \ }}
 let g:unite_enable_start_insert=1
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+"let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+"call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+"call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 let g:unite_source_rec_max_cache_files=20000
 let g:unite_source_rec_min_cache_files=100
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#custom#source('line', 'matchers', 'matcher_regexp')
+"call unite#custom#source('line', 'matchers', 'matcher_regexp')
 
 " prefix key
 let mapleader = '\'
@@ -299,14 +299,23 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
-NeoBundleLazy 'alpaca-tc/beautify.vim', {
+NeoBundleLazy 'maksimr/vim-jsbeautify', {
+       \ 'autoload' : {
+       \   'commands' : [
+       \     'JsBeautify',
+       \ ]
+       \ }}
+
+NeoBundleLazy 'kchmck/vim-coffee-script', {
+      \ 'autoload' : {
+      \    'filetypes' : 'coffee'
+      \ }}
+
+NeoBundleLazy 'Chiel92/vim-autoformat', {
       \ 'autoload' : {
       \   'commands' : [
-      \     {
-      \       'name' : 'Beautify',
-      \       'complete' : 'customlist,beautify#complete_options'
-      \     }
-      \ ]
+      \     'Autoformat',
+      \   ]
       \ }}
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
@@ -342,7 +351,7 @@ NeoBundleCheck
 set nrformats= "<C-A>で8進数の計算をさせない
 set clipboard+=unnamed
 set noswapfile
-set backupdir=$HOME/backup
+set backupdir=$HOME/.vim/backup
 set incsearch
 set ignorecase smartcase
 set ts=2 sw=2 sts=0 sr et ai
@@ -376,8 +385,8 @@ set undoreload=4000
 "" .vimrc編集
 nnoremap <C-S> :suspend<CR>
 nnoremap <C-J> <C-M>
-nnoremap <silent> <Leader>v :<C-u>vs $MYVIMRC<CR>
-nnoremap <silent> <Leader>s :so $MYVIMRC<CR>
+nnoremap <silent> <Leader>v :<C-u>vs ~/.vimrc<CR>
+nnoremap <silent> <Leader>s :so ~/.vimrc<CR>:echo 'source ~/.vimrc'<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
 nnoremap <silent> <RIGHT> :bp<CR>
 nnoremap <silent> <C-N>  :bn<CR>
@@ -385,8 +394,6 @@ nnoremap <silent> <C-P> :bp<CR>
 nnoremap <silent> <Leader>e :Errors<CR>
 nnoremap gv :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -431,6 +438,8 @@ augroup MyAutocmd
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
+  autocmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+  autocmd FileType coffee setl sw=2 sts=2 ts=2 et
 
   " color
   syntax on

@@ -1,7 +1,7 @@
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
-export EDITOR='~/Applications/MacVim.app/Contents/MacOS/Vim'
+export EDITOR="$HOME/Applications/MacVim.app/Contents/MacOS/Vim"
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
@@ -12,42 +12,34 @@ stty stop undef
 
 typeset -U path PATH fpath
 path=(
-/usr/local/bin(N-/)
-$GOPATH/bin(N-/)
-$path
+  /usr/local/bin(N-/)
+  $GOPATH/bin(N-/)
+  $path
 )
 
 # node
 if [ -f ~/.nodebrew/nodebrew ]; then
-  path+=(~/.nodebrew/current/bin)
+  path=(~/.nodebrew/current/bin $path)
   fpath+=(~/.nodebrew/completions/zsh)
   if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
     ln -s ~/.nodebrew/completions/zsh/_nodebrew \
       /usr/local/share/zsh/site-functions/
   fi
   export NODE_PATH=~/.nodebrew/current/lib/node_modules
-  nodebrew use v0.8
 fi
 
-# python
-if [ $+commands[pyenv] ]; then
-  eval "$(SHELL=zsh pyenv init -)"
-fi
-
-# perl
-if [ $+commands[plenv] ]; then
-  eval "$(SHELL=zsh plenv init -)"
-fi
-
-# ruby
-if [ $+commands[rbenv] ]; then
-  eval "$(SHELL=zsh rbenv init - --no-rehash)"
-fi
+# python, perl, ruby
+for xenv in pyenv plenv rbenv; do
+  if [ $+commands[$xenv] ]; then
+    eval "$(SHELL=zsh $xenv init - --no-rehash)"
+    path=($($xenv root)/shims $path)
+  fi
+done
 
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
   export MAVEN_HOME=/usr/local/maven2
-  path=($path $MAVEN_HOME/bin)
+  path+=($MAVEN_HOME/bin)
 fi
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
@@ -82,7 +74,6 @@ alias L='less'
 alias h='history'
 alias H='history 0'
 alias man='vs man'
-alias p='peco'
 
 # cd to the path of the front Finder window
 cdf() {
@@ -95,7 +86,7 @@ cdf() {
 }
 
 # tmux
-function() {
+() {
 
 vs() {
   tmux split-window -h "exec $*"
@@ -142,53 +133,17 @@ sshx() {
   tmux attach-session -t $session
 }
 
-}
-# tmux end
-
-_fh() {
-  grep -E '[0-9]' /etc/hosts | peco
-}
-
-_fh-ip() {
-  _fh | perl -pe 's/^[# ]*([0-9.]+)\s+.+/$1/'
-}
-
-_fh-host() {
-  _fh | perl -pe 's/^[# ]*[0-9.]+\s+(\S+).*$/$1/'
-}
-
-fh() {
-  _fh | tee >(pbcopy)
-}
-
-fh-ip() {
-  _fh-ip | tee >(pbcopy)
-}
-
-fh-host() {
-  _fh-host | tee >(pbcopy)
-}
-
-fh-open() {
-  local h
-  h=$(_fh-host)
-  open "http://${h}"
-}
+} # tmux end
 
 # peco
-function() {
-
+() {
 if (( ! $+commands[tac] )); then
   alias tac='tail -r'
 fi
 
-peco-writeback() {
-  BUFFER=$($LBUFFER | peco)
-  CURSOR=$#BUFFER
-  zle -R -c
+p() {
+  peco | while read LINE; do $@ $LINE; done
 }
-zle -N peco-writeback
-bindkey '^X^X' peco-writeback
 
 peco-find() {
   LBUFFER="$LBUFFER$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)"
@@ -218,6 +173,7 @@ zle -N peco-kill
 bindkey "^X^K" peco-kill
 
 peco-change-dir() {
+  #local DEST=$(fasd -ld "$LBUFFER" 2>&1 | tac | peco)
   local DEST=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
   if [ -n "$DEST" ]; then
     BUFFER="cd $DEST"
@@ -229,7 +185,6 @@ peco-change-dir() {
 }
 zle -N peco-change-dir
 bindkey "^X^J" peco-change-dir
-bindkey "^J" peco-change-dir
 
 peco-select-history() {
   BUFFER=$(fc -l -n 1 | tac | peco --query "$LBUFFER")
@@ -250,8 +205,7 @@ peco-src() {
 }
 zle -N peco-src
 bindkey '^G' peco-src
-}
-# peco end
+} # peco end
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then
     _Z_CMD=j

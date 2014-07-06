@@ -229,29 +229,26 @@ NeoBundleLazy 'fatih/vim-go', {
       \ }}
 let s:hooks = neobundle#get_hooks('vim-go')
 function! s:hooks.on_source(bundle)
-  let g:go_bin_path = expand("~/.go/bin")
+  let g:go_bin_path = expand('$HOME/bin')
   let g:go_disable_autoinstall = 1
-  let g:go_fmt_autosave = 0
-  let g:go_fmt_command = "gofmt"
+  let g:go_fmt_autosave = 1
+  let g:go_fmt_command = 'gofmt'
   let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
   let g:go_play_open_browser = 0
   let g:go_snippet_engine = 'neosnippet'
-  let g:gofmt_command = 'goimports'
   let g:neosnippet#snippets_directory .= ',~/.vim/bundle/vim-go/gosnippets/snippets'
 
   augroup MyGoAutocmd
     autocmd!
-    autocmd FileType go nmap <Leader>i <Plug>(go-info)
-    autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
-    autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-    autocmd FileType go nmap <leader>gb <Plug>(go-build)
-    autocmd FileType go nmap <leader>gt <Plug>(go-test)
+    autocmd FileType go nmap <LocalLeader>i <Plug>(go-info)
+    autocmd FileType go nmap <LocalLeader>gd <Plug>(go-doc)
+    autocmd FileType go nmap <LocalLeader>gv <Plug>(go-doc-vertical)
+    autocmd FileType go nmap <LocalLeader>gb <Plug>(go-build)
+    autocmd FileType go nmap <LocalLeader>gt <Plug>(go-test)
     autocmd FileType go nmap gd <Plug>(go-def)
-    autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
-    autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-    autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
-    autocmd FileType go nmap <Leader>gl :GoLint<CR>
-    autocmd BufWritePre *.go GoFmt
+    autocmd FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
+    autocmd FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
+    autocmd FileType go nmap <LocalLeader>gl :GoLint<CR>
   augroup END
 endfunction
 unlet s:hooks
@@ -373,6 +370,7 @@ set fdm=manual
 set nofoldenable
 set ambiwidth=double
 set tw=0
+set completeopt-=preview
 
 " undo
 set undodir=~/.vim/undo
@@ -446,8 +444,6 @@ augroup MyAutocmd
   set t_Co=256
   set background=dark
   let scheme = 'jellybeans'
-  "let scheme = 'hybrid'
-  "let scheme = 'Tomorrow-night-bright'
   execute 'colorscheme' scheme
   execute 'autocmd GUIEnter * colorscheme' scheme
 

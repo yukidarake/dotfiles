@@ -14,11 +14,12 @@ typeset -U path PATH fpath
 path=(
   /usr/local/bin(N-/)
   $GOPATH/bin(N-/)
+  $(go env GOROOT)/bin(N-/)
   $path
 )
 
 # node
-if [ -f ~/.nodebrew/nodebrew ]; then
+if [ $+commands[nodebrew] ]; then
   path=(~/.nodebrew/current/bin $path)
   fpath+=(~/.nodebrew/completions/zsh)
   if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then

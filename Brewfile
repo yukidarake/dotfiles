@@ -20,6 +20,7 @@ install curl
 install git
 install go
 install hg
+install httpie
 install hub
 install lua
 install lua52
@@ -56,7 +57,7 @@ cask install firefox
 cask install google-chrome
 # cask install hipchat
 cask install iterm2
-cask install keyremap4macbook
+cask install karabiner
 # cask install limechat
 cask install macvim-kaoriya
 cask install nosleep

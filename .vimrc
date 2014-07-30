@@ -63,9 +63,9 @@ NeoBundle 'Shougo/neomru.vim', {
       \   ],
       \ }}
 let g:unite_enable_start_insert=1
-"let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-"call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-"call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 let g:unite_source_rec_max_cache_files=20000
@@ -85,7 +85,7 @@ nnoremap <silent> [Unite]b :<C-u>Unite buffer -quick-match<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async -sync<CR>
+nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
 let g:unite_source_grep_command = 'ag'
@@ -232,7 +232,7 @@ function! s:hooks.on_source(bundle)
   let g:go_bin_path = expand('$HOME/bin')
   let g:go_disable_autoinstall = 1
   let g:go_fmt_autosave = 1
-  let g:go_fmt_command = 'gofmt'
+  "let g:go_fmt_command = 'gofmt'
   let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
   let g:go_play_open_browser = 0
   let g:go_snippet_engine = 'neosnippet'
@@ -245,7 +245,7 @@ function! s:hooks.on_source(bundle)
     autocmd FileType go nmap <LocalLeader>gv <Plug>(go-doc-vertical)
     autocmd FileType go nmap <LocalLeader>gb <Plug>(go-build)
     autocmd FileType go nmap <LocalLeader>gt <Plug>(go-test)
-    autocmd FileType go nmap gd <Plug>(go-def)
+    autocmd FileType go nmap <LocalLeader>gd <Plug>(go-def)
     autocmd FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
     autocmd FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
     autocmd FileType go nmap <LocalLeader>gl :GoLint<CR>
@@ -296,12 +296,12 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
-NeoBundleLazy 'maksimr/vim-jsbeautify', {
-       \ 'autoload' : {
-       \   'commands' : [
-       \     'JsBeautify',
-       \ ]
-       \ }}
+" NeoBundleLazy 'maksimr/vim-jsbeautify', {
+"        \ 'autoload' : {
+"        \   'commands' : [
+"        \     'JsBeautify',
+"        \ ]
+"        \ }}
 
 NeoBundleLazy 'kchmck/vim-coffee-script', {
       \ 'autoload' : {
@@ -426,18 +426,18 @@ augroup MyAutocmd
   autocmd BufReadPost,BufNewFile *.js setl filetype=javascript
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
   autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd BufReadPost,BufNewFile *.coffee setl filetype=coffee
 
+  autocmd FileType coffee setl sw=2 sts=2 ts=2 et
   autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setl sw=2 ts=2 sts=2 et
   autocmd FileType go,neosnippet setl noet noci nopi
-  autocmd FileType javascript,vim,zsh autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,coffee,vim,zsh autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
-  autocmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-  autocmd FileType coffee setl sw=2 sts=2 ts=2 et
 
   " color
   syntax on

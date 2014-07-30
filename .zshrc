@@ -13,10 +13,15 @@ stty stop undef
 typeset -U path PATH fpath
 path=(
   /usr/local/bin(N-/)
-  $GOPATH/bin(N-/)
-  $(go env GOROOT)/bin(N-/)
   $path
 )
+
+if [ $+commands[go] ]; then
+  path+=(
+    $GOPATH/bin(N-/)
+    $(go env GOROOT)/bin(N-/)
+  )
+fi
 
 # node
 if [ $+commands[nodebrew] ]; then
@@ -174,7 +179,6 @@ zle -N peco-kill
 bindkey "^X^K" peco-kill
 
 peco-change-dir() {
-  #local DEST=$(fasd -ld "$LBUFFER" 2>&1 | tac | peco)
   local DEST=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
   if [ -n "$DEST" ]; then
     BUFFER="cd $DEST"
@@ -206,6 +210,39 @@ peco-src() {
 }
 zle -N peco-src
 bindkey '^G' peco-src
+
+peco-writeback() {
+    BUFFER=$(eval "$LBUFFER" | peco)
+    CURSOR=$#BUFFER
+    zle -R -c
+}
+zle -N peco-writeback
+bindkey '^X^X' peco-writeback
+
+peco-launchctl() {
+  if (( ! $+commands[launchctl] )); then
+    return
+  fi
+
+  local SERVICE_NAME=$(launchctl list 2>&1 | awk '{print $3}' \
+                    | peco --prompt='Service>' --query "$LBUFFER")
+  if [ -z "$SERVICE_NAME" ]; then
+    return 1
+  fi
+
+  local -a ACTIONS
+  ACTIONS=(start stop restart reload)
+  local ACTION=$(echo -n "${(j:\n:)ACTIONS}" | peco --prompt='Action>')
+  if [ -z "$ACTION" ]; then
+    return 1
+  fi
+
+  BUFFER="launchctl $ACTION $SERVICE_NAME"
+  zle accept-line
+}
+zle -N peco-launchctl
+bindkey '^X^L' peco-launchctl
+
 } # peco end
 
 if [ -f ~/.zsh/plugins/z/z.sh ]; then

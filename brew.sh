@@ -40,7 +40,7 @@ brew install tig
 brew install tmux 
 brew install w3m 
 brew install wget 
-brew install zsh 
+brew install --disable-etcdir zsh 
 
 # Add GUI Applications
 brew cask install alfred 

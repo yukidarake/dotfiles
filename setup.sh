@@ -2,6 +2,13 @@
 
 DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc .zsh .gvimrc .tmux.conf)
 
+GITHUB_ROOT=$HOME/src/github.com/
+
+if ! type brew >/dev/null 2>&1; then
+  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  . ./brew.sh
+fi
+
 if [ ! -d ~/.vim/bundle ]; then
     mkdir -p ~/.vim/bundle
     git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
@@ -11,23 +18,33 @@ for file in ${DOT_FILES[@]}; do
     ln -s ~/github/dotfiles/$file ~/$file
 done
 
-if [ ! -f ~/.nodebrew/nodebrew ]; then
-  curl -L git.io/nodebrew | perl - setup
+if type go >/dev/null 2>&1; then
+  go get -u code.google.com/p/go.tools/cmd/goimports
+  go get -u code.google.com/p/rog-go/exp/cmd/godef
+  go get -u github.com/motemen/ghq
+  go get -u github.com/nsf/gocode 
+  go get -u github.com/tools/godep
+  go get -u github.com/golang/lint/golint
 fi
 
-npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint
-
-if [ ! -d ~/github ]; then
-  mkdir ~/github
+if type npm >/dev/null 2>&1; then
+  npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint eslint jscs
 fi
 
-if [ ! -d ~/github/powerline-fonts ]; then
-  git clone https://github.com:Lokaltog/powerline-fonts.git ~/github/powerline-fonts
+if [ ! -d $GITHUB_ROOT ]; then
+  mkdir -p $GITHUB_ROOT
 fi
 
-if [ ! -d ~/github/tomorrow-theme ]; then
-  git clone https://github.com:chriskempson/tomorrow-theme.git ~/github/tommorow-theme
-fi
+REPOS=(
+  Lokaltog/powerline-fonts
+  chriskempson/tomorrow-theme
+)
+
+for repo in ${REPOS[@]}; do
+  if [ ! -d $GITHUB_ROOT/$repo ]; then
+    git clone https://github.com/${repo}.git $GITHUB_ROOT/$repo
+  fi
+done
 
 # key binding
 if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then

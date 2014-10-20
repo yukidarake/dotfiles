@@ -24,14 +24,19 @@ if [ $+commands[go] ]; then
 fi
 
 # node
-if [ $+commands[nodebrew] ]; then
-  path=(~/.nodebrew/current/bin $path)
-  fpath+=(~/.nodebrew/completions/zsh)
-  if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
-    ln -s ~/.nodebrew/completions/zsh/_nodebrew \
-      /usr/local/share/zsh/site-functions/
-  fi
-  export NODE_PATH=~/.nodebrew/current/lib/node_modules
+# if [ $+commands[nodebrew] ]; then
+#   path=(~/.nodebrew/current/bin $path)
+#   fpath+=(~/.nodebrew/completions/zsh)
+#   if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
+#     ln -s ~/.nodebrew/completions/zsh/_nodebrew \
+#       /usr/local/share/zsh/site-functions/
+#   fi
+#   #export NODE_PATH=~/.nodebrew/current/lib/node_modules
+# fi
+
+if [ $+commands[nvm] ]; then
+  . ~/.nvm/nvm.sh
+  nvm use 0.8
 fi
 
 # python, perl, ruby
@@ -325,7 +330,7 @@ if [ -f ~/.zshrc.include ]; then
   . ~/.zshrc.include
 fi
 
-#if (which zprof > /dev/null) ;then
-#  zprof | less
-#fi
+# if (which zprof > /dev/null) ;then
+#   zprof | less
+# fi
 

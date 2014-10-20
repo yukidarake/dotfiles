@@ -1,14 +1,13 @@
-set nocompatible
-set encoding=utf-8
-set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
-
 if has('vim_starting')
+  set nocompatible
+  set encoding=utf-8
+  set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
   set rtp+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc()
-
+call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
+call neobundle#end()
 
 NeoBundle 'Shougo/vimproc', {
       \ 'build' : {
@@ -63,9 +62,9 @@ NeoBundle 'Shougo/neomru.vim', {
       \   ],
       \ }}
 let g:unite_enable_start_insert=1
-let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
+" let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
+" call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
+" call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
 let g:unite_cursor_line_highlight = 'Error'
 let g:unite_abbr_highlight = 'StatusLine'
 let g:unite_source_rec_max_cache_files=20000
@@ -229,26 +228,28 @@ NeoBundleLazy 'fatih/vim-go', {
       \ }}
 let s:hooks = neobundle#get_hooks('vim-go')
 function! s:hooks.on_source(bundle)
-  let g:go_bin_path = expand('$HOME/bin')
-  let g:go_disable_autoinstall = 1
-  let g:go_fmt_autosave = 1
-  "let g:go_fmt_command = 'gofmt'
+  let g:go_disable_autoinstall = 0
+  let g:go_fmt_autosave = 0
+  let g:go_fmt_command = 'goimports'
   let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
   let g:go_play_open_browser = 0
   let g:go_snippet_engine = 'neosnippet'
-  let g:neosnippet#snippets_directory .= ',~/.vim/bundle/vim-go/gosnippets/snippets'
 
   augroup MyGoAutocmd
-    autocmd!
-    autocmd FileType go nmap <LocalLeader>i <Plug>(go-info)
-    autocmd FileType go nmap <LocalLeader>gd <Plug>(go-doc)
-    autocmd FileType go nmap <LocalLeader>gv <Plug>(go-doc-vertical)
-    autocmd FileType go nmap <LocalLeader>gb <Plug>(go-build)
-    autocmd FileType go nmap <LocalLeader>gt <Plug>(go-test)
-    autocmd FileType go nmap <LocalLeader>gd <Plug>(go-def)
-    autocmd FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
-    autocmd FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
-    autocmd FileType go nmap <LocalLeader>gl :GoLint<CR>
+    au!
+    au FileType go nmap <LocalLeader>i <Plug>(go-info)
+    au FileType go nmap <LocalLeader>gd <Plug>(go-doc)
+    au FileType go nmap <LocalLeader>gv <Plug>(go-doc-vertical)
+    au FileType go nmap <LocalLeader>r <Plug>(go-run)
+    au FileType go nmap <LocalLeader>b <Plug>(go-build)
+    au FileType go nmap <LocalLeader>t <Plug>(go-test)
+    au FileType go nmap <LocalLeader>c <Plug>(go-coverage)
+    au FileType go nmap <LocalLeader>gb <Plug>(go-build)
+    au FileType go nmap <LocalLeader>gt <Plug>(go-test)
+    " au FileType go nmap <LocalLeader>d <Plug>(go-def)
+    au FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
+    au FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
+    au FileType go nmap <LocalLeader>gl :GoLint<CR>
   augroup END
 endfunction
 unlet s:hooks
@@ -276,10 +277,10 @@ NeoBundleLazy 'pangloss/vim-javascript', {
       \   'filetypes' : 'javascript'
       \ }}
 
-NeoBundleLazy 'jelera/vim-javascript-syntax', {
-      \ 'autoload' : {
-      \    'filetypes' : 'javascript'
-      \ }}
+" NeoBundleLazy 'jelera/vim-javascript-syntax', {
+"       \ 'autoload' : {
+"       \    'filetypes' : 'javascript'
+"       \ }}
 
 NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
       \ 'autoload' : {
@@ -296,23 +297,9 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
-" NeoBundleLazy 'maksimr/vim-jsbeautify', {
-"        \ 'autoload' : {
-"        \   'commands' : [
-"        \     'JsBeautify',
-"        \ ]
-"        \ }}
-
 NeoBundleLazy 'kchmck/vim-coffee-script', {
       \ 'autoload' : {
       \    'filetypes' : 'coffee'
-      \ }}
-
-NeoBundleLazy 'Chiel92/vim-autoformat', {
-      \ 'autoload' : {
-      \   'commands' : [
-      \     'Autoformat',
-      \   ]
       \ }}
 
 NeoBundleLazy 'marijnh/tern_for_vim', {
@@ -437,6 +424,7 @@ augroup MyAutocmd
   autocmd FileType javascript
         \ setl sw=4 ts=4 sts=4 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
+        \ nnoremap <buffer> <Leader>es :%!esformatter --indent.value="    "<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
 
   " color

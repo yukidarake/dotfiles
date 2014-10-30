@@ -57,6 +57,10 @@ if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
 _EOT_
 fi
 
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
 
 # タブでボタンを選択できるようにする
 #システム環境設定→キーボード→キーボードショートカット→すべてのコントロール

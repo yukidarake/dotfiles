@@ -1,3 +1,6 @@
+bindkey -e
+stty stop undef
+
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
@@ -6,9 +9,6 @@ export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 export GOPATH=$HOME
-
-bindkey -e
-stty stop undef
 
 typeset -U path PATH fpath
 path=(
@@ -23,6 +23,10 @@ if [ $+commands[go] ]; then
   )
 fi
 
+export ANDROID_HOME=$(brew --prefix)/Cellar/android-sdk/23.0.2
+export NDK=$HOME/Develop/Android/NDK
+export NDK_ROOT=$(brew --prefix)/Cellar/android-ndk/r10c
+
 # node
 # if [ $+commands[nodebrew] ]; then
 #   path=(~/.nodebrew/current/bin $path)
@@ -36,7 +40,7 @@ fi
 
 if [ $+commands[nvm] ]; then
   . ~/.nvm/nvm.sh
-  nvm use 0.8
+  nvm use default
 fi
 
 # python, perl, ruby
@@ -157,9 +161,9 @@ p() {
 }
 
 peco-find() {
-  LBUFFER="$LBUFFER$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)"
-  BUFFER="$LBUFFER$RBUFFER"
-  CURSOR=$#LBUFFER
+  local FILE=$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)
+  BUFFER="$LBUFFER$FILE$RBUFFER"
+  CURSOR=$#BUFFER
   zle -R -c
 }
 zle -N peco-find
@@ -175,7 +179,7 @@ peco-jump-dir() {
   zle -R -c
 }
 zle -N peco-jump-dir
-bindkey "^X^D" peco-jump-dir
+bindkey "^X^J" peco-jump-dir
 
 peco-kill() {
   ps -ef | sed 1d | peco | awk '{print $2}' | xargs kill -${1:-9}
@@ -194,7 +198,7 @@ peco-change-dir() {
   zle -R -c
 }
 zle -N peco-change-dir
-bindkey "^X^J" peco-change-dir
+bindkey "^X^Z" peco-change-dir
 
 peco-select-history() {
   BUFFER=$(fc -l -n 1 | tac | peco --query "$LBUFFER")
@@ -247,6 +251,16 @@ peco-launchctl() {
 }
 zle -N peco-launchctl
 bindkey '^X^L' peco-launchctl
+
+peco-ssh-host() {
+  local HOST=$(grep -iE '^host[[:space:]]+[^*]' ~/.ssh/config | awk '{print $2}' | peco)
+  BUFFER="$LBUFFER$HOST$RBUFFER"
+  CURSOR=$#BUFFER
+  zle -R -c
+}
+zle -N peco-ssh-host
+bindkey '^X^S' peco-ssh-host
+
 
 } # peco end
 

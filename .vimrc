@@ -358,6 +358,7 @@ set nofoldenable
 set ambiwidth=double
 set tw=0
 set completeopt-=preview
+set hlsearch
 
 " undo
 set undodir=~/.vim/undo

@@ -31,6 +31,7 @@ brew install phantomjs
 brew install plenv 
 brew install pyenv 
 brew install rbenv 
+brew install ruby-build
 brew install nodebrew 
 brew install readline 
 brew install reattach-to-user-namespace 

@@ -80,7 +80,7 @@ nmap <Space> [Unite]
 imap <C-c> <Plug>(unite_exit)
 nmap <C-c> <Plug>(unite_exit)
 
-nnoremap <silent> [Unite]b :<C-u>Unite buffer -quick-match<CR>
+nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
@@ -377,6 +377,10 @@ nnoremap <silent> <RIGHT> :bp<CR>
 nnoremap <silent> <C-N>  :bn<CR>
 nnoremap <silent> <C-P> :bp<CR>
 nnoremap <silent> <Leader>e :Errors<CR>
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
 nnoremap gv :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
 

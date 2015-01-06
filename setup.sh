@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc .zsh .gvimrc .tmux.conf)
+DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc .zsh .zshrc.antigen .gvimrc .tmux.conf)
 
 GITHUB_ROOT=$HOME/src/github.com/
 

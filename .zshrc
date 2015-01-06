@@ -264,40 +264,6 @@ bindkey '^X^S' peco-ssh-host
 
 } # peco end
 
-if [ -f ~/.zsh/plugins/z/z.sh ]; then
-    _Z_CMD=j
-    _Z_DATA=~/.z/.z
-    . ~/.zsh/plugins/z/z.sh
-fi
-
-if [ -f ~/.zsh/plugins/pure/pure.zsh ]; then
-  if [ ! -h /usr/local/share/zsh/site-functions/prompt_pure_setup ]; then
-      ln -s ~/.zsh/plugins/pure/pure.zsh \
-        /usr/local/share/zsh/site-functions/prompt_pure_setup
-  fi
-  autoload -U promptinit && promptinit
-  prompt pure
-
-  # display svn branch info
-  zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
-  zstyle ':vcs_info:svn*' branchformat '%b:r%r'
-  zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
-  +vi-svn-hook() {
-    hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
-  }
-fi
-
-if [ -f ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh ]; then
-  . ~/.zsh/plugins/auto-fu.zsh/auto-fu.zsh
-  function zle-line-init () {
-      auto-fu-init
-  }
-  zle -N zle-line-init
-  zstyle ':completion:*' completer _oldlist _complete
-  zstyle ':auto-fu:var' postdisplay ''
-fi
-
 # 補完
 fpath+=(~/.zsh/plugins/zsh-completions/src)
 autoload -U compinit && compinit
@@ -338,6 +304,10 @@ zshaddhistory() {
   [[ ${#line} -ge 5
     && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
+
+if [ -f ~/.zshrc.antigen ]; then
+  . ~/.zshrc.antigen
+fi
 
 # 設定ファイルのinclude
 if [ -f ~/.zshrc.include ]; then

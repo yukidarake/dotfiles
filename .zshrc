@@ -8,48 +8,6 @@ export EDITOR="$HOME/Applications/MacVim.app/Contents/MacOS/Vim"
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
-export GOPATH=$HOME
-
-typeset -U path PATH fpath
-path=(
-  /usr/local/bin(N-/)
-  $path
-)
-
-if [ $+commands[go] ]; then
-  path+=(
-    $GOPATH/bin(N-/)
-    $(go env GOROOT)/bin(N-/)
-  )
-fi
-
-export ANDROID_HOME=$(brew --prefix)/Cellar/android-sdk/23.0.2
-export NDK=$HOME/Develop/Android/NDK
-export NDK_ROOT=$(brew --prefix)/Cellar/android-ndk/r10c
-
-if [ $+commands[nodebrew] ]; then
-  path=(~/.nodebrew/current/bin $path)
-  # fpath+=(~/.nodebrew/completions/zsh)
-fi
-
-# if [ $+commands[nvm] ]; then
-#   . ~/.nvm/nvm.sh
-#   nvm use default
-# fi
-
-# python, perl, ruby
-for xenv in pyenv plenv rbenv; do
-  if [ $+commands[$xenv] ]; then
-    eval "$(SHELL=zsh $xenv init - --no-rehash)"
-    path=($($xenv root)/shims $path)
-  fi
-done
-
-# java
-if [ -f /usr/local/maven2/bin/mvn ]; then
-  export MAVEN_HOME=/usr/local/maven2
-  path+=($MAVEN_HOME/bin)
-fi
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
@@ -181,9 +139,9 @@ zshaddhistory() {
 }
 
 # include
-[ -f ~/.zshrc.antigen ] && . ~/.zshrc.antigen
 [ -f ~/.zshrc.peco    ] && . ~/.zshrc.peco
-[ -f ~/.zshrc.include ] && . ~/.zshrc.include
+[ -f ~/.zshrc.antigen ] && . ~/.zshrc.antigen
+[ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
 # if type zprof > /dev/null 2>&1; then
 #   zprof | less

@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
-DOT_FILES=(.screenrc .vimrc .jshintrc .zshrc .zsh .zshrc.antigen .gvimrc .tmux.conf)
-
-GITHUB_ROOT=$HOME/src/github.com/
+cd $(dirname $0)
+GITHUB_ROOT=$(cd ../.. && pwd)
 
 if ! type brew >/dev/null 2>&1; then
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
@@ -14,17 +13,18 @@ if [ ! -d ~/.vim/bundle ]; then
     git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 fi
 
+DOT_FILES=(".zsh* .screenrc .vimrc .jshintrc .gvimrc .tmux.conf")
 for file in ${DOT_FILES[@]}; do
-    ln -s ~/github/dotfiles/$file ~/$file
+    ln -s $(pwd)/$file ~/$file
 done
 
 if type go >/dev/null 2>&1; then
-  go get -u code.google.com/p/go.tools/cmd/goimports
-  go get -u code.google.com/p/rog-go/exp/cmd/godef
-  go get -u github.com/motemen/ghq
-  go get -u github.com/nsf/gocode 
-  go get -u github.com/tools/godep
-  go get -u github.com/golang/lint/golint
+  go get -v code.google.com/p/go.tools/cmd/goimports
+  go get -v code.google.com/p/rog-go/exp/cmd/godef
+  go get -v github.com/motemen/ghq
+  go get -v github.com/nsf/gocode 
+  go get -v github.com/tools/godep
+  go get -v github.com/golang/lint/golint
 fi
 
 if type npm >/dev/null 2>&1; then

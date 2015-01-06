@@ -1,11 +1,12 @@
 if [ -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
   . $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh
 
-  # zsh-syntax-highlighting
   antigen bundle zsh-users/zsh-syntax-highlighting
+  antigen bundle zsh-users/zsh-completions
+  antigen bundle hchbaw/auto-fu.zsh --branch=pu
+  antigen bundle sindresorhus/pure
 
   # zsh-completions
-  antigen bundle zsh-users/zsh-completions
   compdef mosh=ssh
 
   # z
@@ -14,7 +15,6 @@ if [ -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
   antigen bundle rupa/z
 
   # auto-fu
-  antigen bundle hchbaw/auto-fu.zsh --branch=pu
   function zle-line-init () {
       auto-fu-init
   }
@@ -23,7 +23,6 @@ if [ -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
   zstyle ':auto-fu:var' postdisplay ''
 
   # pure
-  antigen bundle sindresorhus/pure
   # display svn branch info
   zstyle ':vcs_info:*' enable git svn
   zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'

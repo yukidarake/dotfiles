@@ -6,6 +6,7 @@ if [ -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
 
   # zsh-completions
   antigen bundle zsh-users/zsh-completions
+  compdef mosh=ssh
 
   # z
   _Z_CMD=j

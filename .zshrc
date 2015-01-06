@@ -27,21 +27,15 @@ export ANDROID_HOME=$(brew --prefix)/Cellar/android-sdk/23.0.2
 export NDK=$HOME/Develop/Android/NDK
 export NDK_ROOT=$(brew --prefix)/Cellar/android-ndk/r10c
 
-# node
-# if [ $+commands[nodebrew] ]; then
-#   path=(~/.nodebrew/current/bin $path)
-#   fpath+=(~/.nodebrew/completions/zsh)
-#   if [ ! -h /usr/local/share/zsh/site-functions/_nodebrew ]; then
-#     ln -s ~/.nodebrew/completions/zsh/_nodebrew \
-#       /usr/local/share/zsh/site-functions/
-#   fi
-#   #export NODE_PATH=~/.nodebrew/current/lib/node_modules
-# fi
-
-if [ $+commands[nvm] ]; then
-  . ~/.nvm/nvm.sh
-  nvm use default
+if [ $+commands[nodebrew] ]; then
+  path=(~/.nodebrew/current/bin $path)
+  # fpath+=(~/.nodebrew/completions/zsh)
 fi
+
+# if [ $+commands[nvm] ]; then
+#   . ~/.nvm/nvm.sh
+#   nvm use default
+# fi
 
 # python, perl, ruby
 for xenv in pyenv plenv rbenv; do
@@ -150,125 +144,6 @@ sshx() {
 
 } # tmux end
 
-# peco
-() {
-if (( ! $+commands[tac] )); then
-  alias tac='tail -r'
-fi
-
-p() {
-  peco | while read LINE; do $@ $LINE; done
-}
-
-peco-find() {
-  local FILE=$(find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null | peco)
-  BUFFER="$LBUFFER$FILE$RBUFFER"
-  CURSOR=$#BUFFER
-  zle -R -c
-}
-zle -N peco-find
-bindkey "^X^F" peco-find
-
-peco-jump-dir() {
-  local DIR=${BUFFER#cd }
-  local DEST=$(find -E ${DIR:-.} -regex '.*\.(git|svn).*' -prune -o -type d 2> /dev/null | peco)
-  if [ -n $DEST ]; then
-    BUFFER="cd $DEST"
-    zle accept-line
-  fi
-  zle -R -c
-}
-zle -N peco-jump-dir
-bindkey "^X^J" peco-jump-dir
-
-peco-kill() {
-  ps -ef | sed 1d | peco | awk '{print $2}' | xargs kill -${1:-9}
-}
-zle -N peco-kill
-bindkey "^X^K" peco-kill
-
-peco-change-dir() {
-  local DEST=$(_z -l "$LBUFFER" 2>&1 | awk '{ print $2 }' | tac | peco)
-  if [ -n "$DEST" ]; then
-    BUFFER="cd $DEST"
-    zle accept-line
-  fi
-  #zle reset-prompt
-  #zle clear-screen
-  zle -R -c
-}
-zle -N peco-change-dir
-bindkey "^X^Z" peco-change-dir
-
-peco-select-history() {
-  BUFFER=$(fc -l -n 1 | tac | peco --query "$LBUFFER")
-  CURSOR=$#BUFFER
-  zle -R -c
-}
-zle -N peco-select-history
-bindkey '^X^R' peco-select-history
-bindkey '^R' peco-select-history
-
-peco-src() {
-  local SELECTED_DIR=$(ghq list --full-path | peco --query "$LBUFFER")
-  if [ -n "$SELECTED_DIR" ]; then
-    BUFFER="cd $SELECTED_DIR"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-zle -N peco-src
-bindkey '^G' peco-src
-
-peco-writeback() {
-    BUFFER=$(eval "$LBUFFER" | peco)
-    CURSOR=$#BUFFER
-    zle -R -c
-}
-zle -N peco-writeback
-bindkey '^X^X' peco-writeback
-
-peco-launchctl() {
-  if (( ! $+commands[launchctl] )); then
-    return
-  fi
-
-  local SERVICE_NAME=$(launchctl list 2>&1 | awk '{print $3}' \
-                    | peco --prompt='Service>' --query "$LBUFFER")
-  if [ -z "$SERVICE_NAME" ]; then
-    return 1
-  fi
-
-  local -a ACTIONS
-  ACTIONS=(start stop restart reload)
-  local ACTION=$(echo -n "${(j:\n:)ACTIONS}" | peco --prompt='Action>')
-  if [ -z "$ACTION" ]; then
-    return 1
-  fi
-
-  BUFFER="launchctl $ACTION $SERVICE_NAME"
-  zle accept-line
-}
-zle -N peco-launchctl
-bindkey '^X^L' peco-launchctl
-
-peco-ssh-host() {
-  local HOST=$(grep -iE '^host[[:space:]]+[^*]' ~/.ssh/config | awk '{print $2}' | peco)
-  BUFFER="$LBUFFER$HOST$RBUFFER"
-  CURSOR=$#BUFFER
-  zle -R -c
-}
-zle -N peco-ssh-host
-bindkey '^X^S' peco-ssh-host
-
-
-} # peco end
-
-# 補完
-fpath+=(~/.zsh/plugins/zsh-completions/src)
-autoload -U compinit && compinit
-compdef mosh=ssh
-
 # 補完時に大小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
@@ -305,16 +180,12 @@ zshaddhistory() {
     && ! ( ${cmd} =~ [[:\<:]](mv|cd|rm|l[sal]|[lj]|man)[[:\>:]] ) ]]
 }
 
-if [ -f ~/.zshrc.antigen ]; then
-  . ~/.zshrc.antigen
-fi
+# include
+[ -f ~/.zshrc.antigen ] && . ~/.zshrc.antigen
+[ -f ~/.zshrc.peco    ] && . ~/.zshrc.peco
+[ -f ~/.zshrc.include ] && . ~/.zshrc.include
 
-# 設定ファイルのinclude
-if [ -f ~/.zshrc.include ]; then
-  . ~/.zshrc.include
-fi
-
-# if (which zprof > /dev/null) ;then
+# if type zprof > /dev/null 2>&1; then
 #   zprof | less
 # fi
 

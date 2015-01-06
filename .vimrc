@@ -41,7 +41,7 @@ NeoBundleLazy 'Shougo/neosnippet', {
       \ }}
 imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:neosnippet#snippets_directory = '~/.vim/snippets,~/github/dotfiles/snippets'
+let g:neosnippet#snippets_directory = '~/.vim/snippets,~/snippets'
 let g:neosnippet#disable_runtime_snippets = {
       \ 'javascript' : 1,
       \ }

@@ -18,6 +18,8 @@ for file in ${DOT_FILES[@]}; do
     ln -s $(pwd)/$file ~/$file
 done
 
+ln -s $(pwd)/snippets ~/snippets
+
 if type go >/dev/null 2>&1; then
   go get -v code.google.com/p/go.tools/cmd/goimports
   go get -v code.google.com/p/rog-go/exp/cmd/godef

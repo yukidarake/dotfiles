@@ -9,9 +9,23 @@ if ! type brew >/dev/null 2>&1; then
 fi
 
 if [ ! -d ~/.vim/bundle ]; then
-    mkdir -p ~/.vim/bundle
-    git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+  git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 fi
+
+if [ ! -d ~/.tmux/plugins/tpm ]; then
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+
+REPOS=(
+  zsh-users/antigen
+  Lokaltog/powerline-fonts
+  chriskempson/tomorrow-theme
+)
+for repo in ${REPOS[@]}; do
+  if [ ! -d $GITHUB_ROOT/$repo ]; then
+    git clone https://github.com/${repo}.git $GITHUB_ROOT/$repo
+  fi
+done
 
 DOT_FILES=(".zsh* .screenrc .vimrc .jshintrc .gvimrc .tmux.conf")
 for file in ${DOT_FILES[@]}; do
@@ -33,21 +47,6 @@ if type npm >/dev/null 2>&1; then
   npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint eslint jscs
 fi
 
-if [ ! -d $GITHUB_ROOT ]; then
-  mkdir -p $GITHUB_ROOT
-fi
-
-REPOS=(
-  Lokaltog/powerline-fonts
-  chriskempson/tomorrow-theme
-)
-
-for repo in ${REPOS[@]}; do
-  if [ ! -d $GITHUB_ROOT/$repo ]; then
-    git clone https://github.com/${repo}.git $GITHUB_ROOT/$repo
-  fi
-done
-
 # key binding
 if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
   mkdir ~/Library/KeyBindings
@@ -57,10 +56,6 @@ if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
   "^u"="deleteToBeginningOfParagraph";
 }
 _EOT_
-fi
-
-if [ ! -d ~/.tmux/plugins/tpm ]; then
-   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
 

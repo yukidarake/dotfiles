@@ -1,36 +1,39 @@
-if [ -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
-  . $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh
-
-  antigen bundle zsh-users/zsh-syntax-highlighting
-  antigen bundle zsh-users/zsh-completions
-  antigen bundle hchbaw/auto-fu.zsh --branch=pu
-  antigen bundle sindresorhus/pure
-
-  # zsh-completions
-  compdef mosh=ssh
-
-  # z
-  _Z_CMD=j
-  _Z_DATA=~/.z/.z
-  antigen bundle rupa/z
-
-  # auto-fu
-  function zle-line-init () {
-      auto-fu-init
-  }
-  zle -N zle-line-init
-  zstyle ':completion:*' completer _oldlist _complete
-  zstyle ':auto-fu:var' postdisplay ''
-
-  # pure
-  # display svn branch info
-  zstyle ':vcs_info:*' enable git svn
-  zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
-  zstyle ':vcs_info:svn*' branchformat '%b:r%r'
-  zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
-  +vi-svn-hook() {
-    hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
-  }
-
-  antigen apply
+if [ ! -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
+  ghq get zsh-users/antigen
 fi
+
+. $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh
+
+# z
+_Z_CMD=j
+_Z_DATA=~/.z/.z
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-completions
+antigen bundle hchbaw/auto-fu.zsh --branch=pu
+antigen bundle sindresorhus/pure
+antigen bundle rupa/z
+
+# zsh-completions
+compdef mosh=ssh
+
+# auto-fu
+function zle-line-init () {
+    auto-fu-init
+}
+zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zstyle ':auto-fu:var' postdisplay ''
+
+# pure
+## display svn branch info
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
+zstyle ':vcs_info:svn*' branchformat '%b:r%r'
+zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
++vi-svn-hook() {
+  hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
+}
+
+antigen apply
+

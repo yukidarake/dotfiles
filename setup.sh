@@ -27,7 +27,7 @@ for repo in ${REPOS[@]}; do
   fi
 done
 
-DOT_FILES=(".zsh* .screenrc .vimrc .jshintrc .gvimrc .tmux.conf")
+DOT_FILES=(".zsh* .screenrc .vimrc .jshintrc .gvimrc .tmux.conf. .tern-config")
 for file in ${DOT_FILES[@]}; do
     ln -s $(pwd)/$file ~/$file
 done
@@ -35,9 +35,9 @@ done
 ln -s $(pwd)/snippets ~/snippets
 
 if type go >/dev/null 2>&1; then
+  go get -v github.com/motemen/ghq
   go get -v code.google.com/p/go.tools/cmd/goimports
   go get -v code.google.com/p/rog-go/exp/cmd/godef
-  go get -v github.com/motemen/ghq
   go get -v github.com/nsf/gocode 
   go get -v github.com/tools/godep
   go get -v github.com/golang/lint/golint

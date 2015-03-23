@@ -150,6 +150,7 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'bling/vim-airline'
 let g:airline_theme='simple'
 let g:airline_powerline_fonts=1
+set laststatus=2
 
 NeoBundle 'tpope/vim-fugitive'
 
@@ -158,10 +159,7 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_json_checkers=['jsonlint']
-let g:syntastic_javascript_checkers=[
-      \ 'jshint',
-      \ 'jscs',
-      \ ]
+let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
 let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 
@@ -328,6 +326,8 @@ unlet s:hooks
 
 NeoBundle 'moll/vim-node'
 
+NeoBundle 'mxw/vim-jsx'
+
 NeoBundle 'tpope/vim-commentary'
 
 filetype plugin indent on
@@ -414,13 +414,13 @@ augroup MyAutocmd
   autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
   autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 
-  autocmd BufReadPost,BufNewFile *.json,.jshintrc setl filetype=json
+  autocmd BufReadPost,BufNewFile *.json,.jshintrc,.eslintrc setl filetype=json
   autocmd BufReadPost,BufNewFile *.jade setl filetype=jade
   autocmd BufReadPost,BufNewFile *.js setl filetype=javascript
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
   autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd BufReadPost,BufNewFile *.coffee setl filetype=coffee
-
+  autocmd filetype crontab setl nobackup nowritebackup
   autocmd FileType coffee setl sw=2 sts=2 ts=2 et
   autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
   autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
@@ -428,7 +428,7 @@ augroup MyAutocmd
   autocmd FileType go,neosnippet setl noet noci nopi
   autocmd FileType javascript,coffee,vim,zsh autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
-        \ setl sw=4 ts=4 sts=4 et |
+        \ setl sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
         \ nnoremap <buffer> <Leader>es :%!esformatter --indent.value="    "<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>

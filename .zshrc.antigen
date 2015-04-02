@@ -27,7 +27,7 @@ bindkey '^x^b' anyframe-widget-checkout-git-branch
 peco-jump-dir() {
   local DIR=${BUFFER#cd }
   find -E ${DIR:-.} -type d -a ! -regex '.*.(git|svn)/.*' -a ! -name '.' 2> /dev/null \
-    | anyframe-selector-auto \
+    | anyframe-selector-peco \
     | anyframe-action-execute cd
 }
 zle -N peco-jump-dir
@@ -40,7 +40,7 @@ peco-launchctl() {
   fi
 
   local SERVICE_NAME=$(launchctl list 2>&1 \
-      | anyframe-selector-auto \
+      | anyframe-selector-peco \
       | awk '{print $3}')
 
   local -a ACTIONS
@@ -58,7 +58,7 @@ bindkey '^x^l' peco-launchctl
 
 peco-find() {
   find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null \
-    | anyframe-selector-auto \
+    | anyframe-selector-peco \
     | anyframe-action-insert
 }
 zle -N peco-find
@@ -68,7 +68,7 @@ bindkey "^x^f" peco-find
 peco-ssh-host() {
   grep -iE '^host[[:space:]]+[^*]' ~/.ssh/config \
     | awk '{print $2}' \
-    | anyframe-selector-auto \
+    | anyframe-selector-peco \
     | anyframe-action-insert
 }
 zle -N peco-ssh-host

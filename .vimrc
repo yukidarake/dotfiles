@@ -397,6 +397,7 @@ nnoremap g# g#zz
 " 「日本語入力固定モード」切替キー
 "inoremap <silent> <C-j> <C-^><C-r>=IMState('FixMode')<CR>
 " 「日本語入力固定モード」の動作モード
+inoremap jj <ESC>
 "let IM_CtrlMode = 4
 set noimdisable
 
@@ -430,7 +431,7 @@ augroup MyAutocmd
   autocmd FileType javascript
         \ setl sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
-        \ nnoremap <buffer> <Leader>es :%!esformatter --indent.value="    "<CR> |
+        \ nnoremap <buffer> <Leader>f :%!jscs -x<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
 
   " color

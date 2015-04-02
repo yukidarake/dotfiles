@@ -98,6 +98,6 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-completions
   zgen load hchbaw/auto-fu.zsh . pu
   zgen load sindresorhus/pure
-  zgen load zsh-users/zsh-syntax-highlighting
+  # zgen load zsh-users/zsh-syntax-highlighting
   zgen save
 fi

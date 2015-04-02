@@ -8,16 +8,82 @@ fi
 _Z_CMD=j
 _Z_DATA=~/.z/.z
 
-antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle mollifier/anyframe
+bindkey '^r' anyframe-widget-execute-history
+
+bindkey '^xi' anyframe-widget-put-history
+bindkey '^x^i' anyframe-widget-put-history
+
+bindkey '^g' anyframe-widget-cd-ghq-repository
+bindkey '^xg' anyframe-widget-cd-ghq-repository
+bindkey '^x^g' anyframe-widget-cd-ghq-repository
+
+bindkey '^xk' anyframe-widget-kill
+bindkey '^x^k' anyframe-widget-kill
+
+bindkey '^xb' anyframe-widget-checkout-git-branch
+bindkey '^x^b' anyframe-widget-checkout-git-branch
+
+peco-jump-dir() {
+  local DIR=${BUFFER#cd }
+  find -E ${DIR:-.} -type d -a ! -regex '.*.(git|svn)/.*' -a ! -name '.' 2> /dev/null \
+    | anyframe-selector-auto \
+    | anyframe-action-execute cd
+}
+zle -N peco-jump-dir
+bindkey "^xj" peco-jump-dir
+bindkey "^x^j" peco-jump-dir
+
+peco-launchctl() {
+  if (( ! $+commands[launchctl] )); then
+    return
+  fi
+
+  local SERVICE_NAME=$(launchctl list 2>&1 \
+      | anyframe-selector-auto \
+      | awk '{print $3}')
+
+  local -a ACTIONS
+  ACTIONS=(start stop restart reload)
+  local ACTION=$(echo -n "${(j:\n:)ACTIONS}" | peco --prompt='Action>')
+  if [ -z "$ACTION" ]; then
+    return 1
+  fi
+
+  echo "$ACTION $SERVICE_NAME" | anyframe-action-execute launchctl
+}
+zle -N peco-launchctl
+bindkey '^xl' peco-launchctl
+bindkey '^x^l' peco-launchctl
+
+peco-find() {
+  find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null \
+    | anyframe-selector-auto \
+    | anyframe-action-insert
+}
+zle -N peco-find
+bindkey "^xf" peco-find
+bindkey "^x^f" peco-find
+
+peco-ssh-host() {
+  grep -iE '^host[[:space:]]+[^*]' ~/.ssh/config \
+    | awk '{print $2}' \
+    | anyframe-selector-auto \
+    | anyframe-action-insert
+}
+zle -N peco-ssh-host
+bindkey '^xs' peco-ssh-host
+bindkey '^x^s' peco-ssh-host
+
+
+# antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
-antigen bundle hchbaw/auto-fu.zsh --branch=pu
-antigen bundle sindresorhus/pure
 antigen bundle rupa/z
 
 # zsh-completions
 compdef mosh=ssh
 
-# auto-fu
+antigen bundle hchbaw/auto-fu.zsh --branch=pu
 function zle-line-init () {
     auto-fu-init
 }
@@ -25,7 +91,8 @@ zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zstyle ':auto-fu:var' postdisplay ''
 
-# pure
+
+antigen bundle sindresorhus/pure
 ## display svn branch info
 zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'

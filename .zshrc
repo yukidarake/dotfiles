@@ -139,8 +139,7 @@ zshaddhistory() {
 }
 
 # include
-[ -f ~/.zshrc.peco    ] && . ~/.zshrc.peco
-[ -f ~/.zshrc.antigen ] && . ~/.zshrc.antigen
+[ -f ~/.zshrc.zgen ] && . ~/.zshrc.zgen
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
 # if type zprof > /dev/null 2>&1; then

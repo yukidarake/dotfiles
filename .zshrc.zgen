@@ -1,22 +1,14 @@
-if [ ! -f $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh ]; then
-  ghq get zsh-users/antigen
-fi
-
-. $GOPATH/src/github.com/zsh-users/antigen/antigen.zsh
-
 # z
 _Z_CMD=j
 _Z_DATA=~/.z/.z
 
-antigen bundle mollifier/anyframe
+# anyframe
 bindkey '^r' anyframe-widget-execute-history
 
 bindkey '^xi' anyframe-widget-put-history
 bindkey '^x^i' anyframe-widget-put-history
 
 bindkey '^g' anyframe-widget-cd-ghq-repository
-bindkey '^xg' anyframe-widget-cd-ghq-repository
-bindkey '^x^g' anyframe-widget-cd-ghq-repository
 
 bindkey '^xk' anyframe-widget-kill
 bindkey '^x^k' anyframe-widget-kill
@@ -76,24 +68,22 @@ bindkey '^xs' peco-ssh-host
 bindkey '^x^s' peco-ssh-host
 
 
-# antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-antigen bundle rupa/z
+# load saved zgen settings
+. $GOPATH/src/github.com/tarjoilija/zgen/zgen.zsh
+
 
 # zsh-completions
 compdef mosh=ssh
 
-antigen bundle hchbaw/auto-fu.zsh --branch=pu
-function zle-line-init () {
-    auto-fu-init
-}
+# auto-fu
 zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
 zstyle ':auto-fu:var' postdisplay ''
+function zle-line-init () {
+    auto-fu-init
+}
 
-
-antigen bundle sindresorhus/pure
-## display svn branch info
+# display svn branch info
 zstyle ':vcs_info:*' enable git svn
 zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
 zstyle ':vcs_info:svn*' branchformat '%b:r%r'
@@ -102,5 +92,12 @@ zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
   hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
 }
 
-antigen apply
-
+if ! zgen saved; then
+  zgen load mollifier/anyframe
+  zgen load rupa/z
+  zgen load zsh-users/zsh-completions
+  zgen load hchbaw/auto-fu.zsh . pu
+  zgen load sindresorhus/pure
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen save
+fi

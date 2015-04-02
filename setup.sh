@@ -17,7 +17,8 @@ if [ ! -d ~/.tmux/plugins/tpm ]; then
 fi
 
 REPOS=(
-  zsh-users/antigen
+  # zsh-users/antigen
+  tarjoilija/zgen
   Lokaltog/powerline-fonts
   chriskempson/tomorrow-theme
 )

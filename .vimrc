@@ -458,5 +458,6 @@ augroup MyAutocmd
         \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
         \ endif
+        \ setl suffixesadd+=.es,.es6,.jxs
 augroup END
 

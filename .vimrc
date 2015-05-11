@@ -394,12 +394,7 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
-" 「日本語入力固定モード」切替キー
-"inoremap <silent> <C-j> <C-^><C-r>=IMState('FixMode')<CR>
-" 「日本語入力固定モード」の動作モード
-inoremap jj <ESC>
-"let IM_CtrlMode = 4
-set noimdisable
+set imdisable
 
 if has('kaoriya')
   let $PYTHON_DLL='/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Python'

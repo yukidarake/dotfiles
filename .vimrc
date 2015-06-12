@@ -69,7 +69,7 @@ let g:unite_source_rec_min_cache_files=100
 call unite#filters#matcher_default#use(['converter_relative_word', 'matcher_fuzzy'])
 call unite#custom#source(
       \ 'buffer,file_rec,file_rec/async,file_rec/git', 'matchers',
-      \ ['matcher_project_ignore_files', 'matcher_default'])
+      \ ['matcher_default'])
 
 " prefix key
 let g:mapleader = '\'
@@ -79,11 +79,20 @@ nmap <Space> [Unite]
 imap <C-c> <Plug>(unite_exit)
 nmap <C-c> <Plug>(unite_exit)
 
+function! DispatchUniteFileRec()
+  if isdirectory(getcwd()."/.git")
+    Unite file_rec/git
+  else
+    Unite file_rec/async
+  endif
+endfunction
+
+nnoremap <silent> <C-p> :<C-u>call DispatchUniteFileRecAsyncOrGit()<CR>
 nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
 nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]p :<C-u>Unite file_rec/async<CR>
+nnoremap <silent> [Unite]p :<C-u>call DispatchUniteFileRec()<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
 let g:unite_source_grep_command = 'ag'

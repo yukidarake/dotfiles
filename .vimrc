@@ -63,19 +63,17 @@ NeoBundle 'Shougo/neomru.vim', {
       \   ],
       \ }}
 let g:unite_enable_start_insert=1
-" let s:file_rec_ignore_pattern = (unite#sources#rec#define()[0]['ignore_pattern']) . '\|node_modules'
-" call unite#custom#source('file_rec', 'ignore_pattern', s:file_rec_ignore_pattern)
-" call unite#custom#source('file_rec/async', 'ignore_pattern', s:file_rec_ignore_pattern)
-let g:unite_cursor_line_highlight = 'Error'
-let g:unite_abbr_highlight = 'StatusLine'
+let g:unite_options_auto_highlight = 1
 let g:unite_source_rec_max_cache_files=20000
 let g:unite_source_rec_min_cache_files=100
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-"call unite#custom#source('line', 'matchers', 'matcher_regexp')
+call unite#filters#matcher_default#use(['converter_relative_word', 'matcher_fuzzy'])
+call unite#custom#source(
+      \ 'buffer,file_rec,file_rec/async,file_rec/git', 'matchers',
+      \ ['matcher_project_ignore_files', 'matcher_default'])
 
 " prefix key
-let mapleader = '\'
-let maplocalleader = ','
+let g:mapleader = '\'
+let g:maplocalleader = ','
 nnoremap [Unite] <Nop>
 nmap <Space> [Unite]
 imap <C-c> <Plug>(unite_exit)
@@ -138,19 +136,12 @@ NeoBundleLazy 'mattn/emmet-vim.git', {
       \ 'autoload' : {
       \   'filetypes' : ['html', 'htm']
       \ }}
-"let g:user_emmet_leader_key='<C-E>'
+let g:user_emmet_leader_key='<C-E>'
 
+NeoBundle 'thinca/vim-template'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'nanotech/jellybeans.vim'
-"NeoBundle 'w0ng/vim-hybrid'
-"NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'thinca/vim-visualstar'
-
-NeoBundle 'bling/vim-airline'
-let g:airline_theme='simple'
-let g:airline_powerline_fonts=1
-set laststatus=2
 
 NeoBundle 'tpope/vim-fugitive'
 
@@ -158,6 +149,7 @@ NeoBundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 let g:syntastic_always_populate_loc_list=1
+let g:syntastic_css_checkers=['csslint']
 let g:syntastic_json_checkers=['jsonlint']
 let g:syntastic_javascript_checkers=['eslint']
 let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
@@ -293,6 +285,8 @@ NeoBundleLazy 'heavenshell/vim-jsdoc', {
 let s:hooks = neobundle#get_hooks('vim-jsdoc')
 function! s:hooks.on_source(bundle)
   let g:jsdoc_default_mapping=0
+  nnoremap <silent> <C-J> :JsDoc<CR>
+  nnoremap <silent> <C-Q> :JsDoc<CR>
 endfunction
 unlet s:hooks
 
@@ -329,6 +323,37 @@ NeoBundle 'moll/vim-node'
 NeoBundle 'mxw/vim-jsx'
 
 NeoBundle 'tpope/vim-commentary'
+
+" NeoBundle 'w0ng/vim-hybrid'
+" NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
+NeoBundle 'nanotech/jellybeans.vim'
+
+let colorscheme = 'jellybeans'
+NeoBundle 'bling/vim-airline'
+let g:airline_theme=colorscheme
+let g:airline_powerline_fonts=1
+set laststatus=2
+
+NeoBundleLazy 'OmniSharp/omnisharp-vim', {
+      \ 'autoload' : {
+      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
+      \ },
+      \ 'build': {
+      \   'windows' : 'msbuild server/OmniSharp.sln',
+      \   'mac': 'xbuild server/OmniSharp.sln',
+      \   'unix': 'xbuild server/OmniSharp.sln',
+      \ }}
+let g:OmniSharp_selector_ui = 'unite'  " Use unite.vim
+
+NeoBundleLazy 'OrangeT/vim-csharp', {
+      \ 'autoload' : {
+      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
+      \ }}
+
+NeoBundleLazy 'tpope/vim-dispatch', {
+      \ 'autoload' : {
+      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
+      \ }}
 
 filetype plugin indent on
 NeoBundleCheck
@@ -371,7 +396,6 @@ set undoreload=4000
 
 "" .vimrc編集
 nnoremap <C-S> :suspend<CR>
-nnoremap <C-J> <C-M>
 nnoremap <silent> <Leader>v :<C-u>vs ~/.vimrc<CR>
 nnoremap <silent> <Leader>s :so ~/.vimrc<CR>:echo 'source ~/.vimrc'<CR>
 nnoremap <silent> <LEFT>  :bn<CR>
@@ -385,6 +409,8 @@ if maparg('<C-L>', 'n') ==# ''
 endif
 nnoremap gv :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
+nnoremap :: :w<CR>
+nnoremap <ESC><ESC> :w<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -410,37 +436,40 @@ augroup MyAutocmd
   autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
   autocmd FileType unite inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
 
-  autocmd BufReadPost,BufNewFile *.json,.jshintrc,.eslintrc setl filetype=json
-  autocmd BufReadPost,BufNewFile *.jade setl filetype=jade
-  autocmd BufReadPost,BufNewFile *.js setl filetype=javascript
-  autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setl filetype=markdown
+  autocmd BufReadPost,BufNewFile *.json,.jshintrc,.eslintrc setlocal filetype=json
+  autocmd BufReadPost,BufNewFile .eslintrc setlocal filetype=yaml
+  autocmd BufReadPost,BufNewFile *.jade setlocal filetype=jade
+  autocmd BufReadPost,BufNewFile *.js setlocal filetype=javascript
+  autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setlocal filetype=markdown
   autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
-  autocmd BufReadPost,BufNewFile *.coffee setl filetype=coffee
-  autocmd filetype crontab setl nobackup nowritebackup
-  autocmd FileType coffee setl sw=2 sts=2 ts=2 et
-  autocmd FileType html,htm setl sw=2 ts=2 sts=2 et iskeyword+=/
-  autocmd FileType css,jade setl sw=2 ts=2 sts=2 et iskeyword+=_,#
-  autocmd FileType vim setl sw=2 ts=2 sts=2 et
-  autocmd FileType go,neosnippet setl noet noci nopi
-  autocmd FileType javascript,coffee,vim,zsh autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd BufReadPost,BufNewFile *.coffee setlocal filetype=coffee
+  autocmd filetype crontab setlocal nobackup nowritebackup
+  autocmd FileType coffee setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType html,htm setlocal sw=2 ts=2 sts=2 et iskeyword+=/
+  autocmd FileType css,jade setlocal sw=2 ts=2 sts=2 et iskeyword+=_,#
+  autocmd FileType vim setlocal sw=2 ts=2 sts=2 et
+  autocmd FileType go,neosnippet setlocal noet noci nopi
+  autocmd FileType javascript,coffee,vim,zsh,json,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
-        \ setl sw=2 ts=2 sts=2 et |
+        \ setlocal sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
         \ nnoremap <buffer> <Leader>f :%!jscs -x<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
+  autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
   " color
   syntax on
   set t_Co=256
   set background=dark
-  let scheme = 'jellybeans'
-  execute 'colorscheme' scheme
-  execute 'autocmd GUIEnter * colorscheme' scheme
-
+  execute 'colorscheme' colorscheme
+  execute 'autocmd GUIEnter * colorscheme' colorscheme
   if !exists('g:neocomplete#sources#omni#functions')
     let g:neocomplete#sources#omni#functions = {}
   endif
 
+  let g:neocomplete#sources#omni#functions.cs = [
+        \ 'OmniSharp#Complete',
+        \ ]
   " 'tern#Complete',
   let g:neocomplete#sources#omni#functions.javascript = [
         \ 'tern#Complete',
@@ -457,7 +486,7 @@ augroup MyAutocmd
         \ if &filetype == "javascript" |
         \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
-        \ endif
-        \ setl suffixesadd+=.es,.es6,.jxs
+        \ endif |
+        \ setlocal suffixesadd+=.es,.es6,.jsx
 augroup END
 

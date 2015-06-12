@@ -9,6 +9,14 @@ export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 
+# python, perl, ruby
+for xenv in pyenv plenv rbenv; do
+  if [ $+commands[$xenv] ]; then
+    eval "$(SHELL=zsh $xenv init - --no-rehash)"
+    path=($($xenv root)/shims $path)
+  fi
+done
+
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
 fi
@@ -146,3 +154,6 @@ zshaddhistory() {
 #   zprof | less
 # fi
 
+if [ $+commands[direnv] ]; then
+  eval "$(direnv hook zsh)"
+fi

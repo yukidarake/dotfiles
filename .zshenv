@@ -24,19 +24,6 @@ if [ $+commands[nodebrew] ]; then
   # fpath+=(~/.nodebrew/completions/zsh)
 fi
 
-# if [ $+commands[nvm] ]; then
-#   . ~/.nvm/nvm.sh
-#   nvm use default
-# fi
-
-# python, perl, ruby
-for xenv in pyenv plenv rbenv; do
-  if [ $+commands[$xenv] ]; then
-    eval "$(SHELL=zsh $xenv init - --no-rehash)"
-    path=($($xenv root)/shims $path)
-  fi
-done
-
 # java
 if [ -f /usr/local/maven2/bin/mvn ]; then
   export MAVEN_HOME=/usr/local/maven2

@@ -75,28 +75,18 @@ bindkey '^x^s' peco-ssh-host
 # zsh-completions
 compdef mosh=ssh
 
-# display svn branch info
-zstyle ':vcs_info:*' enable git svn
-zstyle ':vcs_info:svn*' formats ' %F{magenta}%s%f %b'
-zstyle ':vcs_info:svn*' branchformat '%b:r%r'
-zstyle ':vcs_info:svn+set-branch-format:*' hooks svn-hook
-+vi-svn-hook() {
-  hook_com[branch]=`svn info | perl -ne 's/^Relative URL: // && print'`
-}
-
-# zsh-autosuggestions
-zle-line-init() {
-  zle autosuggest-start
-}
+# auto-fu
 zle -N zle-line-init
-unset COMPLETION_WAITING_DOTS
-AUTOSUGGESTION_HIGHLIGHT_COLOR='fg=1'
-bindkey '^T' autosuggest-toggle
+zstyle ':completion:*' completer _oldlist _complete
+zstyle ':auto-fu:var' postdisplay ''
+function zle-line-init () {
+    auto-fu-init
+}
 
 if ! zgen saved; then
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-completions
-  zgen load tarruda/zsh-autosuggestions
+  zgen load hchbaw/auto-fu.zsh . pu
   zgen load mollifier/anyframe
   zgen load rupa/z
   zgen load mafredri/zsh-async

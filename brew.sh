@@ -4,7 +4,6 @@ brew tap homebrew/dupes
 brew tap homebrew/nginx 
 brew tap caskroom/cask 
 brew tap caskroom/versions
-brew tap yukidarake/homebrew-793 
 brew tap peco/peco 
 
 # Packages
@@ -16,12 +15,10 @@ brew install curl
 brew install git 
 brew install go 
 brew install hg 
-brew install httpie 
 brew install hub 
 brew install lua 
-brew install lua52 
 brew install luajit 
-brew install mongodb22 
+brew install mongodb
 brew install mobile-shell 
 #brew install nginx 
 brew install nginx-full 
@@ -43,6 +40,9 @@ brew install w3m
 brew install wget 
 brew install --disable-etcdir zsh 
 
+# Install homebrew-cask applications into /Applications
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
 # Add GUI Applications
 brew cask install alfred 
 brew cask install appcleaner 
@@ -55,7 +55,6 @@ brew cask install google-japanese-ime
 brew cask install hipchat 
 brew cask install iterm2 
 brew cask install karabiner 
-# brew cask install limechat 
 brew cask install macvim-kaoriya 
 brew cask install nosleep 
 brew cask install skype 
@@ -65,6 +64,4 @@ brew cask install xtrafinder
 brew cask install virtualbox 
 brew cask install vagrant 
 brew cask install macvim-kaoriya
-
-brew cask alfred link 
 

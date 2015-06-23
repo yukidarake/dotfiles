@@ -4,7 +4,7 @@ stty stop undef
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export TERM=xterm-color
-export EDITOR="$HOME/Applications/MacVim.app/Contents/MacOS/Vim"
+export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
 export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no

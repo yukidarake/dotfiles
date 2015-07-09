@@ -60,16 +60,3 @@ _EOT_
 fi
 
 
-# タブでボタンを選択できるようにする
-#システム環境設定→キーボード→キーボードショートカット→すべてのコントロール
-
-#ダブルタップでドラッグにする
-#システム環境設定→アクセシビリティ→マウスとトラックパッド→トラックパッドオプション→ドラッグを有効にする
-
-# dashboardを無効にする
-# defaults write com.apple.dashboard mcx-disabled -boolean true
-# アニメーション高速化
-# defaults write com.apple.dock expose-animation-duration -float 0.15
-# killall Dock
-
-

@@ -15,9 +15,9 @@ if [ $+commands[go] ]; then
   )
 fi
 
-export ANDROID_HOME=$(brew --prefix)/Cellar/android-sdk/23.0.2
+export ANDROID_HOME=$(brew --prefix)/Cellar/android-sdk/24.3.3
 export NDK=$HOME/Develop/Android/NDK
-export NDK_ROOT=$(brew --prefix)/Cellar/android-ndk/r10c
+export NDK_ROOT=$(brew --prefix)/Cellar/android-ndk/r10e
 
 if [ $+commands[nodebrew] ]; then
   path=(~/.nodebrew/current/bin $path)

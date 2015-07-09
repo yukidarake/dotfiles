@@ -148,8 +148,8 @@ NeoBundleLazy 'mattn/emmet-vim.git', {
 let g:user_emmet_leader_key='<C-E>'
 
 NeoBundle 'thinca/vim-template'
-NeoBundle 'tpope/vim-surround'
 NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-surround'
 NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'tpope/vim-fugitive'
@@ -332,6 +332,8 @@ NeoBundle 'moll/vim-node'
 NeoBundle 'mxw/vim-jsx'
 
 NeoBundle 'tpope/vim-commentary'
+
+NeoBundle 'Townk/vim-autoclose'
 
 " NeoBundle 'w0ng/vim-hybrid'
 " NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}

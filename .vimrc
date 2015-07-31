@@ -87,7 +87,6 @@ function! DispatchUniteFileRec()
   endif
 endfunction
 
-nnoremap <silent> <C-p> :<C-u>call DispatchUniteFileRecAsyncOrGit()<CR>
 nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
@@ -148,8 +147,11 @@ NeoBundleLazy 'mattn/emmet-vim.git', {
 let g:user_emmet_leader_key='<C-E>'
 
 NeoBundle 'thinca/vim-template'
+
 NeoBundle 'tpope/vim-repeat'
+
 NeoBundle 'tpope/vim-surround'
+
 NeoBundle 'thinca/vim-visualstar'
 
 NeoBundle 'tpope/vim-fugitive'
@@ -195,25 +197,16 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
-NeoBundleLazy 'tyru/open-browser.vim', {
-      \ 'autoload' : {
-      \   'functions' : 'OpenBrowser',
-      \   'commands'  : ['OpenBrowser', 'OpenBrowserSearch'],
-      \   'mappings'  : '<Plug>(openbrowser-smart-search)',
-      \   'filetypes' : ['markdown']
-      \ }}
 NeoBundleLazy 'tpope/vim-markdown', {
       \ 'autoload' : {
       \   'filetypes' : ['markdown']
       \ }}
-NeoBundleLazy 'kannokanno/previm', {
-      \ 'autoload' : {
-      \   'filetypes' : ['markdown']
-      \ }}
+
 NeoBundleLazy 'digitaltoad/vim-jade', {
       \ 'autoload' : {
       \   'filetypes' : ['jade']
       \ }}
+
 NeoBundle 'thinca/vim-ft-svn_diff'
 
 NeoBundle 'othree/eregex.vim'
@@ -254,33 +247,12 @@ function! s:hooks.on_source(bundle)
 endfunction
 unlet s:hooks
 
-NeoBundleLazy 'Tabular', {
-      \ 'autoload' : {
-      \   'insert' : 1,
-      \ }}
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
-
 NeoBundle 'mopp/autodirmake.vim'
 
 NeoBundleLazy 'pangloss/vim-javascript', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript'
       \ }}
-
-" NeoBundleLazy 'jelera/vim-javascript-syntax', {
-"       \ 'autoload' : {
-"       \    'filetypes' : 'javascript'
-"       \ }}
 
 NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
       \ 'autoload' : {
@@ -333,28 +305,29 @@ NeoBundle 'mxw/vim-jsx'
 
 NeoBundle 'tpope/vim-commentary'
 
-NeoBundle 'Townk/vim-autoclose'
+NeoBundle 'Raimondi/delimitMate'
 
 " NeoBundle 'w0ng/vim-hybrid'
 " NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'nanotech/jellybeans.vim'
 
 let colorscheme = 'jellybeans'
+
 NeoBundle 'bling/vim-airline'
 let g:airline_theme=colorscheme
 let g:airline_powerline_fonts=1
 set laststatus=2
 
-NeoBundleLazy 'OmniSharp/omnisharp-vim', {
-      \ 'autoload' : {
-      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
-      \ },
-      \ 'build': {
-      \   'windows' : 'msbuild server/OmniSharp.sln',
-      \   'mac': 'xbuild server/OmniSharp.sln',
-      \   'unix': 'xbuild server/OmniSharp.sln',
-      \ }}
-let g:OmniSharp_selector_ui = 'unite'  " Use unite.vim
+" NeoBundleLazy 'OmniSharp/omnisharp-vim', {
+"       \ 'autoload' : {
+"       \    'filetypes' : [ 'cs', 'csi', 'csx' ]
+"       \ },
+"       \ 'build': {
+"       \   'windows' : 'msbuild server/OmniSharp.sln',
+"       \   'mac': 'xbuild server/OmniSharp.sln',
+"       \   'unix': 'xbuild server/OmniSharp.sln',
+"       \ }}
+" let g:OmniSharp_selector_ui = 'unite'  " Use unite.vim
 
 NeoBundleLazy 'OrangeT/vim-csharp', {
       \ 'autoload' : {
@@ -396,6 +369,7 @@ set ambiwidth=double
 set tw=0
 set completeopt-=preview
 set hlsearch
+" set timeout timeoutlen=500 ttimeoutlen=50
 
 " undo
 set undodir=~/.vim/undo
@@ -420,8 +394,6 @@ if maparg('<C-L>', 'n') ==# ''
 endif
 nnoremap gv :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
-nnoremap :: :w<CR>
-nnoremap <ESC><ESC> :w<CR>
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -460,7 +432,7 @@ augroup MyAutocmd
   autocmd FileType css,jade setlocal sw=2 ts=2 sts=2 et iskeyword+=_,#
   autocmd FileType vim setlocal sw=2 ts=2 sts=2 et
   autocmd FileType go,neosnippet setlocal noet noci nopi
-  autocmd FileType javascript,coffee,vim,zsh,json,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,coffee,vim,zsh,json,yaml,javascript.jsx autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setlocal sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
@@ -497,7 +469,6 @@ augroup MyAutocmd
         \ if &filetype == "javascript" |
         \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
-        \ endif |
-        \ setlocal suffixesadd+=.es,.es6,.jsx
+        \ endif
 augroup END
 

@@ -154,7 +154,7 @@ NeoBundle 'tpope/vim-surround'
 
 NeoBundle 'thinca/vim-visualstar'
 
-NeoBundle 'tpope/vim-fugitive'
+" NeoBundle 'tpope/vim-fugitive'
 
 NeoBundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
@@ -249,15 +249,15 @@ unlet s:hooks
 
 NeoBundle 'mopp/autodirmake.vim'
 
-NeoBundleLazy 'pangloss/vim-javascript', {
+NeoBundleLazy 'othree/yajs.vim', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript'
       \ }}
 
-NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
-      \ 'autoload' : {
-      \    'filetypes' : 'javascript'
-      \ }}
+" NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
+"       \ 'autoload' : {
+"       \    'filetypes' : 'javascript'
+"       \ }}
 
 NeoBundleLazy 'heavenshell/vim-jsdoc', {
       \ 'autoload' : {
@@ -392,7 +392,7 @@ nnoremap <silent> <Leader>e :Errors<CR>
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
-nnoremap gv :vertical wincmd f<CR>
+nnoremap gV :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
 
 "" 検索結果を中心に持ってくる
@@ -436,7 +436,7 @@ augroup MyAutocmd
   autocmd FileType javascript
         \ setlocal sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
-        \ nnoremap <buffer> <Leader>f :%!jscs -x<CR> |
+""        \ nnoremap <buffer> <Leader>f :%!eslint --fix --stdin<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
   autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 

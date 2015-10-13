@@ -12,6 +12,7 @@ if has('gui_macvim')
     set columns=100
     set fuoptions=maxvert,maxhorz
     set formatoptions=q
+    set imdisable
 
     function! ToggleFullScreen()
         if &fullscreen

@@ -120,6 +120,16 @@ snippet setInterval
 		${0}
 	}, 1000);
 
+snippet sett6
+	setTimeout(() => {
+		${0}
+	}, 1000);
+
+snippet seti6
+	setInterval(() => {
+		${0}
+	}, 1000);
+
 snippet try
 alias t
 	try {
@@ -195,73 +205,68 @@ options word
 		}
 	});
 
-snippet describe
-	describe('${1}', function() {
-		it('${2}', function() {
-			${0}
-		});
-	});
+# mocha ES5
+# snippet describe
+# alias desc
+# 	describe('${1}', function() {
+#     ${2}
+# 	});
 
-snippet adescribe
-	describe('${1}', function() {
-		it('${0}', function(done) {
-			done();
-		});
+# snippet it
+# 	it('${1}', function() {
+# 		${0}
+# 	});
+
+# snippet before
+# 	before(function() {
+# 		${0}
+# 	});
+
+# snippet beforeEach
+# 	beforeEach(function() {
+# 		${0}
+# 	});
+
+# snippet after
+# 	after(function() {
+# 		${0}
+# 	});
+
+# snippet afterEach
+# 	afterEach(function() {
+# 		${0}
+# 	});
+
+# mocha ES6
+snippet describe
+alias desc
+	describe('${1}', () => {
+    ${2}
 	});
 
 snippet it
-	it('${1}', function() {
-		${0}
-	});
-
-snippet ait
-	it('${1}', function(done) {
-		${0}
-		done();
+	it('${1}', () => {
+		${2}
 	});
 
 snippet before
-	before(function() {
+	before(() => {
 		${0}
-	});
-
-snippet abefore
-	before(function(done) {
-		${0}
-		done();
 	});
 
 snippet beforeEach
-	beforeEach(function() {
+	beforeEach(() => {
 		${0}
-	});
-
-snippet abeforeEach
-	beforeEach(function(done) {
-		${0}
-		done();
 	});
 
 snippet after
-	after(function() {
+	after(() => {
 		${0}
-	});
-
-snippet aafter
-	after(function(done) {
-		${0}
-		done();
 	});
 
 snippet afterEach
-	afterEach(function() {
+	afterEach(() => {
 		${0}
-	});
-
-snippet aafterEach
-	afterEach(function(done) {
-		${0}
-		done();
 	});
 
 snippet strict
@@ -272,3 +277,33 @@ options head
 alias _
   var _ = require('lodash');
 
+# ES6
+snippet (=>
+  ((${1}) => {
+    ${0}
+  })
+
+snippet =>
+  (${1}) => {
+    ${0}
+  }
+
+snippet co
+alias c
+	const ${1} = ${0};
+
+snippet class
+	class ${1:name} {
+		constructor (${2:arg}) {
+			${3:// init}
+		}
+		${4}
+	}
+
+snippet forof
+	for (let ${1:s} of ${2:sequence}) {
+		${3}
+	}
+
+snippet im
+	import ${1:foo} from "${2:bar}"

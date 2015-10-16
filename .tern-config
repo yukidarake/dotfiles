@@ -1,12 +1,18 @@
 {
   "libs": [
-      "browser",
-      "ecma5",
-      "jquery",
-      "underscore"
+    "browser",
+    "jquery",
+    "underscore",
+    "ecma5",
+    "ecma6"
+  ],
+  "loadEagerly": [
+    "client/**/*.js"
   ],
   "plugins": {
-    "node": {
+    "node": {},
+    "doc_comment": {
+      "fullDocs": true
     }
   }
 }

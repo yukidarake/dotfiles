@@ -254,10 +254,11 @@ NeoBundleLazy 'othree/yajs.vim', {
       \   'filetypes' : 'javascript'
       \ }}
 
-" NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
-"       \ 'autoload' : {
-"       \    'filetypes' : 'javascript'
-"       \ }}
+NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
+      \ 'autoload' : {
+      \    'filetypes' : 'javascript'
+      \ }}
+let g:used_javascript_libs = 'underscore,react'
 
 NeoBundleLazy 'heavenshell/vim-jsdoc', {
       \ 'autoload' : {

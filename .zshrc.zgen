@@ -16,6 +16,9 @@ bindkey '^x^k' anyframe-widget-kill
 bindkey '^xb' anyframe-widget-checkout-git-branch
 bindkey '^x^b' anyframe-widget-checkout-git-branch
 
+bindkey '^xe' emoji::cli
+bindkey '^x^e' emoji::cli
+
 peco-jump-dir() {
   local DIR=${BUFFER#cd }
   find -E ${DIR:-.} -type d -a ! -regex '.*.(git|svn)/.*' -a ! -name '.' 2> /dev/null \
@@ -76,12 +79,12 @@ bindkey '^x^s' peco-ssh-host
 compdef mosh=ssh
 
 # auto-fu
-zle -N zle-line-init
-zstyle ':completion:*' completer _oldlist _complete
-zstyle ':auto-fu:var' postdisplay ''
 function zle-line-init () {
     auto-fu-init
 }
+zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zstyle ':auto-fu:var' postdisplay ''
 
 if ! zgen saved; then
   zgen load zsh-users/zsh-syntax-highlighting
@@ -91,5 +94,6 @@ if ! zgen saved; then
   zgen load rupa/z
   zgen load mafredri/zsh-async
   zgen load sindresorhus/pure
+  zgen load b4b4r07/emoji-cli
   zgen save
 fi

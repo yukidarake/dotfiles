@@ -308,6 +308,8 @@ NeoBundle 'tpope/vim-commentary'
 
 NeoBundle 'Raimondi/delimitMate'
 
+NeoBundle 'stephpy/vim-yaml'
+
 " NeoBundle 'w0ng/vim-hybrid'
 " NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'nanotech/jellybeans.vim'
@@ -318,6 +320,8 @@ NeoBundle 'bling/vim-airline'
 let g:airline_theme=colorscheme
 let g:airline_powerline_fonts=1
 set laststatus=2
+
+NeoBundle 'leafgarland/typescript-vim'
 
 " NeoBundleLazy 'OmniSharp/omnisharp-vim', {
 "       \ 'autoload' : {

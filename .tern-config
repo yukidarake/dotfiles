@@ -3,16 +3,14 @@
     "browser",
     "jquery",
     "underscore",
-    "ecma5",
     "ecma6"
   ],
-  "loadEagerly": [
-    "client/**/*.js"
-  ],
+  "async": true,
   "plugins": {
     "node": {},
-    "doc_comment": {
-      "fullDocs": true
-    }
+    "modules": {},
+    "requirejs": {},
+    "doc_comment": {},
+    "es_modules": true
   }
 }

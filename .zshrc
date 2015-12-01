@@ -12,10 +12,15 @@ export GIT_MERGE_AUTOEDIT=no
 # python, perl, ruby
 for xenv in pyenv plenv rbenv; do
   if [ $+commands[$xenv] ]; then
-    eval "$(SHELL=zsh $xenv init - --no-rehash)"
     path=($($xenv root)/shims $path)
+    eval "$(SHELL=zsh $xenv init - --no-rehash)"
   fi
 done
+
+if [ $+commands[rakudobrew] ]; then
+  path=(~/.rakudobrew/bin $path)
+  eval "$(SHELL=zsh rakudobrew init - --no-rehash)"
+fi
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
@@ -28,6 +33,7 @@ git config --global core.editor "$EDITOR"
 alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
 alias view='vim -R'
+alias gitdiff='git difftool --tool=vimdiff --no-prompt'
 alias v='vim -'
 alias ls='ls -G'
 alias ll='ls -ahl'

@@ -87,31 +87,29 @@ moshx() {
 
 sshx() {
   local SSH=${SSHX_COMMAND:-ssh}
+  local SESSION=${SESSION_NAME:-"${SSH}x-$(date +%s)"}
 
-  if [ -n "$SESSION_NAME" ]; then
-    session=$SESSION_NAME
+  if [ -n "$TMUX" ]; then
+    tmux new-window
+    tmux send-keys "$SSH $1" C-m
+    shift
+    for h in $*; do
+      tmux split-window "$SSH $h"
+      tmux select-layout tiled
+    done
+    tmux set-window-option synchronize-panes on
+    tmux select-pane -t 0
+
   else
-    session=${SSH}x-`date +%s`
+    tmux new-session -d -s $SESSION "$SSH $1"
+    shift
+    for h in $*; do
+      tmux split-window -d -t $SESSION "$SSH $h"
+      tmux select-layout -t $SESSION tiled
+    done
+    tmux set-option -t $SESSION synchronize-panes on
+    tmux attach-session -t $SESSION
   fi
-
-  window=${SSH}x
-
-  tmux new-session -d -n $window -s $session
-
-  tmux send-keys "$SSH $1" C-m
-  shift
-
-  for h in $*; do
-    tmux split-window
-    tmux select-layout tiled
-    tmux send-keys "$SSH $h" C-m
-  done
-
-  tmux select-pane -t 0
-
-  tmux set-window-option synchronize-panes on
-
-  tmux attach-session -t $session
 }
 
 } # tmux end

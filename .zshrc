@@ -11,13 +11,13 @@ export GIT_MERGE_AUTOEDIT=no
 
 # python, perl, ruby
 for xenv in pyenv plenv rbenv; do
-  if [ $+commands[$xenv] ]; then
+  if (( $+commands[$xenv] )); then
     path=($($xenv root)/shims $path)
     eval "$(SHELL=zsh $xenv init - --no-rehash)"
   fi
 done
 
-if [ $+commands[rakudobrew] ]; then
+if (( $+commands[rakudobrew] )); then
   path=(~/.rakudobrew/bin $path)
   eval "$(SHELL=zsh rakudobrew init - --no-rehash)"
 fi
@@ -158,6 +158,7 @@ zshaddhistory() {
 #   zprof | less
 # fi
 
-if [ $+commands[direnv] ]; then
+if (( $+commands[direnv] )); then
   eval "$(direnv hook zsh)"
 fi
+

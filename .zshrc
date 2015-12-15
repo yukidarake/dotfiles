@@ -94,7 +94,7 @@ sshx() {
     tmux send-keys "$SSH $1" C-m
     shift
     for h in $*; do
-      tmux split-window "$SSH $h"
+      tmux split-window -h "$SSH $h"
       tmux select-layout tiled
     done
     tmux set-window-option synchronize-panes on
@@ -104,7 +104,7 @@ sshx() {
     tmux new-session -d -s $SESSION "$SSH $1"
     shift
     for h in $*; do
-      tmux split-window -d -t $SESSION "$SSH $h"
+      tmux split-window -h -d -t $SESSION "$SSH $h"
       tmux select-layout -t $SESSION tiled
     done
     tmux set-option -t $SESSION synchronize-panes on

@@ -2,11 +2,11 @@
 _Z_CMD=j
 _Z_DATA=~/.z/.z
 
-# anyframe
+# bindkey
 bindkey '^r' anyframe-widget-execute-history
 
-bindkey '^xi' anyframe-widget-put-history
-bindkey '^x^i' anyframe-widget-put-history
+bindkey '^xr' anyframe-widget-put-history
+bindkey '^x^r' anyframe-widget-put-history
 
 bindkey '^g' anyframe-widget-cd-ghq-repository
 
@@ -19,6 +19,33 @@ bindkey '^x^b' anyframe-widget-checkout-git-branch
 bindkey '^xe' emoji::cli
 bindkey '^x^e' emoji::cli
 
+bindkey "^xj" peco-jump-dir
+bindkey "^x^j" peco-jump-dir
+
+bindkey '^xl' peco-launchctl
+bindkey '^x^l' peco-launchctl
+
+bindkey "^xf" peco-find
+bindkey "^x^f" peco-find
+
+bindkey '^xs' peco-ssh-host
+bindkey '^x^s' peco-ssh-host
+
+# load zgen
+. $GOPATH/src/github.com/tarjoilija/zgen/zgen.zsh
+
+# load plugins
+if ! zgen saved; then
+  zgen load zsh-users/zsh-completions
+  zgen load hchbaw/auto-fu.zsh . pu
+  zgen load mollifier/anyframe
+  zgen load rupa/z
+  zgen load mafredri/zsh-async
+  zgen load sindresorhus/pure
+  zgen load b4b4r07/emoji-cli
+  zgen load zsh-users/zsh-syntax-highlighting
+fi
+
 peco-jump-dir() {
   local DIR=${BUFFER#cd }
   find -E ${DIR:-.} -type d -a ! -regex '.*.(git|svn)/.*' -a ! -name '.' 2> /dev/null \
@@ -26,8 +53,6 @@ peco-jump-dir() {
     | anyframe-action-execute cd
 }
 zle -N peco-jump-dir
-bindkey "^xj" peco-jump-dir
-bindkey "^x^j" peco-jump-dir
 
 peco-launchctl() {
   if (( ! $+commands[launchctl] )); then
@@ -48,8 +73,6 @@ peco-launchctl() {
   echo "$ACTION $SERVICE_NAME" | anyframe-action-execute launchctl
 }
 zle -N peco-launchctl
-bindkey '^xl' peco-launchctl
-bindkey '^x^l' peco-launchctl
 
 peco-find() {
   find * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null \
@@ -57,8 +80,6 @@ peco-find() {
     | anyframe-action-insert
 }
 zle -N peco-find
-bindkey "^xf" peco-find
-bindkey "^x^f" peco-find
 
 peco-ssh-host() {
   grep -iE '^host[[:space:]]+[^*]' ~/.ssh/config \
@@ -67,12 +88,6 @@ peco-ssh-host() {
     | anyframe-action-insert
 }
 zle -N peco-ssh-host
-bindkey '^xs' peco-ssh-host
-bindkey '^x^s' peco-ssh-host
-
-
-# load saved zgen settings
-. $GOPATH/src/github.com/tarjoilija/zgen/zgen.zsh
 
 
 # zsh-completions
@@ -83,17 +98,6 @@ function zle-line-init () {
     auto-fu-init
 }
 zle -N zle-line-init
+
 zstyle ':completion:*' completer _oldlist _complete
 zstyle ':auto-fu:var' postdisplay ''
-
-if ! zgen saved; then
-  zgen load zsh-users/zsh-syntax-highlighting
-  zgen load zsh-users/zsh-completions
-  zgen load hchbaw/auto-fu.zsh . pu
-  zgen load mollifier/anyframe
-  zgen load rupa/z
-  zgen load mafredri/zsh-async
-  zgen load sindresorhus/pure
-  zgen load b4b4r07/emoji-cli
-  zgen save
-fi

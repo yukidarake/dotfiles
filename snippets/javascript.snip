@@ -13,16 +13,6 @@ options word
 		//TODO
 	};
 
-snippet callback
-alias c
-options word
-	function(err, result) {
-		if (err) {
-			return callback(err);
-		}
-		callback(null, result);
-	}
-
 snippet function
 alias f
 options word
@@ -100,16 +90,6 @@ options word
 snippet d
 	debugger;
 
-snippet {}
-	{
-		${1}: ${0},
-	}
-
-snippet []
-	[
-		${0},
-	]
-
 snippet setTimeout
 	setTimeout(function() {
 		${0}
@@ -167,9 +147,11 @@ snippet time
 snippet timeEnd
 	console.timeEnd(${0});
 
-snippet require
-alias r
+snippet require5
+alias r5
+abbr require in ES5
 	var ${1} = require('$1${0}');
+
 
 snippet now
 options word
@@ -275,22 +257,23 @@ snippet strict
 snippet lodash
 options head
 alias _
-  var _ = require('lodash');
+  const _ = require('lodash');
 
 # ES6
-snippet (=>
-  ((${1}) => {
-    ${0}
-  })
-
 snippet =>
+options word
   (${1}) => {
     ${0}
   }
 
-snippet co
+snippet const
 alias c
-	const ${1} = ${0};
+options head
+	const ${0}
+
+snippet require
+alias r
+	const ${1} = require('$1${0}');
 
 snippet class
 	class ${1:name} {
@@ -307,3 +290,46 @@ snippet forof
 
 snippet im
 	import ${1:foo} from "${2:bar}"
+
+snippet {
+options word 
+  {${0}}
+
+snippet {}
+options word 
+  {
+    ${1}: ${0},
+  }
+
+snippet :
+options word 
+  : ${0},
+
+snippet [
+options word 
+  [${0}]
+
+snippet []
+options word 
+  [
+    ${0},
+  ]
+
+snippet $
+options word 
+  ${${0}}
+
+snippet '
+options word
+  '${0}'
+
+snippet `
+options word
+  \`${0}\`
+
+snippet *
+options word
+  function* ${1}{
+    ${0}
+  }
+

@@ -9,19 +9,6 @@ export LESS='-R'
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
 
-# python, perl, ruby
-for xenv in pyenv plenv rbenv; do
-  if (( $+commands[$xenv] )); then
-    path=($($xenv root)/shims $path)
-    eval "$(SHELL=zsh $xenv init - --no-rehash)"
-  fi
-done
-
-if (( $+commands[rakudobrew] )); then
-  path=(~/.rakudobrew/bin $path)
-  eval "$(SHELL=zsh rakudobrew init - --no-rehash)"
-fi
-
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
 fi
@@ -30,7 +17,8 @@ fi
 git config --global core.editor "$EDITOR"
 
 # alias
-alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
+alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
+# alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
 alias view='vim -R'
 alias gitdiff='git difftool --tool=vimdiff --no-prompt'
@@ -154,11 +142,10 @@ zshaddhistory() {
 [ -f ~/.zshrc.zgen ] && . ~/.zshrc.zgen
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
 
-# if type zprof > /dev/null 2>&1; then
-#   zprof | less
-# fi
-
 if (( $+commands[direnv] )); then
   eval "$(direnv hook zsh)"
 fi
 
+if type zprof > /dev/null 2>&1; then
+  zprof | less
+fi

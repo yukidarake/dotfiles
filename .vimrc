@@ -39,9 +39,17 @@ NeoBundleLazy 'Shougo/neosnippet', {
       \ 'autoload' : {
       \     'insert' : 1,
       \ }}
-imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:neosnippet#snippets_directory = '~/.vim/snippets,~/snippets'
+NeoBundleLazy 'Shougo/neosnippet-snippets', {
+      \ 'autoload' : {
+      \     'insert' : 1,
+      \ }}
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)"
+    \ : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+    \ "\<Plug>(neosnippet_expand_or_jump)"
+    \ : "\<TAB>"
+let g:neosnippet#snippets_directory = '~/snippets'
 let g:neosnippet#disable_runtime_snippets = {
       \ 'javascript' : 1,
       \ }
@@ -306,20 +314,29 @@ NeoBundle 'mxw/vim-jsx'
 
 NeoBundle 'tpope/vim-commentary'
 
-NeoBundle 'Raimondi/delimitMate'
+" NeoBundleLazy 'Raimondi/delimitMate', {
+"       \ 'autoload' : {
+"       \     'insert' : 1,
+"       \ }}
+" augroup DelimitMate
+"   autocmd!
+"   autocmd FileType javascript let b:delimitMate_smart_matchpairs = '\v^\%(\w|$)'
+"   autocmd FileType markdown let b:delimitMate_nesting_quotes = ['`']
+" augroup END
+" let delimitMate_expand_space = 1
+" let delimitMate_expand_cr = 1
 
 NeoBundle 'stephpy/vim-yaml'
 
-" NeoBundle 'w0ng/vim-hybrid'
 " NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 NeoBundle 'nanotech/jellybeans.vim'
-
 let colorscheme = 'jellybeans'
 
-NeoBundle 'bling/vim-airline'
-let g:airline_theme=colorscheme
+NeoBundle 'vim-airline/vim-airline'
 let g:airline_powerline_fonts=1
 set laststatus=2
+NeoBundle 'vim-airline/vim-airline-themes'
+let g:airline_theme=colorscheme
 
 NeoBundle 'leafgarland/typescript-vim'
 
@@ -410,10 +427,6 @@ nnoremap g# g#zz
 
 set imdisable
 
-if has('kaoriya')
-  let $PYTHON_DLL='/usr/local/Cellar/python/2.7.5/Frameworks/Python.framework/Python'
-endif
-
 augroup MyAutocmd
   autocmd!
 
@@ -451,6 +464,7 @@ augroup MyAutocmd
   set background=dark
   execute 'colorscheme' colorscheme
   execute 'autocmd GUIEnter * colorscheme' colorscheme
+
   if !exists('g:neocomplete#sources#omni#functions')
     let g:neocomplete#sources#omni#functions = {}
   endif

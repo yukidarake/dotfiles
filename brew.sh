@@ -4,12 +4,9 @@ brew tap homebrew/dupes
 brew tap homebrew/nginx 
 brew tap caskroom/cask 
 brew tap caskroom/versions
-brew tap peco/peco 
 
 # Packages
-brew install boot2docker
 brew install brew-cask 
-brew install casperjs 
 brew install coreutils 
 brew install curl 
 brew install git 
@@ -24,7 +21,6 @@ brew install mobile-shell
 brew install nginx-full 
 brew install ngrep 
 brew install peco 
-brew install phantomjs 
 brew install plenv 
 brew install pyenv 
 brew install rbenv 
@@ -52,16 +48,12 @@ brew cask install day-o
 brew cask install firefox 
 brew cask install google-chrome 
 brew cask install google-japanese-ime 
-brew cask install hipchat 
 brew cask install iterm2 
 brew cask install karabiner 
-brew cask install macvim-kaoriya 
 brew cask install nosleep 
 brew cask install skype 
-brew cask install sourcetree 
+brew cask install slack 
 brew cask install waterroof 
-brew cask install xtrafinder 
 brew cask install virtualbox 
 brew cask install vagrant 
 brew cask install macvim-kaoriya
-

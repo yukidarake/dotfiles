@@ -36,6 +36,9 @@ brew install w3m
 brew install wget 
 brew install --disable-etcdir zsh 
 
+# git diff
+ln -s /usr/local/share/git-core/contrib/diff-highlight/diff-highlight /usr/local/bin/diff-highlight 
+
 # Install homebrew-cask applications into /Applications
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 

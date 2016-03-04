@@ -1,0 +1,110 @@
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+[[plugins]]
+repo = 'Shougo/neopairs.vim'
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_path = '.*'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_path = '.*'
+on_source = 'unite.vim'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+depends = 'context_filetype.vim'
+disabled = '!has("lua")'
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
+on_i = 1
+on_ft = 'snippet'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_i = 1
+on_ft = 'snippet'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+depends = 'neomru.vim'
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'Shougo/unite-outline'
+on_source = 'unite.vim'
+
+[[plugins]]
+repo = 'thinca/vim-unite-history'
+on_source = 'unite.vim'
+
+[[plugins]]
+repo = 'thinca/vim-qfreplace'
+on_ft = ['unite', 'quickfix']
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+on_map = '<Plug>'
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+
+[[plugins]]
+repo = 'osyo-manga/unite-quickfix'
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]]
+repo = 'kchmck/vim-coffee-script'
+on_ft = 'coffee'
+
+[[plugins]]
+repo = 'ternjs/tern_for_vim'
+on_ft = 'javascript'
+build = 'npm install'
+
+[[plugins]]
+repo = 'mxw/vim-jsx'
+on_ft = 'javascript'
+
+[[plugins]]
+repo = 'tpope/vim-markdown'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'digitaltoad/vim-jade'
+on_ft = 'jade'
+
+[[plugins]]
+repo = 'thinca/vim-ft-svn_diff'
+
+[[plugins]]
+repo = 'heavenshell/vim-jsdoc'
+on_ft = 'javascript'
+
+[[plugins]]
+repo = 'stephpy/vim-yaml'
+on_ft = 'yaml'
+
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+on_ft = 'typescript-vim'
+
+[[plugins]]
+repo = 'chrisbra/vim-diff-enhanced'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+

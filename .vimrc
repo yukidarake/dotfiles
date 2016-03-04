@@ -1,187 +1,132 @@
-if has('vim_starting')
+if &compatible
   set nocompatible
+endif
+
+" dein.vim
+let s:dein_dir = expand('~/.cache/dein')
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+endif
+
+call dein#begin(s:dein_dir)
+
+" プラグインリストを収めた TOML ファイル
+let s:toml      = '~/.vim/rc/dein.toml'
+let s:lazy_toml = '~/.vim/rc/deinlazy.toml'
+
+" TOML を読み込み、キャッシュしておく
+if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call dein#save_cache()
+endif
+
+call dein#end()
+
+filetype plugin indent on
+
+if dein#check_install()
+  call dein#install()
+endif
+
+if has('vim_starting') && &encoding !=# 'utf-8'
   set encoding=utf-8
   scriptencoding utf-8
   set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
-  set rtp+=~/.vim/bundle/neobundle.vim/
 endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
-call neobundle#end()
-
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \   'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
-      \   'cygwin' : 'make -f make_cygwin.mak',
-      \   'mac' : 'make -f make_mac.mak',
-      \   'unix' : 'make -f make_unix.mak',
-      \ }}
-
-NeoBundleLazy 'Shougo/neocomplete', {
-      \ 'depends' : 'Shougo/context_filetype.vim',
-      \ 'autoload' : {
-      \   'insert' : 1,
-      \ }}
-
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#sources#dictionary#dictionaries = {
-      \ 'default' : '',
-      \ 'javascript' : '~/github/vim-node-dict/dict/node.dict'
-      \ }
-if !exists('g:neocomplete#keyword_patterns')
-  let g:neocomplete#keyword_patterns = {}
-endif
-
-NeoBundleLazy 'Shougo/neosnippet', {
-      \ 'autoload' : {
-      \     'insert' : 1,
-      \ }}
-NeoBundleLazy 'Shougo/neosnippet-snippets', {
-      \ 'autoload' : {
-      \     'insert' : 1,
-      \ }}
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    \ "\<Plug>(neosnippet_expand_or_jump)"
-    \ : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-    \ "\<Plug>(neosnippet_expand_or_jump)"
-    \ : "\<TAB>"
-let g:neosnippet#snippets_directory = '~/snippets'
-let g:neosnippet#disable_runtime_snippets = {
-      \ 'javascript' : 1,
-      \ }
-
-NeoBundle 'Shougo/unite.vim', {
-      \ 'autoload': {
-      \   'commands' : [
-      \     'Unite',
-      \     'UniteWithBufferDir',
-      \     'UniteWithCursorWord',
-      \     'UniteWithWithInput',
-      \   ],
-      \ }}
-
-NeoBundle 'Shougo/neomru.vim', {
-      \ 'autoload': {
-      \   'unite_sources': [
-      \     'file_mru', 'directory_mru', 'neomru/file', 'neomru/directory'
-      \   ],
-      \ }}
-let g:unite_enable_start_insert=1
-let g:unite_options_auto_highlight = 1
-let g:unite_source_rec_max_cache_files=20000
-let g:unite_source_rec_min_cache_files=100
-call unite#filters#matcher_default#use(['converter_relative_word', 'matcher_fuzzy'])
-call unite#custom#source(
-      \ 'buffer,file_rec,file_rec/async,file_rec/git', 'matchers',
-      \ ['matcher_default'])
 
 " prefix key
 let g:mapleader = '\'
 let g:maplocalleader = ','
-nnoremap [Unite] <Nop>
-nmap <Space> [Unite]
-imap <C-c> <Plug>(unite_exit)
-nmap <C-c> <Plug>(unite_exit)
 
-function! DispatchUniteFileRec()
-  if isdirectory(getcwd()."/.git")
-    Unite file_rec/git
-  else
-    Unite file_rec/async
+let colorscheme = 'jellybeans'
+
+if dein#tap('neocomplete.vim') && has('lua') "{{{
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#sources#dictionary#dictionaries = {
+        \ 'default' : '',
+        \ }
+  if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
   endif
-endfunction
+endif "}}}
 
-nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
-nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
-nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
-nnoremap <silent> [Unite]p :<C-u>call DispatchUniteFileRec()<CR>
-nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
-let g:unite_source_grep_command = 'ag'
-let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
-let g:unite_source_grep_recursive_opt = ''
-let g:unite_source_grep_max_candidates = 200
+if dein#tap('neosnippet.vim') "{{{
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \ : pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \ : "\<TAB>"
+  let g:neosnippet#snippets_directory = '~/snippets'
+  let g:neosnippet#disable_runtime_snippets = {
+        \ 'javascript' : 1,
+        \ }
+endif "}}}
 
-" " 選択した文字列をunite-grep
-" " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
-vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
+if dein#tap('unite.vim') "{{{
+  let g:unite_enable_start_insert = 1
+  let g:unite_options_auto_highlight = 1
+  let g:unite_source_rec_max_cache_files=20000
+  let g:unite_source_rec_min_cache_files=100
 
-nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
-nnoremap <silent> [Unite]j :<C-u>Unite jump<CR>
+  nnoremap [Unite] <Nop>
+  nmap <Space> [Unite]
+  imap <C-c> <Plug>(unite_exit)
+  nmap <C-c> <Plug>(unite_exit)
 
-NeoBundleLazy 'Shougo/unite-outline', {
-      \ 'autoload': {
-      \   'unite_sources' : [
-      \     'outline',
-      \   ],
-      \ }}
-nnoremap <silent> [Unite]o :<C-u>Unite -winheight=15 outline<CR>
+  function! DispatchUniteFileRec()
+    if isdirectory(getcwd()."/.git")
+      Unite file_rec/git
+    else
+      Unite file_rec/async
+    endif
+  endfunction
 
-NeoBundleLazy 'thinca/vim-unite-history', {
-      \ 'autoload': {
-      \   'unite_sources' : [
-      \     'history/command',
-      \     'history/search',
-      \     'history/yank',
-      \   ],
-      \ }}
-nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
-nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
-nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
+  nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
+  nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+  nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
+  nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
+  nnoremap <silent> [Unite]p :<C-u>call DispatchUniteFileRec()<CR>
+  nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
+  nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
+  let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_grep_max_candidates = 200
 
-NeoBundleLazy 'osyo-manga/unite-quickfix', {
-      \ 'autoload': {
-      \   'unite_sources' : [
-      \     'location_list',
-      \   ],
-      \ }}
-nnoremap <silent> [Unite]q :<C-u>Unite -no-quit -winheight=10 location_list<CR>
+  " 選択した文字列をunite-grep
+  " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
+  vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
-" NeoBundleLazy 'tsukkee/unite-tag', {
-"       \ 'autoload' : {
-"       \   'filetypes' : ['javascript']
-"       \ }}
-" noremap <silent> <C-]> :<C-u>Unite -immediately tag:<C-r>=expand('<cword>')<CR><CR>
+  nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
+  nnoremap <silent> [Unite]j :<C-u>Unite jump<CR>
+  nnoremap <silent> [Unite]o :<C-u>Unite -winheight=15 outline<CR>
+  nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
+  nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
+  nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
+endif "}}}
 
-NeoBundleLazy 'mattn/emmet-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html', 'htm']
-      \ }}
-let g:user_emmet_leader_key='<C-E>'
+if dein#tap('syntastic') "{{{
+  let g:syntastic_enable_signs=1
+  let g:syntastic_auto_loc_list=2
+  let g:syntastic_always_populate_loc_list=1
+  let g:syntastic_css_checkers=['csslint']
+  let g:syntastic_json_checkers=['jsonlint']
+  let g:syntastic_javascript_checkers=['eslint']
+  let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
+  let g:syntastic_go_checkers = ['go', 'golint', 'govet']
+endif "}}}
 
-NeoBundle 'thinca/vim-template'
-
-NeoBundle 'tpope/vim-repeat'
-
-NeoBundle 'tpope/vim-surround'
-
-NeoBundle 'thinca/vim-visualstar'
-
-" NeoBundle 'tpope/vim-fugitive'
-
-NeoBundle 'scrooloose/syntastic'
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=2
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_css_checkers=['csslint']
-let g:syntastic_json_checkers=['jsonlint']
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
-let g:syntastic_go_checkers = ['go', 'golint', 'govet']
-
-NeoBundleLazy 'thinca/vim-quickrun', {
-      \ 'commands' : 'QuickRun',
-      \ 'mappings' : [
-      \   ['nxo', '<Plug>(quickrun)']],
-      \ }
-nmap <Leader>r <Plug>(quickrun)
-let s:hooks = neobundle#get_hooks('vim-quickrun')
-function! s:hooks.on_source(bundle)
+if dein#tap('vim-quickrun') "{{{
+  nmap <Leader>r <Plug>(quickrun)
   let g:quickrun_config = {
         \ '_': {
         \   'runner': 'vimproc',
@@ -202,33 +147,16 @@ function! s:hooks.on_source(bundle)
         \   'command': 'mocha',
         \   'tempfile': '{tempname()}.js'
         \ }}
-endfunction
-unlet s:hooks
+endif "}}}
 
-NeoBundleLazy 'tpope/vim-markdown', {
-      \ 'autoload' : {
-      \   'filetypes' : ['markdown']
-      \ }}
+if dein#tap('eregex.vim') "{{{
+  nnoremap / :M/
+  nnoremap ? :M?
+  nnoremap ,/ /
+  nnoremap ,? ?
+endif "}}}
 
-NeoBundleLazy 'digitaltoad/vim-jade', {
-      \ 'autoload' : {
-      \   'filetypes' : ['jade']
-      \ }}
-
-NeoBundle 'thinca/vim-ft-svn_diff'
-
-NeoBundle 'othree/eregex.vim'
-nnoremap / :M/
-nnoremap ? :M?
-nnoremap ,/ /
-nnoremap ,? ?
-
-NeoBundleLazy 'fatih/vim-go', {
-      \ 'autoload' : {
-      \   'filetypes' : ['go']
-      \ }}
-let s:hooks = neobundle#get_hooks('vim-go')
-function! s:hooks.on_source(bundle)
+if dein#tap('vim-go') "{{{
   let g:go_disable_autoinstall = 0
   let g:go_fmt_autosave = 0
   let g:go_fmt_command = 'goimports'
@@ -252,50 +180,19 @@ function! s:hooks.on_source(bundle)
     au FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
     au FileType go nmap <LocalLeader>gl :GoLint<CR>
   augroup END
-endfunction
-unlet s:hooks
+endif "}}}
 
-NeoBundle 'mopp/autodirmake.vim'
+if dein#tap('javascript-libraries-syntax.vim') "{{{
+  let g:used_javascript_libs = 'underscore,react'
+endif "}}}
 
-NeoBundleLazy 'othree/yajs.vim', {
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript'
-      \ }}
-
-NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {
-      \ 'autoload' : {
-      \    'filetypes' : 'javascript'
-      \ }}
-let g:used_javascript_libs = 'underscore,react'
-
-NeoBundleLazy 'heavenshell/vim-jsdoc', {
-      \ 'autoload' : {
-      \    'filetypes' : 'javascript'
-      \ }}
-let s:hooks = neobundle#get_hooks('vim-jsdoc')
-function! s:hooks.on_source(bundle)
+if dein#tap('vim-jsdoc') "{{{
   let g:jsdoc_default_mapping=0
   nnoremap <silent> <C-J> :JsDoc<CR>
   nnoremap <silent> <C-Q> :JsDoc<CR>
-endfunction
-unlet s:hooks
+endif "}}}
 
-NeoBundleLazy 'kchmck/vim-coffee-script', {
-      \ 'autoload' : {
-      \    'filetypes' : 'coffee'
-      \ }}
-
-NeoBundleLazy 'marijnh/tern_for_vim', {
-      \ 'autoload' : {
-      \   'functions' : ['tern#Complete', 'tern#Enable'],
-      \   'filetypes' : 'javascript'
-      \ },
-      \ 'commands' : ['TernDef', 'TernDoc', 'TernType', 'TernRefs', 'TernRename'],
-      \ 'build': {
-      \   'others': 'npm install'
-      \ }}
-let s:hooks = neobundle#get_hooks('tern_for_vim')
-function! s:hooks.on_source(bundle)
+if dein#tap('tern_for_vim') "{{{
   nnoremap <LocalLeader>tt :TernType<CR>
   nnoremap <LocalLeader>td :TernDef<CR>
   nnoremap <LocalLeader>tpd :TernDefPreview<CR>
@@ -305,64 +202,15 @@ function! s:hooks.on_source(bundle)
   nnoremap <LocalLeader>tR :TernRename<CR>
   nnoremap <LocalLeader>j :TernDef<CR>f'gf
   let g:tern_show_argument_hints='on_hold'
-endfunction
-unlet s:hooks
+endif "}}}
 
-NeoBundle 'moll/vim-node'
+if dein#tap('vim-airline') "{{{
+  let g:airline_powerline_fonts=1
+  set laststatus=2
+  let g:airline_theme=colorscheme
+endif "}}}
 
-NeoBundle 'mxw/vim-jsx'
-
-NeoBundle 'tpope/vim-commentary'
-
-" NeoBundleLazy 'Raimondi/delimitMate', {
-"       \ 'autoload' : {
-"       \     'insert' : 1,
-"       \ }}
-" augroup DelimitMate
-"   autocmd!
-"   autocmd FileType javascript let b:delimitMate_smart_matchpairs = '\v^\%(\w|$)'
-"   autocmd FileType markdown let b:delimitMate_nesting_quotes = ['`']
-" augroup END
-" let delimitMate_expand_space = 1
-" let delimitMate_expand_cr = 1
-
-NeoBundle 'stephpy/vim-yaml'
-
-" NeoBundle 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
-NeoBundle 'nanotech/jellybeans.vim'
-let colorscheme = 'jellybeans'
-
-NeoBundle 'vim-airline/vim-airline'
-let g:airline_powerline_fonts=1
-set laststatus=2
-NeoBundle 'vim-airline/vim-airline-themes'
-let g:airline_theme=colorscheme
-
-NeoBundle 'leafgarland/typescript-vim'
-
-" NeoBundleLazy 'OmniSharp/omnisharp-vim', {
-"       \ 'autoload' : {
-"       \    'filetypes' : [ 'cs', 'csi', 'csx' ]
-"       \ },
-"       \ 'build': {
-"       \   'windows' : 'msbuild server/OmniSharp.sln',
-"       \   'mac': 'xbuild server/OmniSharp.sln',
-"       \   'unix': 'xbuild server/OmniSharp.sln',
-"       \ }}
-" let g:OmniSharp_selector_ui = 'unite'  " Use unite.vim
-
-NeoBundleLazy 'OrangeT/vim-csharp', {
-      \ 'autoload' : {
-      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
-      \ }}
-
-NeoBundleLazy 'tpope/vim-dispatch', {
-      \ 'autoload' : {
-      \    'filetypes' : [ 'cs', 'csi', 'csx' ]
-      \ }}
-
-filetype plugin indent on
-NeoBundleCheck
+" filetype plugin indent on
 
 set nrformats= "<C-A>で8進数の計算をさせない
 set clipboard+=unnamed
@@ -456,10 +304,9 @@ augroup MyAutocmd
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
 ""        \ nnoremap <buffer> <Leader>f :%!eslint --fix --stdin<CR> |
         \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
-  autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
 
   " color
-  syntax on
+  syntax enable
   set t_Co=256
   set background=dark
   execute 'colorscheme' colorscheme

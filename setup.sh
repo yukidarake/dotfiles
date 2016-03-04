@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash 
+set -ux
 
 cd $(dirname $0)
 GITHUB_ROOT=$(cd ../.. && pwd)
@@ -8,8 +9,8 @@ if ! type brew >/dev/null 2>&1; then
   . ./brew.sh
 fi
 
-if [ ! -d ~/.vim/bundle ]; then
-  git clone git://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+if [ ! -d ~/.vim/rc ]; then
+  ln -s ~/src/github.com/yukidarake/dotfiles/.vim/rc/ ~/.vim/rc
 fi
 
 if [ ! -d ~/.tmux/plugins/tpm ]; then
@@ -45,7 +46,7 @@ if type go >/dev/null 2>&1; then
 fi
 
 if type npm >/dev/null 2>&1; then
-  npm i -g node-inspector jshint mocha should nodemon longjohn jsonlint eslint jscs
+  npm i -g node-inspector longjohn jsonlint eslint-cli js-yaml
 fi
 
 # key binding

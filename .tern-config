@@ -1,16 +1,19 @@
 {
   "libs": [
-    "browser",
-    "jquery",
-    "underscore",
-    "ecma6"
+    "ecma5",
+    "ecma6",
+    "underscore"
   ],
   "async": true,
   "plugins": {
     "node": {},
+    "node_resolve": {},
+    "lint": {},
     "modules": {},
-    "requirejs": {},
-    "doc_comment": {},
-    "es_modules": true
+    "es_modules": {},
+    "doc_comment": {
+      "fullDocs": true
+    },
+    "complete_strings":{}
   }
 }

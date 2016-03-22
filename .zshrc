@@ -3,11 +3,11 @@ stty stop undef
 
 export LANG=ja_JP.UTF-8
 export LSCOLORS=gxfxcxdxbxegedabagacad
-export TERM=xterm-color
-export EDITOR="/Applications/MacVim.app/Contents/MacOS/Vim"
-export LESS='-R'
+export TERM=xterm-256color
+export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
 export GREP_OPTIONS='--color=none'
 export GIT_MERGE_AUTOEDIT=no
+export XDG_CONFIG_HOME=~/.config
 
 if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
@@ -17,9 +17,10 @@ fi
 git config --global core.editor "$EDITOR"
 
 # alias
-alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
-# alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
+# alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
+alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
+alias vimdiff='vim -dO'
 alias view='vim -R'
 alias gitdiff='git difftool --tool=vimdiff --no-prompt'
 alias v='vim -'
@@ -42,7 +43,7 @@ alias f='open .'
 alias L='less'
 alias h='history'
 alias H='history 0'
-alias man='vs man'
+alias vman='vs man'
 
 # cd to the path of the front Finder window
 cdf() {

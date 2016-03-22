@@ -1,5 +1,5 @@
 # zmodload zsh/zprof
-
+setopt no_global_rcs
 typeset -U path cdpath fpath manpath
 
 path=(

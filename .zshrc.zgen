@@ -37,7 +37,7 @@ bindkey '^x^s' peco-ssh-host
 # load plugins
 if ! zgen saved; then
   zgen load zsh-users/zsh-completions
-  zgen load hchbaw/auto-fu.zsh . pu
+  zgen load b4b4r07/auto-fu.zsh
   zgen load mollifier/anyframe
   zgen load rupa/z
   zgen load mafredri/zsh-async

@@ -1,7 +1,4 @@
 [[plugins]]
-repo = 'scrooloose/syntastic'
-
-[[plugins]]
 repo = 'Shougo/neopairs.vim'
 on_i = 1
 
@@ -13,6 +10,11 @@ on_path = '.*'
 repo = 'Shougo/neoyank.vim'
 on_path = '.*'
 on_source = 'unite.vim'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = 'context_filetype.vim'
+on_i = 1
 
 [[plugins]]
 repo = 'Shougo/neocomplete.vim'
@@ -48,19 +50,16 @@ repo = 'thinca/vim-unite-history'
 on_source = 'unite.vim'
 
 [[plugins]]
+repo = 'osyo-manga/unite-quickfix'
+on_source = 'unite.vim'
+
+[[plugins]]
 repo = 'thinca/vim-qfreplace'
 on_ft = ['unite', 'quickfix']
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
-on_map = '<Plug>'
-
-[[plugins]]
 repo = 'fatih/vim-go'
 on_ft = 'go'
-
-[[plugins]]
-repo = 'osyo-manga/unite-quickfix'
 
 [[plugins]]
 repo = 'cespare/vim-toml'

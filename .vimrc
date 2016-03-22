@@ -44,18 +44,75 @@ endif
 let g:mapleader = '\'
 let g:maplocalleader = ','
 
+" let colorscheme = 'Tomorrow-Night-Eighties'
 let colorscheme = 'jellybeans'
 
+" if dein#tap('deoplete.nvim') && has('nvim') "{{{
+"   let g:loaded_neocomplete = 1
+"   let g:deoplete#enable_at_startup = 1
+"   set completeopt+=noinsert
+
+"   " <TAB>: completion.
+"   imap <silent><expr> <TAB>
+"         \ pumvisible() ? "\<C-n>" :
+"         \ <SID>check_back_space() ? "\<TAB>" :
+"         \ deoplete#mappings#manual_complete()
+"   function! s:check_back_space() abort "{{{
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1]  =~ '\s'
+"   endfunction"}}}
+
+"   " <S-TAB>: completion back.
+"   inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
+
+"   " <C-h>, <BS>: close popup and delete backword char.
+"   inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
+"   inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+
+"   inoremap <expr><C-g> deoplete#mappings#undo_completion()
+"   " <C-l>: redraw candidates
+"   inoremap <expr><C-l>       deoplete#mappings#refresh()
+
+"   " <CR>: close popup and save indent.
+"   inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"   function! s:my_cr_function() abort
+"     return deoplete#mappings#close_popup() . "\<CR>"
+"   endfunction
+
+"   inoremap <expr> '  pumvisible() ? deoplete#mappings#close_popup() : "'"
+" endif "}}}
+
 if dein#tap('neocomplete.vim') && has('lua') "{{{
+  let g:loaded_deoplete = 1
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_smart_case = 1
   let g:neocomplete#sources#syntax#min_keyword_length = 3
   let g:neocomplete#sources#dictionary#dictionaries = {
         \ 'default' : '',
         \ }
+
   if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
   endif
+
+  if !exists('g:neocomplete#sources#omni#functions')
+    let g:neocomplete#sources#omni#functions = {}
+  endif
+
+  let g:neocomplete#sources#omni#functions.cs = [
+        \ 'OmniSharp#Complete',
+        \ ]
+  " 'tern#Complete',
+  let g:neocomplete#sources#omni#functions.javascript = [
+        \ 'tern#Complete',
+        \ 'javascriptcomplete#CompleteJS',
+        \ ]
+
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+  endif
+
+  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
 endif "}}}
 
 if dein#tap('neosnippet.vim') "{{{
@@ -74,8 +131,14 @@ endif "}}}
 if dein#tap('unite.vim') "{{{
   let g:unite_enable_start_insert = 1
   let g:unite_options_auto_highlight = 1
-  let g:unite_source_rec_max_cache_files=20000
-  let g:unite_source_rec_min_cache_files=100
+  let g:unite_source_rec_async_command = [
+    \ 'ag', '--follow', '--nocolor', '--nogroup',
+    \  '--hidden', '-g', '']
+  " let g:unite_source_rec_find_args = [
+  "   \ '-regex', '".*/\."', '-o', '-path', '"*node_modules',
+  "   \ '-prune', '-o', '-type', 'l', '-print']
+  " let g:unite_source_rec_max_cache_files=20000
+  " let g:unite_source_rec_min_cache_files=100
 
   nnoremap [Unite] <Nop>
   nmap <Space> [Unite]
@@ -115,6 +178,9 @@ if dein#tap('unite.vim') "{{{
 endif "}}}
 
 if dein#tap('syntastic') "{{{
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
   let g:syntastic_enable_signs=1
   let g:syntastic_auto_loc_list=2
   let g:syntastic_always_populate_loc_list=1
@@ -123,6 +189,14 @@ if dein#tap('syntastic') "{{{
   let g:syntastic_javascript_checkers=['eslint']
   let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
   let g:syntastic_go_checkers = ['go', 'golint', 'govet']
+  let g:syntastic_error_symbol = '❗'
+  let g:syntastic_style_error_symbol = '❗'
+  let g:syntastic_warning_symbol = '⚠️'
+  let g:syntastic_style_warning_symbol = '⚠️'
+  highlight link SyntasticErrorSign SignColumn
+  highlight link SyntasticWarningSign SignColumn
+  highlight link SyntasticStyleErrorSign SignColumn
+  highlight link SyntasticStyleWarningSign SignColumn
 endif "}}}
 
 if dein#tap('vim-quickrun') "{{{
@@ -207,7 +281,7 @@ endif "}}}
 if dein#tap('vim-airline') "{{{
   let g:airline_powerline_fonts=1
   set laststatus=2
-  let g:airline_theme=colorscheme
+  let g:airline_theme='jellybeans'
 endif "}}}
 
 " filetype plugin indent on
@@ -264,6 +338,9 @@ if maparg('<C-L>', 'n') ==# ''
 endif
 nnoremap gV :vertical wincmd f<CR>
 nnoremap ga ggVG<CR>
+if has('nvim')
+  nmap <BS> <C-W>h
+endif
 
 "" 検索結果を中心に持ってくる
 nnoremap n nzz
@@ -312,29 +389,11 @@ augroup MyAutocmd
   execute 'colorscheme' colorscheme
   execute 'autocmd GUIEnter * colorscheme' colorscheme
 
-  if !exists('g:neocomplete#sources#omni#functions')
-    let g:neocomplete#sources#omni#functions = {}
-  endif
-
-  let g:neocomplete#sources#omni#functions.cs = [
-        \ 'OmniSharp#Complete',
-        \ ]
-  " 'tern#Complete',
-  let g:neocomplete#sources#omni#functions.javascript = [
-        \ 'tern#Complete',
-        \ 'javascriptcomplete#CompleteJS',
-        \ ]
-
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-
-  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
-
   autocmd User Node
         \ if &filetype == "javascript" |
         \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
         \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
         \ endif
+
 augroup END
 

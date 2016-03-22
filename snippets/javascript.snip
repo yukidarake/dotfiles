@@ -328,8 +328,27 @@ options word
   \`${0}\`
 
 snippet *
+alias generator function
 options word
-  function* (${1}){
+  function *(${1}) {
     ${0}
   }
+
+snippet require promise
+alias bluebird
+alias rp
+options head
+  const Promise = require('bluebird');
+
+snippet return promise
+alias new promise
+options head
+  return new Promise((resolve, reject) => {
+    ${0}
+  });
+
+snippet coroutine
+  Promise.coroutine(function *() {
+    ${0}
+  })();
 

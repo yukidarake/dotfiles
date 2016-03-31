@@ -47,6 +47,7 @@ brew cask install appcleaner
 brew cask install bettertouchtool 
 brew cask install day-o 
 brew cask install google-chrome 
+brew cask install google-drive 
 brew cask install google-japanese-ime 
 brew cask install karabiner 
 brew cask install macvim-kaoriya

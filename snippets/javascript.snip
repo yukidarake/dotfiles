@@ -328,20 +328,18 @@ options word
   \`${0}\`
 
 snippet *
-alias generator function
+alias generator_function
 options word
   function *(${1}) {
     ${0}
   }
 
-snippet require promise
+snippet promise
 alias bluebird
-alias rp
-options head
   const Promise = require('bluebird');
 
-snippet return promise
-alias new promise
+snippet return_promise
+alias new_promise
 options head
   return new Promise((resolve, reject) => {
     ${0}

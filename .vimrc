@@ -13,31 +13,14 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-call dein#begin(s:dein_dir)
-
-" プラグインリストを収めた TOML ファイル
-let s:toml      = '~/.vim/rc/dein.toml'
-let s:lazy_toml = '~/.vim/rc/deinlazy.toml'
-
-" TOML を読み込み、キャッシュしておく
-if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
-  call dein#load_toml(s:toml,      {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
-  call dein#save_cache()
-endif
-
-call dein#end()
-
-filetype plugin indent on
-
-if dein#check_install()
-  call dein#install()
-endif
+set runtimepath+=~/.vim/
+runtime! rc/*.vim
 
 if has('vim_starting') && &encoding !=# 'utf-8'
   set encoding=utf-8
   scriptencoding utf-8
   set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
+  call dein#install()
 endif
 
 " prefix key

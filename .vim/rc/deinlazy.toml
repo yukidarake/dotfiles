@@ -107,3 +107,10 @@ repo = 'chrisbra/vim-diff-enhanced'
 [[plugins]]
 repo = 'tyru/open-browser.vim'
 
+[[plugins]]
+repo = 'Glench/Vim-Jinja2-Syntax'
+on_ft = 'jinja'
+
+[[plugins]]
+repo = 'pearofducks/ansible-vim'
+on_ft = 'yaml'

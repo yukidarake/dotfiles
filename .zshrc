@@ -13,12 +13,9 @@ if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
   . ~/.tmuxinator/scripts/tmuxinator
 fi
 
-# git
-git config --global core.editor "$EDITOR"
-
 # alias
-# alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
-alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
+alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
+# alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
 alias vimdiff='vim -dO'
 alias view='vim -R'
@@ -39,11 +36,34 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias diff='diff --exclude=".svn"'
 alias ag='ag -S --nogroup --nocolor'
-alias f='open .'
-alias L='less'
-alias h='history'
-alias H='history 0'
 alias vman='vs man'
+
+# 補完時に大小文字を区別しない
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select=1
+
+# options
+setopt bash_auto_list
+setopt list_ambiguous
+setopt autopushd
+setopt auto_cd
+
+# history
+# autoload history-search-end
+# zle -N history-beginning-search-backward-end history-search-end
+# zle -N history-beginning-search-forward-end history-search-end
+# bindkey "^P" history-beginning-search-backward-end
+# bindkey "^N" history-beginning-search-forward-end
+# bindkey '^R' history-incremental-pattern-search-backward
+# bindkey '^S' history-incremental-pattern-search-forward
+HISTFILE=~/.zsh_history
+HISTSIZE=16384
+SAVEHIST=16384
+LISTMAX=1000
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt share_history
 
 # cd to the path of the front Finder window
 cdf() {
@@ -56,20 +76,6 @@ cdf() {
 }
 
 # tmux
-() {
-
-vs() {
-  tmux split-window -h "exec $*"
-}
-
-sp() {
-  tmux split-window -v "exec $*"
-}
-
-sssh() {
-  tmux new-window -n $@ "exec ssh $@"
-}
-
 moshx() {
   SSHX_COMMAND=mosh sshx $@
 }
@@ -101,35 +107,6 @@ sshx() {
   fi
 }
 
-} # tmux end
-
-# 補完時に大小文字を区別しない
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' menu select=1
-
-# options
-setopt bash_auto_list
-setopt list_ambiguous
-setopt autopushd
-setopt auto_cd
-
-# history
-# autoload history-search-end
-# zle -N history-beginning-search-backward-end history-search-end
-# zle -N history-beginning-search-forward-end history-search-end
-# bindkey "^P" history-beginning-search-backward-end
-# bindkey "^N" history-beginning-search-forward-end
-# bindkey '^R' history-incremental-pattern-search-backward
-# bindkey '^S' history-incremental-pattern-search-forward
-HISTFILE=~/.zsh_history
-HISTSIZE=16384
-SAVEHIST=16384
-LISTMAX=1000
-setopt hist_ignore_all_dups
-setopt hist_ignore_space
-setopt hist_reduce_blanks
-setopt share_history
-
 zshaddhistory() {
   local line=${1%%$'\n'}
   local cmd=${line%% *}
@@ -140,8 +117,8 @@ zshaddhistory() {
 }
 
 # include
-[ -f ~/.zshrc.zgen ] && . ~/.zshrc.zgen
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
+[ -f ~/.zshrc.zgen ] && . ~/.zshrc.zgen
 
 if (( $+commands[direnv] )); then
   eval "$(direnv hook zsh)"

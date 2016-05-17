@@ -122,7 +122,6 @@ if dein#tap('unite.vim') "{{{
   "   \ '-prune', '-o', '-type', 'l', '-print']
   " let g:unite_source_rec_max_cache_files=20000
   " let g:unite_source_rec_min_cache_files=100
-
   nnoremap [Unite] <Nop>
   nmap <Space> [Unite]
   imap <C-c> <Plug>(unite_exit)
@@ -143,6 +142,7 @@ if dein#tap('unite.vim') "{{{
   nnoremap <silent> [Unite]p :<C-u>call DispatchUniteFileRec()<CR>
   nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
   nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
+  nnoremap <silent> [Unite]q :<C-u>Unite -no-quit location_list -winheight=10<CR>
   let g:unite_source_grep_command = 'ag'
   let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
   let g:unite_source_grep_recursive_opt = ''
@@ -170,12 +170,13 @@ if dein#tap('syntastic') "{{{
   let g:syntastic_css_checkers=['csslint']
   let g:syntastic_json_checkers=['jsonlint']
   let g:syntastic_javascript_checkers=['eslint']
+  let g:syntastic_python_checkers = ['flake8']
   let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
   let g:syntastic_go_checkers = ['go', 'golint', 'govet']
-  let g:syntastic_error_symbol = '❗'
-  let g:syntastic_style_error_symbol = '❗'
-  let g:syntastic_warning_symbol = '⚠️'
-  let g:syntastic_style_warning_symbol = '⚠️'
+  let g:syntastic_error_symbol = '💢'
+  let g:syntastic_style_error_symbol = '💢'
+  let g:syntastic_warning_symbol = '⚠'
+  let g:syntastic_style_warning_symbol = '⚠'
   highlight link SyntasticErrorSign SignColumn
   highlight link SyntasticWarningSign SignColumn
   highlight link SyntasticStyleErrorSign SignColumn
@@ -269,13 +270,14 @@ endif "}}}
 
 " filetype plugin indent on
 
-set nrformats= "<C-A>で8進数の計算をさせない
+set nrformats-=octal "<C-A>で8進数の計算をさせない
 set clipboard+=unnamed
 set noswapfile
 set backupdir=$HOME/.vim/backup
 set incsearch
 set ignorecase smartcase
-set ts=2 sw=2 sts=0 sr et ai
+set ts=2 sw=2 sts=2 sr et ai
+
 set list
 set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
 set history=200
@@ -352,13 +354,15 @@ augroup MyAutocmd
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setlocal filetype=markdown
   autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd BufReadPost,BufNewFile *.coffee setlocal filetype=coffee
-  autocmd filetype crontab setlocal nobackup nowritebackup
+  autocmd Filetype crontab setlocal nobackup nowritebackup
   autocmd FileType coffee setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType html,htm setlocal sw=2 ts=2 sts=2 et iskeyword+=/
-  autocmd FileType css,jade setlocal sw=2 ts=2 sts=2 et iskeyword+=_,#
-  autocmd FileType vim setlocal sw=2 ts=2 sts=2 et
+  autocmd FileType html,htm,yaml,yml setlocal sw=2 ts=2 sts=2 et iskeyword+=/,-
+  autocmd FileType zsh setlocal sw=2 ts=2 sts=2 et iskeyword+=/,-
+  autocmd FileType css,jade setlocal sw=2 ts=2 sts=2 et iskeyword+=_,#,-
+  autocmd FileType vim setlocal sw=2 ts=2 sts=2 et |
+        \ let g:vim_indent_cont = 0
   autocmd FileType go,neosnippet setlocal noet noci nopi
-  autocmd FileType javascript,coffee,vim,zsh,json,yaml,javascript.jsx autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,coffee,vim,zsh,json,javascript.jsx autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd FileType javascript
         \ setlocal sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |

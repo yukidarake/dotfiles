@@ -17,6 +17,7 @@ fi
 alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
 # alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
+alias nv=nvim
 alias vimdiff='vim -dO'
 alias view='vim -R'
 alias gitdiff='git difftool --tool=vimdiff --no-prompt'
@@ -119,10 +120,6 @@ zshaddhistory() {
 # include
 [ -f ~/.zshrc.local ] && . ~/.zshrc.local
 [ -f ~/.zshrc.zgen ] && . ~/.zshrc.zgen
-
-if (( $+commands[direnv] )); then
-  eval "$(direnv hook zsh)"
-fi
 
 if type zprof > /dev/null 2>&1; then
   zprof | less

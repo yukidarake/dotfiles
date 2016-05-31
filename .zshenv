@@ -1,5 +1,8 @@
 # zmodload zsh/zprof
 setopt no_global_rcs
+
+. /etc/zprofile
+
 typeset -U path cdpath fpath manpath
 
 path=(

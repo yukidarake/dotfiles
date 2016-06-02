@@ -12,6 +12,11 @@ if has('vim_starting') && &encoding !=# 'utf-8'
   set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
 endif
 
+if has('vim_starting') && has('nvim')
+  " http://ja.stackoverflow.com/questions/22877/
+  " set rtp+=/usr/local/share/nvim/runtime/
+endif
+
 " prefix key
 let g:mapleader = '\'
 let g:maplocalleader = ','

@@ -1,16 +1,12 @@
 #!/bin/bash 
 set -ux
 
-cd $(dirname $0)
+cd $(dirname "$0")
 GITHUB_ROOT=$(cd ../.. && pwd)
 
 if ! type brew >/dev/null 2>&1; then
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
   . ./brew.sh
-fi
-
-if [ ! -d ~/.vim/rc ]; then
-  ln -s ~/src/github.com/yukidarake/dotfiles/.vim/rc/ ~/.vim/rc
 fi
 
 if [ ! -d ~/.tmux/plugins/tpm ]; then
@@ -24,7 +20,7 @@ REPOS=(
   chriskempson/tomorrow-theme
 )
 for repo in ${REPOS[@]}; do
-  if [ ! -d $GITHUB_ROOT/$repo ]; then
+  if [ ! -d "$GITHUB_ROOT/$repo" ]; then
     git clone https://github.com/${repo}.git $GITHUB_ROOT/$repo
   fi
 done
@@ -34,15 +30,19 @@ for file in ${DOT_FILES[@]}; do
     ln -s $(pwd)/$file ~/$file
 done
 
-ln -s $(pwd)/snippets ~/snippets
+ln -s "$(pwd)/snippets" ~/snippets
 
 if type go >/dev/null 2>&1; then
-  go get -v github.com/motemen/ghq
-  go get -v code.google.com/p/go.tools/cmd/goimports
-  go get -v code.google.com/p/rog-go/exp/cmd/godef
-  go get -v github.com/nsf/gocode 
-  go get -v github.com/tools/godep
-  go get -v github.com/golang/lint/golint
+  go get -u github.com/golang/lint/golint
+  go get -u github.com/k0kubun/pp # or github.com/davecgh/go-spew
+  go get -u github.com/kisielk/errcheck
+  go get -u github.com/motemen/ghq
+  go get -u github.com/motemen/gore
+  go get -u github.com/newhook/go-symbols
+  go get -u github.com/nsf/gocode 
+  go get -u golang.org/x/tools/cmd/goimports
+  go get -u golang.org/x/tools/cmd/vet
+  go get -u sourcegraph.com/sqs/goreturns
 fi
 
 if type npm >/dev/null 2>&1; then
@@ -60,4 +60,7 @@ if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
 _EOT_
 fi
 
-
+# git
+if [ -n "$EDITOR" ]; then
+  git config --global core.editor vim
+fi

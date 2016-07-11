@@ -41,6 +41,10 @@ defaults write com.apple.dock expose-animation-duration -float 0.01
 killall Dock
 ```
 
+## トラックパッド
+### ダブルクリックでドラッグ可能に
+アクセシビリティ→マウス＆トラックパッド→トラックパッドオプション
+
 ## COMMAND + TAB時の切り替えにアプリアイコンが出ないようにする
 ### Info.plistの編集
 下記追記

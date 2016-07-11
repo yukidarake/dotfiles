@@ -1,7 +1,3 @@
-if &compatible
-  set nocompatible
-endif
-
 if has('vim_starting') && &encoding !=# 'utf-8'
   set encoding=utf-8
   scriptencoding utf-8
@@ -13,26 +9,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 Plug 'tpope/vim-fugitive'
-
-" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-" Plug 'junegunn/fzf.vim'
-" let g:fzf_action = {
-"   \ 'ctrl-s': 'split',
-"   \ 'ctrl-v': 'vsplit' }
-" let g:fzf_layout = { 'up': '~20%' }
-" let g:fzf_command_prefix = 'Fzf'
-" nmap <Space> [FZF]
-" nnoremap <silent> [FZF]b :<C-u>FzfBuffer<CR>
-" nnoremap <silent> [FZF]c :<C-u>FzfHistory:<CR>
-" nnoremap <silent> [FZF]g :<C-u>FzfAg<CR>
-" nnoremap <silent> [FZF]h :<C-u>FzfHistory<CR>
-" nnoremap <silent> [FZF]l :<C-u>FzfLines<CR>
-" nnoremap <silent> [FZF]p :<C-u>FzfFiles<CR>
-" nnoremap <silent> [FZF]s :<C-u>FzfHistory/<CR>
-" " nnoremap <silent> [FZF]r :<C-u>Unite -buffer-name=register register<CR>
-" " nnoremap <silent> [FZF]q :<C-u>Unite -no-quit location_list -winheight=10<CR>
-
-" nnoremap <expr> [FZF]q fzf#complete('ls -la ')
 
 Plug 'thinca/vim-template'
 
@@ -116,10 +92,12 @@ if has('nvim')
   let g:deoplete#sources#go#align_class = 1
   let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
   let g:deoplete#sources#go#package_dot = 1
+  if !exists('g:deoplete#sources#omni#functions')
+    let deoplete#sources#omni#functions = {}
+  endif
   let g:deoplete#sources#omni#functions.typescript = [
         \ 'tsuquyomi#complete',
         \ ]
-
 
   Plug 'zchee/deoplete-go', { 'do': 'make', 'for': ['go'] }
 
@@ -157,7 +135,7 @@ else
     let g:neocomplete#sources#omni#input_patterns = {}
   endif
 
-  let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
+  " let g:neocomplete#sources#omni#input_patterns.go = '[^.[:digit:] *\t]\.\w*'
 
   if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
@@ -198,20 +176,20 @@ nmap <C-c> <Plug>(unite_exit)
 
 function! DispatchUniteFileRec()
   if isdirectory(getcwd()."/.git")
-    Unite file_rec/git
+    Unite -ignorecase file_rec/git
   else
-    Unite file_rec/async
+    Unite -ignorecase file_rec/async
   endif
 endfunction
 
-nnoremap <silent> [Unite]b :<C-u>Unite buffer<CR>
+nnoremap <silent> [Unite]b :<C-u>Unite -ignorecase buffer<CR>
 nnoremap <silent> [Unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> [Unite]r :<C-u>Unite -buffer-name=register register<CR>
-nnoremap <silent> [Unite]h :<C-u>Unite file_mru<CR>
+nnoremap <silent> [Unite]r :<C-u>Unite -ignorecase -buffer-name=register register<CR>
+nnoremap <silent> [Unite]h :<C-u>Unite -ignorecase file_mru<CR>
 nnoremap <silent> [Unite]p :<C-u>call DispatchUniteFileRec()<CR>
 nnoremap <silent> [Unite]<Space> :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]g :<C-u>Unite -no-quit -winheight=10 grep:<CR>
-nnoremap <silent> [Unite]q :<C-u>Unite -no-quit location_list -winheight=10<CR>
+nnoremap <silent> [Unite]g :<C-u>Unite -ignorecase -no-quit -winheight=10 grep:<CR>
+nnoremap <silent> [Unite]q :<C-u>Unite -ignorecase -no-quit location_list -winheight=10<CR>
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '-S --nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
@@ -221,12 +199,12 @@ let g:unite_source_grep_max_candidates = 200
 " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
 vnoremap /g y:Unite grep::-i:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
-nnoremap <silent> [Unite]l :<C-u>Unite line<CR>
-nnoremap <silent> [Unite]j :<C-u>Unite jump<CR>
-nnoremap <silent> [Unite]o :<C-u>Unite -winheight=15 outline<CR>
-nnoremap <silent> [Unite]c :<C-u>Unite history/command<CR>
-nnoremap <silent> [Unite]s :<C-u>Unite history/search<CR>
-nnoremap <silent> [Unite]y :<C-u>Unite history/yank<CR>
+nnoremap <silent> [Unite]l :<C-u>Unite -ignorecase line<CR>
+nnoremap <silent> [Unite]j :<C-u>Unite -ignorecase jump<CR>
+nnoremap <silent> [Unite]o :<C-u>Unite -ignorecase -winheight=15 outline<CR>
+nnoremap <silent> [Unite]c :<C-u>Unite -ignorecase history/command<CR>
+nnoremap <silent> [Unite]s :<C-u>Unite -ignorecase history/search<CR>
+nnoremap <silent> [Unite]y :<C-u>Unite -ignorecase history/yank<CR>
 
 Plug 'Shougo/context_filetype.vim'
 
@@ -239,9 +217,9 @@ Plug 'osyo-manga/unite-quickfix'
 Plug 'thinca/vim-qfreplace', { 'for': ['unite', 'quickfix'] }
 
 Plug 'fatih/vim-go', { 'for': ['go'] }
-let g:go_fmt_command = 'goimports'
+" let g:go_fmt_command = 'goimports'
 let g:go_disable_autoinstall = 0
-let g:go_fmt_autosave = 0
+let g:go_fmt_autosave = 1
 let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
 let g:go_play_open_browser = 0
 let g:go_snippet_engine = 'neosnippet'
@@ -249,15 +227,16 @@ let g:go_snippet_engine = 'neosnippet'
 if has('nvim')
   Plug 'neomake/neomake'
   autocmd! BufWritePost * Neomake
-  autocmd! FileType go
-    \ let s:goargs = go#package#ImportPath(expand('%:p:h'))
-    \ let g:neomake_go_errcheck_maker = {
+
+  " \ let s:goargs = go#package#ImportPath(expand('%:p:h')) |
+  let s:goargs = expand('%:p:h:s#\v^.+/src/##')
+  let g:neomake_go_errcheck_maker = {
       \ 'args': ['-abspath', s:goargs],
       \ 'append_file': 0,
       \ 'errorformat': '%f:%l:%c:\ %m, %f:%l:%c\ %#%m',
       \ }
-    \ let g:neomake_go_enabled_makers = ['golint', 'govet', 'errcheck']
-
+  " let g:neomake_go_enabled_makers = ['golint', 'govet', 'errcheck']
+  let g:neomake_go_enabled_makers = ['go', 'golint', 'govet']
   let g:neomake_javascript_enabled_makers = ['eslint']
   let g:neomake_warning_sign = {
     \ 'text': '💩',
@@ -281,9 +260,11 @@ else
   let g:syntastic_python_checkers = ['flake8']
   " For TypeScript
   let g:tsuquyomi_disable_quickfix = 1
-  let g:syntastic_typescript_checkers = ['tsuquyomi'] "
+  let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
   let g:syntastic_html_tidy_ignore_errors=[' proprietary attribute "ng-']
-  let g:syntastic_go_checkers = ['go', 'golint', 'govet']
+  " let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'errcheck']
+  let g:syntastic_go_checkers = ['go', 'golint']
+  " let g:syntastic_go_checkers = ['gometalinter']
   let g:syntastic_error_symbol = '✕'
   let g:syntastic_style_error_symbol = '✕'
   let g:syntastic_warning_symbol = '△'
@@ -296,20 +277,19 @@ endif
 
 
 augroup MyGoAutocmd
-  au!
-  au FileType go nmap <LocalLeader>i <Plug>(go-info)
-  au FileType go nmap <LocalLeader>gd <Plug>(go-doc)
-  au FileType go nmap <LocalLeader>gv <Plug>(go-doc-vertical)
-  au FileType go nmap <LocalLeader>r <Plug>(go-run)
-  au FileType go nmap <LocalLeader>b <Plug>(go-build)
-  au FileType go nmap <LocalLeader>t <Plug>(go-test)
-  au FileType go nmap <LocalLeader>c <Plug>(go-coverage)
-  au FileType go nmap <LocalLeader>gb <Plug>(go-build)
-  au FileType go nmap <LocalLeader>gt <Plug>(go-test)
-  " au FileType go nmap <LocalLeader>d <Plug>(go-def)
-  au FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
-  au FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
-  au FileType go nmap <LocalLeader>gl :GoLint<CR>
+  autocmd!
+  autocmd FileType go nmap <LocalLeader>i <Plug>(go-info)
+  autocmd FileType go nmap <LocalLeader>dc <Plug>(go-doc)
+  autocmd FileType go nmap <LocalLeader>dcv <Plug>(go-doc-vertical)
+  " autocmd FileType go nmap <LocalLeader>r <Plug>(go-run)
+  autocmd FileType go nmap <LocalLeader>b <Plug>(go-build)
+  autocmd FileType go nmap <LocalLeader>t <Plug>(go-test)
+  autocmd FileType go nmap <LocalLeader>c <Plug>(go-coverage)
+  autocmd FileType go nmap <LocalLeader>d <Plug>(go-def)
+  autocmd FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
+  autocmd FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
+  autocmd FileType go nnoremap <LocalLeader>l :GoLint<CR>
+  autocmd FileType go nmap <LocalLeader>f <Plug>(go-imports)
 augroup END
 
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
@@ -345,12 +325,10 @@ Plug 'stephpy/vim-yaml', { 'for': ['yaml'] }
 Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
 
 Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
-" if exists('*TSScompleteFunc') && &omnifunc ==# ''
-"   augroup MyTSAutocmd
-"     au!
-"     au FileType typescript setlocal omnifunc=TSScompleteFunc
-"   augroup END
-" endif
+" augroup MyTSAutocmd
+"   autocmd!
+"   autocmd FileType typescript setlocal omnifunc=TSScompleteFunc
+" augroup END
 
 Plug 'chrisbra/vim-diff-enhanced'
 
@@ -464,7 +442,7 @@ augroup MyAutocmd
   autocmd FileType vim setlocal sw=2 ts=2 sts=2 et |
         \ let g:vim_indent_cont = 0
   autocmd FileType go,neosnippet setlocal noet noci nopi
-  autocmd FileType javascript,coffee,vim,zsh,json,javascript.jsx autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,coffee,vim,zsh,json,javascript,jsx,go autocmd BufWritePre <buffer> :%s/\s\+$//e
 
   autocmd FileType go nnoremap <buffer> <Leader>t :vs %:s#\v\.go$#_test.go#<CR>
   autocmd FileType javascript

@@ -10,6 +10,10 @@ path=(
   $path
 )
 
+fpath+=(
+  /usr/local/opt/docker/share/zsh/site-functions/(N-/)
+)
+
 if (( $+commands[go] )); then
   export GOPATH=$HOME
   path+=(

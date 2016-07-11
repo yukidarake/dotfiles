@@ -14,6 +14,7 @@ if [ -s ~/.tmuxinator/scripts/tmuxinator ]; then
 fi
 
 # alias
+alias g=git
 alias vim="env LANG=ja_JP.UTF-8 $EDITOR"
 # alias vim="env LANG=ja_JP.UTF-8 $EDITOR -u $HOME/.vimrc"
 alias vi=vim
@@ -38,6 +39,7 @@ alias .....='cd ../../../..'
 alias diff='diff --exclude=".svn"'
 alias ag='ag -S --nogroup --nocolor'
 alias vman='vs man'
+alias gometalinter='gometalinter --fast'
 
 # 補完時に大小文字を区別しない
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'

@@ -1,6 +1,8 @@
 # zmodload zsh/zprof
 setopt no_global_rcs
 
+autoload -Uz compinit && compinit
+
 . /etc/zprofile
 
 typeset -U path cdpath fpath manpath

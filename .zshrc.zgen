@@ -40,7 +40,8 @@ if ! zgen saved; then
   zgen load mafredri/zsh-async
   zgen load sindresorhus/pure
   zgen load b4b4r07/emoji-cli
-  zgen load zsh-users/zsh-syntax-highlighting
+  zgen load lukechilds/zsh-better-npm-completion
+  # zgen load zsh-users/zsh-syntax-highlighting
 fi
 
 peco-jump-dir() {
@@ -106,6 +107,8 @@ EOT
     zle -N "$fun"
     bindkey -M afu "$key" "$fun"
 }
+
+autoload -U compinit && compinit
 zstyle ':completion:*' completer _oldlist _complete
 zstyle ':auto-fu:var' postdisplay ''
 bindkey-advice-before "^[" afu+cancel

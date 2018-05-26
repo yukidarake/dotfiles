@@ -240,5 +240,6 @@ augroup MyAutocmd
   set background=dark
   execute 'colorscheme' colorscheme
   execute 'autocmd GUIEnter * colorscheme' colorscheme
+  execute 'highlight Visual cterm=bold ctermbg=Blue ctermfg=NONE'
 augroup END
 

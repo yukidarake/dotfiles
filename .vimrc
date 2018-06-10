@@ -22,8 +22,6 @@ nnoremap <silent> [FZF]l :<C-u>BLines<CR>
 nnoremap <silent> [FZF]f :<C-u>Files %:h<CR>
 nnoremap <silent> [FZF]p :<C-u>Files .<CR>
 nnoremap <silent> [FZF]a :<C-u>Rg<CR>
-Plug 'tpope/vim-fugitive'
-Plug 'thinca/vim-template'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'thinca/vim-visualstar'
@@ -34,6 +32,10 @@ nnoremap ,/ /
 nnoremap ,? ?
 Plug 'mopp/autodirmake.vim'
 Plug 'itchyny/lightline.vim'
+
+Plug 'hashivim/vim-terraform'
+let g:terraform_align=1
+
 if ! has('gui_running')
   set ttimeoutlen=10
   augroup FastEscape
@@ -98,21 +100,8 @@ augroup MyGoAutocmd
 augroup END
 Plug 'w0rp/ale'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
-Plug 'kchmck/vim-coffee-script', { 'for': ['coffee'] }
-Plug 'ternjs/tern_for_vim', { 'do': 'npm i', 'for': ['javascript'] }
-nnoremap <LocalLeader>tt :TernType<CR>
-nnoremap <LocalLeader>td :TernDef<CR>
-nnoremap <LocalLeader>tpd :TernDefPreview<CR>
-nnoremap <LocalLeader>tsd :TernDefSplit<CR>
-nnoremap <LocalLeader>ttd :TernDefTab<CR>
-nnoremap <LocalLeader>tr :TernRefs<CR>:lclose<CR>:Unite -no-quit -winheight=10 location_list<CR>
-nnoremap <LocalLeader>tR :TernRename<CR>
-nnoremap <LocalLeader>j :TernDef<CR>f'gf
-let g:tern_show_argument_hints='on_hold'
 Plug 'mxw/vim-jsx', { 'for': ['javascript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'digitaltoad/vim-jade', { 'for': ['jade'] }
-Plug 'thinca/vim-ft-svn_diff'
 Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript'] }
 let g:jsdoc_default_mapping=0
 nnoremap <silent> <C-J> :JsDoc<CR>
@@ -228,6 +217,7 @@ augroup MyAutocmd
   autocmd FileType javascript,coffee,vim,zsh,json,javascript,jsx,go autocmd BufWritePre <buffer> :%s/\s\+$//e
 
   autocmd FileType go nnoremap <buffer> <Leader>t :vs %:s#\v\.go$#_test.go#<CR>
+  autocmd FileType terraform setlocal commentstring=#%s
   autocmd FileType javascript
         \ setlocal sw=2 ts=2 sts=2 et |
         \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |

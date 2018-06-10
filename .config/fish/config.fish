@@ -1,11 +1,13 @@
 set fish_greeting 
 
-set -x PATH \
-  ~/.nodebrew/current/bin \
-  ~/.pyenv/shims \
-  ~/.rbenv/shims \
-  $GOPATH/bin \
-  $PATH
+if not string match -q '*shims*' -- $PATH
+  set -x PATH \
+    ~/.nodebrew/current/bin \
+    ~/.pyenv/shims \
+    ~/.rbenv/shims \
+    $GOPATH/bin \
+    $PATH
+end
 set -x TERM xterm-256color
 
 set -x EDITOR vim

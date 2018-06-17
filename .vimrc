@@ -35,6 +35,7 @@ Plug 'itchyny/lightline.vim'
 
 Plug 'hashivim/vim-terraform'
 let g:terraform_align=1
+let g:terraform_fmt_on_save = 1
 
 if ! has('gui_running')
   set ttimeoutlen=10
@@ -102,10 +103,6 @@ Plug 'w0rp/ale'
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'mxw/vim-jsx', { 'for': ['javascript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'heavenshell/vim-jsdoc', { 'for': ['javascript'] }
-let g:jsdoc_default_mapping=0
-nnoremap <silent> <C-J> :JsDoc<CR>
-nnoremap <silent> <C-Q> :JsDoc<CR>
 Plug 'stephpy/vim-yaml', { 'for': ['yaml'] }
 Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
 Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }

@@ -9,7 +9,6 @@ if not string match -q '*shims*' -- $PATH
     $PATH
 end
 set -x TERM xterm-256color
-
 set -x EDITOR vim
 set -x FZF_TMUX 0
 set -x GOPATH $HOME
@@ -24,3 +23,4 @@ alias ..... 'cd ../../../..'
 alias cp 'cp -i'
 alias rm 'rm -i'
 alias mv 'mv -i'
+alias l ll

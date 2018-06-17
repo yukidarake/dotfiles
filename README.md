@@ -53,3 +53,18 @@ killall Dock
   <key>NSUIElement</key>
   <string>1</string>
 ```
+
+### iTerm2
+
+#### フルスクリーン時同じSpaceに表示させる
+
+Preferences -> General
+Native full screen windows を off
+
+#### どのSpaceにいてもかぶせる?
+
+Preferences -> Profiles -> Window
+Setting for New Windows -> Style -> Fullscreen
+Setting for New Windows -> Screen -> Screen with Cursor
+Setting for New Windows -> Space -> All Spaces
+

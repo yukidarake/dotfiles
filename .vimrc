@@ -17,7 +17,7 @@ command! -bang -nargs=* Rg
 nnoremap [FZF] <Nop>
 nmap <Space> [FZF]
 nnoremap <silent> [FZF]b :<C-u>Buffers<CR>
-nnoremap <silent> [FZF]h :<C-u>History<CR>
+nnoremap <silent> [FZF]r :<C-u>History<CR>
 nnoremap <silent> [FZF]l :<C-u>BLines<CR>
 nnoremap <silent> [FZF]f :<C-u>Files %:h<CR>
 nnoremap <silent> [FZF]p :<C-u>Files .<CR>
@@ -135,7 +135,7 @@ set ts=2 sw=2 sts=2 sr et ai
 
 set list
 set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
-set history=200
+set history=1000
 set number
 set backspace=indent,eol,start
 set ruler

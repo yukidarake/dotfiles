@@ -4,14 +4,12 @@ if not string match -q '*shims*' -- $PATH
   set -x PATH \
     ~/.nodebrew/current/bin \
     ~/.pyenv/shims \
-    ~/.rbenv/shims \
     $GOPATH/bin \
     $PATH
 end
 set -x TERM xterm-256color
 set -x EDITOR vim
 set -x FZF_TMUX 0
-set -x GOPATH $HOME
 set -x Z_CMD "j"
 set -x Z_DATA "$HOME/.z/.z"
 

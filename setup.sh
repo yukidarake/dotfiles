@@ -1,53 +1,59 @@
 #!/bin/bash 
-set -ux
+set -eux
 
-cd $(dirname "$0")
-GITHUB_ROOT=$(cd ../.. && pwd)
+cd "$(dirname "$0")"
 
 if ! type brew >/dev/null 2>&1; then
   ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
-  . ./brew.sh
+  brew bundle
+fi
+
+if [ ! -f ~/.vim/autoload/plug.vim ]; then
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+DIRS=(
+  "$HOME/.vim/backup "
+  "$HOME/.vim/undo "
+  "$HOME/.z"
+)
+for dir in "${DIRS[@]}"; do
+  if [ ! -d "$dir" ]; then
+    mkdir "$dir"
+  fi
+done
+
+if [ ! -d ~/.nodebrew ]; then
+  nodebrew setup_dirs
 fi
 
 if [ ! -d ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-REPOS=(
-  # zsh-users/antigen
-  tarjoilija/zgen
-  Lokaltog/powerline-fonts
-  chriskempson/tomorrow-theme
+DOT_FILES=(
+  .vimrc
+  .gvimrc
+  .ideavimrc
+  .tmux.conf
+  .terraformrc
 )
-for repo in ${REPOS[@]}; do
-  if [ ! -d "$GITHUB_ROOT/$repo" ]; then
-    git clone https://github.com/${repo}.git $GITHUB_ROOT/$repo
+for file in "${DOT_FILES[@]}"; do
+  if [ ! -h "$HOME/$file" ]; then
+    ln -s "$(pwd)/$file" "$HOME/$file"
   fi
 done
 
-DOT_FILES=(".zsh* .screenrc .vimrc .jshintrc .gvimrc .tmux.conf. .tern-config")
-for file in ${DOT_FILES[@]}; do
-    ln -s $(pwd)/$file ~/$file
+FISH_FILES=(
+  config.fish
+  fishfile
+)
+for file in "${FISH_FILES[@]}"; do
+  if [ ! -h "$HOME/.config/fish/$file" ]; then
+    ln -s "$(pwd)/.config/fish/$file" "$HOME/.config/fish/$file"
+  fi
 done
-
-ln -s "$(pwd)/snippets" ~/snippets
-
-if type go >/dev/null 2>&1; then
-  go get -u github.com/golang/lint/golint
-  go get -u github.com/k0kubun/pp # or github.com/davecgh/go-spew
-  go get -u github.com/kisielk/errcheck
-  go get -u github.com/motemen/ghq
-  go get -u github.com/motemen/gore
-  go get -u github.com/newhook/go-symbols
-  go get -u github.com/nsf/gocode 
-  go get -u golang.org/x/tools/cmd/goimports
-  go get -u golang.org/x/tools/cmd/vet
-  go get -u sourcegraph.com/sqs/goreturns
-fi
-
-if type npm >/dev/null 2>&1; then
-  npm i -g node-inspector longjohn jsonlint eslint-cli js-yaml
-fi
 
 # key binding
 if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
@@ -61,6 +67,4 @@ _EOT_
 fi
 
 # git
-if [ -n "$EDITOR" ]; then
-  git config --global core.editor vim
-fi
+git config --global core.editor vim

@@ -1,0 +1,5 @@
+set clipboard+=unnamed
+" JIS 配列 C-[ で Esc
+inoremap <C-]> <Esc>
+inoremap ¥ \
+inoremap \ ¥

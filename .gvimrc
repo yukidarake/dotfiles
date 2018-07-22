@@ -1,7 +1,7 @@
 if has('gui_macvim')
   set showtabline=2
   set antialias
-  set guifont=Droid\ Sans\ Mono\ for\ Powerline:h13
+  set guifont=Hack:h13
   set guioptions+=a
   set guioptions-=T
   set guioptions-=r

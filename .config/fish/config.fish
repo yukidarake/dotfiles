@@ -22,3 +22,5 @@ alias cp 'cp -i'
 alias rm 'rm -i'
 alias mv 'mv -i'
 alias l ll
+alias vi vim
+

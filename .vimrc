@@ -22,6 +22,7 @@ nnoremap <silent> [FZF]l :<C-u>BLines<CR>
 nnoremap <silent> [FZF]f :<C-u>Files %:h<CR>
 nnoremap <silent> [FZF]p :<C-u>Files .<CR>
 nnoremap <silent> [FZF]a :<C-u>Rg<CR>
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'thinca/vim-visualstar'
@@ -47,13 +48,7 @@ if ! has('gui_running')
 endif
 Plug 'othree/yajs.vim', { 'for': ['javascript'] }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript'] }
-let g:used_javascript_libs = 'underscore,react'
-Plug 'moll/vim-node', { 'for': ['javascript'] }
-autocmd User Node
-      \ if &filetype == "javascript" |
-      \   nnoremap <buffer> <C-w>f <Plug>NodeVSplitGotoFile |
-      \   nnoremap <buffer> <C-w><C-f> <Plug>NodeVSplitGotoFile |
-      \ endif
+let g:used_javascript_libs = 'react'
 Plug 'tpope/vim-commentary'
 Plug 'thinca/vim-quickrun'
 nmap <Leader>r <Plug>(quickrun)

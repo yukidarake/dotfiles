@@ -4,7 +4,7 @@ if not string match -q '*shims*' -- $PATH
   set -x PATH \
     ~/.nodebrew/current/bin \
     ~/.pyenv/shims \
-    $GOPATH/bin \
+    ~/go/bin \
     $PATH
 end
 set -x TERM xterm-256color

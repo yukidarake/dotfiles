@@ -95,6 +95,17 @@ augroup MyGoAutocmd
   autocmd FileType go nmap <LocalLeader>f <Plug>(go-imports)
 augroup END
 Plug 'w0rp/ale'
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
+
+" ファイル保存時に実行
+let g:ale_fix_on_save = 1
+
+" ローカルの設定ファイルを考慮する
+let g:ale_javascript_prettier_use_local_config = 1
+
 Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'mxw/vim-jsx', { 'for': ['javascript'] }
 Plug 'tpope/vim-markdown', { 'for': ['markdown'] }

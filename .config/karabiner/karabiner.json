@@ -8,40 +8,43 @@
         {
             "complex_modifications": {
                 "parameters": {
-                    "basic.simultaneous_threshold_milliseconds": 50,
-                    "basic.to_delayed_action_delay_milliseconds": 500,
-                    "basic.to_if_alone_timeout_milliseconds": 1000,
-                    "basic.to_if_held_down_threshold_milliseconds": 500
+                    "basic.simultaneous_threshold_milliseconds": 6,
+                    "basic.to_delayed_action_delay_milliseconds": 15,
+                    "basic.to_if_alone_timeout_milliseconds": 40,
+                    "basic.to_if_held_down_threshold_milliseconds": 15,
+                    "mouse_motion_to_scroll.speed": 80
                 },
                 "rules": [
                     {
-                        "description": "TerminalまたはMacVimでESCあるいは^[を押したときに日本語入力を英数に切り替える。",
+                        "description": "Ctrl+[を押したときに、英数キーも送信する（vim用） (rev 2)",
                         "manipulators": [
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": [
-                                            "^com\\.apple\\.Terminal$",
-                                            "^org\\.vim\\.",
-                                            "^com.googlecode.iterm2$"
+                                        "keyboard_types": [
+                                            "ansi",
+                                            "iso"
                                         ],
-                                        "type": "frontmost_application_if"
+                                        "type": "keyboard_type_if"
                                     }
                                 ],
                                 "from": {
-                                    "key_code": "escape",
+                                    "key_code": "open_bracket",
                                     "modifiers": {
-                                        "optional": [
-                                            "any"
+                                        "mandatory": [
+                                            "control"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "lang2"
+                                        "key_code": "open_bracket",
+                                        "modifiers": [
+                                            "control"
+                                        ]
                                     },
                                     {
-                                        "key_code": "escape"
+                                        "key_code": "japanese_eisuu"
                                     }
                                 ],
                                 "type": "basic"
@@ -49,28 +52,88 @@
                             {
                                 "conditions": [
                                     {
-                                        "bundle_identifiers": [
-                                            "^com\\.apple\\.Terminal$",
-                                            "^org\\.vim\\.",
-                                            "^com.googlecode.iterm2"
+                                        "keyboard_types": [
+                                            "jis"
                                         ],
-                                        "type": "frontmost_application_if"
+                                        "type": "keyboard_type_if"
                                     }
                                 ],
                                 "from": {
                                     "key_code": "close_bracket",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_control"
+                                            "control"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "lang2"
+                                        "key_code": "close_bracket",
+                                        "modifiers": [
+                                            "control"
+                                        ]
                                     },
                                     {
+                                        "key_code": "japanese_eisuu"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "escキーを押したときに、英数キーも送信する（vim用）",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "escape"
+                                },
+                                "to": [
+                                    {
                                         "key_code": "escape"
+                                    },
+                                    {
+                                        "key_code": "japanese_eisuu"
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change ¥ to Alt+¥",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "international3"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "international3",
+                                        "modifiers": [
+                                            "option"
+                                        ]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Change Alt+¥ to ¥",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "international3",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "international3"
                                     }
                                 ],
                                 "type": "basic"
@@ -179,10 +242,14 @@
                 }
             ],
             "name": "Default profile",
+            "parameters": {
+                "delay_milliseconds_before_open_device": 1000
+            },
             "selected": true,
             "simple_modifications": [],
             "virtual_hid_keyboard": {
-                "country_code": 45
+                "country_code": 45,
+                "mouse_key_xy_scale": 100
             }
         }
     ]

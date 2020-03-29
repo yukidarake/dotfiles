@@ -1,130 +1,131 @@
-if has('vim_starting') && &encoding !=# 'utf-8'
-  set encoding=utf-8
-  scriptencoding utf-8
-  set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
-endif
+set nocompatible
+set enc=utf-8
+set fencs=ucs-bom,utf-8,iso-2022-jp,euc-jp,cp932,utf-16le,utf-16,default,latin1
+set fileformats=unix,dos,mac
+set shell=/bin/bash
 
-call plug#begin('~/.vim/plugged')
+call plug#begin()
+let g:plug_threads = 6
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+nnoremap [FZF] <Nop>
+nmap <Space> [FZF]
+nnoremap [FZF]b :Buffers<CR>
+nnoremap [FZF]x :Commands<CR>
+nnoremap [FZF]f :Files %:h<CR>
+nnoremap [FZF]e :Files .<CR>
+nnoremap [FZF]p :GitFiles .<CR>
+nnoremap [FZF]k :bd<CR>
+nnoremap [FZF]l :BLines<CR>
+nnoremap [FZF]r :History<CR>
+nnoremap [FZF]<Space> :Buffers<CR>
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
   \   <bang>0 ? fzf#vim#with_preview('up:60%')
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
-nnoremap [FZF] <Nop>
-nmap <Space> [FZF]
-nnoremap <silent> [FZF]b :<C-u>Buffers<CR>
-nnoremap <silent> [FZF]r :<C-u>History<CR>
-nnoremap <silent> [FZF]l :<C-u>BLines<CR>
-nnoremap <silent> [FZF]f :<C-u>Files %:h<CR>
-nnoremap <silent> [FZF]p :<C-u>Files .<CR>
-nnoremap <silent> [FZF]a :<C-u>Rg<CR>
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+nnoremap [FZF]a :Rg<CR>
+
+Plug 'StanAngeloff/php.vim'
+Plug 'jwalton512/vim-blade'
+
+" vim-lsp
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
+Plug 'stephpy/vim-php-cs-fixer'
+" If php-cs-fixer is in $PATH, you don't need to define line below
+" let g:php_cs_fixer_path = "~/php-cs-fixer.phar" " define the path to the php-cs-fixer.phar
+  set t_Co=256
+let g:php_cs_fixer_rules = "@PSR2"          " options: --rules (default:@PSR2)
+"let g:php_cs_fixer_cache = ".php_cs.cache" " options: --cache-file
+"let g:php_cs_fixer_config_file = '.php_cs' " options: --config
+let g:php_cs_fixer_php_path = "php"               " Path to PHP
+" let g:php_cs_fixer_enable_default_mapping = 1     " Enable the mapping by default (<leader>pcd)
+let g:php_cs_fixer_dry_run = 0                    " Call command with dry-run option
+let g:php_cs_fixer_verbose = 0                    " Return the output of command if 1, else an inline information.
+
+augroup PhpAutocmd
+  autocmd!
+  autocmd FileType php
+  \ setlocal sw=4 ts=4 sts=4 et |
+  \ nnoremap <silent><leader>df :call PhpCsFixerFixDirectory()<CR> |
+  \ nnoremap <silent><leader>f :call PhpCsFixerFixFile()<CR>
+augroup END
+
+" function! BuildYCM(info)
+"   if a:info.status == 'installed' || a:info.force
+"     !./install.py --clang-completer --gocode-completer
+"   endif
+" endfunction
+" Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp'], 'do': function('BuildYCM') }
+Plug 'tell-k/vim-autopep8'
+let g:autopep8_disable_show_diff=1
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'thinca/vim-visualstar'
+Plug 'thinca/vim-quickrun'
+
 Plug 'othree/eregex.vim'
-nnoremap / :M/
-nnoremap ? :M?
+nnoremap / :m/
+nnoremap ? :m?
 nnoremap ,/ /
 nnoremap ,? ?
-Plug 'mopp/autodirmake.vim'
-Plug 'itchyny/lightline.vim'
 
-Plug 'hashivim/vim-terraform'
-let g:terraform_align=1
-let g:terraform_fmt_on_save = 1
-
-if ! has('gui_running')
-  set ttimeoutlen=10
-  augroup FastEscape
-    autocmd!
-    au InsertEnter * set timeoutlen=0
-    au InsertLeave * set timeoutlen=1000
-  augroup END
-endif
-Plug 'othree/yajs.vim', { 'for': ['javascript'] }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': ['javascript'] }
-let g:used_javascript_libs = 'react'
-Plug 'tpope/vim-commentary'
-Plug 'thinca/vim-quickrun'
-nmap <Leader>r <Plug>(quickrun)
-let g:quickrun_config = {
-      \ '_': {
-      \   'runner': 'vimproc',
-      \   'runner/vimproc/updatetime': 10,
-      \ },
-      \ 'go': {
-      \   'command': 'go',
-      \   'exec': ['%c run %s'],
-      \ },
-      \ 'markdown': {
-      \   'outputter': 'browser'
-      \ },
-      \ 'javascript': {
-      \   'command': 'node',
-      \   'tempfile': '{tempname()}.js'
-      \ },
-      \ 'javascript/mocha': {
-      \   'command': 'mocha',
-      \   'tempfile': '{tempname()}.js'
-      \ }}
-Plug 'fatih/vim-go', { 'for': ['go'] }
-" let g:go_fmt_command = 'goimports'
-let g:go_disable_autoinstall = 0
-let g:go_fmt_autosave = 1
-let g:go_fmt_fail_silently = 1 " use syntasitic to check errors
-let g:go_play_open_browser = 0
-let g:go_snippet_engine = 'neosnippet'
-augroup MyGoAutocmd
-  autocmd!
-  autocmd FileType go nmap <LocalLeader>i <Plug>(go-info)
-  autocmd FileType go nmap <LocalLeader>dc <Plug>(go-doc)
-  autocmd FileType go nmap <LocalLeader>dcv <Plug>(go-doc-vertical)
-  " autocmd FileType go nmap <LocalLeader>r <Plug>(go-run)
-  autocmd FileType go nmap <LocalLeader>b <Plug>(go-build)
-  autocmd FileType go nmap <LocalLeader>t <Plug>(go-test)
-  autocmd FileType go nmap <LocalLeader>c <Plug>(go-coverage)
-  autocmd FileType go nmap <LocalLeader>d <Plug>(go-def)
-  autocmd FileType go nmap <LocalLeader>ds <Plug>(go-def-split)
-  autocmd FileType go nmap <LocalLeader>dv <Plug>(go-def-vertical)
-  autocmd FileType go nnoremap <LocalLeader>l :GoLint<CR>
-  autocmd FileType go nmap <LocalLeader>f <Plug>(go-imports)
-augroup END
-Plug 'w0rp/ale'
-let g:ale_fixers = {
-\   'typescript': ['prettier'],
-\   'javascript': ['prettier'],
-\   'css': ['prettier'],
-\}
-
-" ファイル保存時に実行
-let g:ale_fix_on_save = 1
-
-" ローカルの設定ファイルを考慮する
-let g:ale_javascript_prettier_use_local_config = 1
-
-Plug 'cespare/vim-toml', { 'for': ['toml'] }
-Plug 'mxw/vim-jsx', { 'for': ['javascript'] }
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
-Plug 'stephpy/vim-yaml', { 'for': ['yaml'] }
-Plug 'leafgarland/typescript-vim', { 'for': ['typescript'] }
-Plug 'Quramy/tsuquyomi', { 'for': ['typescript'] }
-" augroup MyTSAutocmd
-"   autocmd!
-"   autocmd FileType typescript setlocal omnifunc=TSScompleteFunc
-" augroup END
-Plug 'chrisbra/vim-diff-enhanced'
-Plug 'tyru/open-browser.vim'
-Plug 'Glench/Vim-Jinja2-Syntax', { 'for': ['jinja'] }
-Plug 'pearofducks/ansible-vim', { 'for': ['yaml'] }
 Plug 'editorconfig/editorconfig-vim'
-
 Plug 'jacoborus/tender.vim'
+let macvim_skip_colorscheme=1
+Plug 'mopp/autodirmake.vim'
+Plug 'othree/yajs.vim', { 'for': ['javascript'] } " es6のハイライト
+Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }  " stage-0 のsyntax highlight
+Plug 'tpope/vim-commentary'
+" plug 'cespare/vim-toml', { 'for': ['toml'] }
+Plug 'stephpy/vim-yaml', { 'for': ['yaml'] }
+Plug 'chrisbra/vim-diff-enhanced'
+" plug 'pearofducks/ansible-vim', { 'for': ['yaml'] }
+Plug 'Vimjas/vim-python-pep8-indent', { 'for': ['py'] }
+Plug 'w0rp/ale'
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'typescript': ['eslint'],
+\   'python': ['flake8'],
+\   'dockerfile': ['hadolint'],
+\}
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'typescript': ['prettier'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_typescript_prettier_use_local_config = 1
+
+Plug 'dag/vim-fish'
+
 let colorscheme = 'tender'
+
+Plug 'itchyny/lightline.vim'
+set laststatus=2
+let g:lightline = { 'colorscheme': colorscheme }
+
+augroup JsAutocmd
+  autocmd!
+  autocmd FileType javascript
+  \ setlocal sw=2 ts=2 sts=2 et |
+  \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
+  \ nmap <Leader>f <Plug>(Prettier) |
+  \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
+augroup END
+
+augroup PythonAutocmd
+  autocmd!
+  autocmd FileType python
+  \ nnoremap <buffer> <Leader>f :Autopep8<CR>
+augroup END
 
 call plug#end()
 
@@ -132,17 +133,14 @@ call plug#end()
 let g:mapleader = '\'
 let g:maplocalleader = ','
 
-set nrformats-=octal "<C-A>で8進数の計算をさせない
+set nrformats-=octal
 set clipboard+=unnamed
 set noswapfile
-set backupdir=$HOME/.vim/backup
 set incsearch
 set ignorecase smartcase
 set ts=2 sw=2 sts=2 sr et ai
-
-set list
-set listchars=tab:»-,trail:»,eol:↲,extends:»,precedes:«,nbsp:%
-set history=1000
+set nolist
+set history=10000
 set number
 set backspace=indent,eol,start
 set ruler
@@ -150,9 +148,9 @@ set showmatch
 set showmode
 set virtualedit+=block " http://vim-users.jp/2010/02/hack125/
 set title
-set wildmenu " コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
-set wildmode=list:longest " コマンドライン補間をシェルっぽく
-set cursorline " カーソル行表示
+set wildmenu
+set wildmode=list:longest
+set cursorline
 set hidden
 set fdm=manual
 set nofoldenable
@@ -161,35 +159,22 @@ set tw=0
 set completeopt-=preview
 set hlsearch
 " set timeout timeoutlen=500 ttimeoutlen=50
-
-" undo
+set backupdir=~/.vim/backup
 set undodir=~/.vim/undo
 set undofile
 set undolevels=1000
 set undoreload=4000
 
-" 独自のキーバインディング
-
-"" .vimrc編集
 nnoremap <C-S> :suspend<CR>
 nnoremap <silent> <Leader>v :<C-u>vs ~/.vimrc<CR>
 nnoremap <silent> <Leader>s :so ~/.vimrc<CR>:echo 'source ~/.vimrc'<CR>
-nnoremap <silent> <LEFT>  :bn<CR>
-nnoremap <silent> <RIGHT> :bp<CR>
-nnoremap <silent> <C-N>  :bn<CR>
-nnoremap <silent> <C-P> :bp<CR>
 nnoremap <silent> <Leader>e :Errors<CR>
 " Use <C-L> to clear the highlighting of :set hlsearch.
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 nnoremap gV :vertical wincmd f<CR>
-nnoremap ga ggVG<CR>
-if has('nvim')
-  nmap <BS> <C-W>h
-endif
 
-"" 検索結果を中心に持ってくる
 nnoremap n nzz
 nnoremap N Nzz
 nnoremap * *zz
@@ -197,43 +182,39 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
-set imdisable
-
 augroup MyAutocmd
   autocmd!
-
   autocmd BufReadPost,BufNewFile *.json,.jshintrc,.eslintrc setlocal filetype=json
-  autocmd BufReadPost,BufNewFile .eslintrc setlocal filetype=yaml
+  autocmd BufReadPost,BufNewFile Supfile,.eslintrc,*.dig setlocal filetype=yaml
+  autocmd BufReadPost,BufNewFile Dockerfile.* setlocal filetype=dockerfile
+  autocmd BufReadPost,BufNewFile .inc setlocal filetype=php
   autocmd BufReadPost,BufNewFile *.jade setlocal filetype=jade
-  autocmd BufReadPost,BufNewFile *.js setlocal filetype=javascript
+  autocmd BufReadPost,BufNewFile *.{js,mjs} setlocal filetype=javascript
   autocmd BufReadPost,BufNewFile *.{md,mdwn,mkd,mkdn,mark*} setlocal filetype=markdown
   autocmd BufReadPost,BufNewFile hosts,hosts.????* autocmd BufWritePre <buffer> :%s/\s\+$//e
   autocmd BufReadPost,BufNewFile *.coffee setlocal filetype=coffee
+  autocmd BufReadPost,BufNewFile *.blade.php setlocal filetype=blade
+  autocmd BufReadPost,BufNewFile *.gradle setlocal filetype=groovy
   autocmd Filetype crontab setlocal nobackup nowritebackup
   autocmd FileType coffee setlocal sw=2 sts=2 ts=2 et
   autocmd FileType php setlocal sw=4 sts=4 ts=4 et
-  autocmd FileType html,htm,yaml,yml setlocal sw=2 ts=2 sts=2 et iskeyword+=/,-
+  autocmd FileType html,htm,yaml,yml,blade setlocal sw=2 ts=2 sts=2 et iskeyword+=/,-
   autocmd FileType zsh setlocal sw=2 ts=2 sts=2 et iskeyword+=/,-
   autocmd FileType css,jade setlocal sw=2 ts=2 sts=2 et iskeyword+=_,#,-
   autocmd FileType vim setlocal sw=2 ts=2 sts=2 et |
-        \ let g:vim_indent_cont = 0
+  autocmd FileType make setlocal sw=4 ts=4 sts=4  ts=4 noet |
+  \ let g:vim_indent_cont = 0
   autocmd FileType go,neosnippet setlocal noet noci nopi
-  autocmd FileType javascript,coffee,vim,zsh,json,javascript,jsx,go autocmd BufWritePre <buffer> :%s/\s\+$//e
+  autocmd FileType javascript,vim,json,javascript,jsx,go autocmd BufWritePre <buffer> :%s/\s\+$//e
 
   autocmd FileType go nnoremap <buffer> <Leader>t :vs %:s#\v\.go$#_test.go#<CR>
-  autocmd FileType terraform setlocal commentstring=#%s
-  autocmd FileType javascript
-        \ setlocal sw=2 ts=2 sts=2 et |
-        \ nnoremap <buffer> <Leader>t :vs %:s#\v^[^/]+#test#<CR> |
-""        \ nnoremap <buffer> <Leader>f :%!eslint --fix --stdin<CR> |
-        \ nnoremap <Leader>m :QuickRun javascript/mocha<CR>
 
   " color
   syntax enable
-  set t_Co=256
+
   set background=dark
+
   execute 'colorscheme' colorscheme
   execute 'autocmd GUIEnter * colorscheme' colorscheme
   execute 'highlight Visual cterm=bold ctermbg=Blue ctermfg=NONE guifg=NONE guibg=SkyBlue1'
 augroup END
-

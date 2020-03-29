@@ -6,7 +6,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -96,6 +96,7 @@ augroup MyGoAutocmd
 augroup END
 Plug 'w0rp/ale'
 let g:ale_fixers = {
+\   'typescript': ['prettier'],
 \   'javascript': ['prettier'],
 \   'css': ['prettier'],
 \}

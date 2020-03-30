@@ -7,7 +7,7 @@ if not string match -q '*go/bin*' -- $PATH
 end
 set -x TERM xterm-256color
 set -x PIPENV_VENV_IN_PROJECT true
-
+set -x LANG ja_JP.UTF-8
 set -x EDITOR vim
 set -x FZF_TMUX 0
 set -x Z_CMD "j"
@@ -23,6 +23,12 @@ alias cp 'cp -i'
 alias rm 'rm -i'
 alias mv 'mv -i'
 alias vi 'vim'
+
+if not functions -q fisher
+    set -q XDG_CONFIG_HOME; or set XDG_CONFIG_HOME ~/.config
+    curl https://git.io/fisher --create-dirs -sLo $XDG_CONFIG_HOME/fish/functions/fisher.fish
+    fish -c fisher
+end
 
 function pfd -d "Return the path of the frontmost Finder window"
   osascript 2>/dev/null -e '

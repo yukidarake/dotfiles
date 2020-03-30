@@ -1,3 +1,5 @@
+window:
+  startup_mode: SimpleFullscreen
 font:
   size: 13.0
   normal:
@@ -44,5 +46,6 @@ key_bindings:
   - { key: Minus,        mods: Command|Shift,     action: DecreaseFontSize               }
   - { key: 36,           mods: Command,           action: ToggleSimpleFullscreen         }
   - { key: Comma,        mods: Command,           command: { program: "open", args: ["~/.config/alacritty/alacritty.yml"]} }
+
 # debug:
 #   print_events: true

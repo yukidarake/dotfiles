@@ -41,6 +41,7 @@ key_bindings:
   - { key: F,            mods: Command,           chars: "\x1bf"                         }
   - { key: B,            mods: Command,           chars: "\x1bb"                         }
   - { key: D,            mods: Command,           chars: "\x1bd"                         }
+  - { key: "LBracket",   mods: Control,           chars: "\x1b"                          }
   - { key: Key0,         mods: Command,           action: ResetFontSize                  }
   - { key: Semicolon,    mods: Command|Shift,     action: IncreaseFontSize               }
   - { key: Minus,        mods: Command|Shift,     action: DecreaseFontSize               }

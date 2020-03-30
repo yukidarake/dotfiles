@@ -4,7 +4,7 @@ set -eux
 cd "$(dirname "$0")"
 
 if ! type brew >/dev/null 2>&1; then
-  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
   brew bundle
 fi
 
@@ -24,10 +24,6 @@ for dir in "${DIRS[@]}"; do
   fi
 done
 
-if [ ! -d ~/.nodebrew ]; then
-  nodebrew setup_dirs
-fi
-
 if [ ! -d ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
@@ -45,15 +41,21 @@ for file in "${DOT_FILES[@]}"; do
   fi
 done
 
-FISH_FILES=(
-  config.fish
-  fishfile
+CONFIG_FILES=(
+  fish/config.fish
+  fish/fishfile
+  karabiner/karabiner.json
+  alacritty/alacritty.yml
 )
-for file in "${FISH_FILES[@]}"; do
-  if [ ! -h "$HOME/.config/fish/$file" ]; then
-    ln -s "$(pwd)/.config/fish/$file" "$HOME/.config/fish/$file"
+for file in "${CONFIG_FILES[@]}"; do
+  if [ ! -h "$HOME/.config/$file" ]; then
+    ln -s "$(pwd)/.config/$file" "$HOME/.config/$file"
   fi
 done
+
+if type fisher >/dev/null 2>&1; then
+  fisher
+fi
 
 # key binding
 if [ ! -f ~/Library/KeyBindings/DefaultKeyBinding.dict ]; then
@@ -68,3 +70,16 @@ fi
 
 # git
 git config --global core.editor vim
+git config --global ghq.root ~/go/src 
+git config --global commit.verbose true
+git config --global color.ui true
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.st status -uno
+git config --global alias.p pull --prune
+
+# key repeat
+defaults write -g InitialKeyRepeat -int 10
+defaults write -g KeyRepeat -int 1
+

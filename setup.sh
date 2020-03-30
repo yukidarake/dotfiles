@@ -76,8 +76,8 @@ git config --global color.ui true
 git config --global alias.br branch
 git config --global alias.ci commit
 git config --global alias.co checkout
-git config --global alias.st status -uno
-git config --global alias.p pull --prune
+git config --global alias.st 'status -uno'
+git config --global alias.p 'pull --prune'
 
 # key repeat
 defaults write -g InitialKeyRepeat -int 10

@@ -1,9 +1,20 @@
+set surround
+set commentary
+set clipboard-=ideaput
 set clipboard+=unnamed
-" JIS 配列 C-[ で Esc
-inoremap <C-]> <Esc>
-inoremap ¥ \
-inoremap \ ¥
-
-set tabstop=2
-set softtabstop=2
-set smarttab
+set ideajoin
+set hlsearch
+set incsearch
+set ignorecase smartcase
+set nrformats-=octal
+set virtualedit+=block
+set ts=2 sw=2 sts=2 sr et ai
+" Use <C-L> to clear the highlighting of :set hlsearch.
+if maparg('<C-L>', 'n') ==# ''
+  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+endif
+" https://stackoverflow.com/a/45109772
+" inoremap <C-n> <ESC>:action HippieCompletion<CR>a
+" inoremap <C-p> <ESC>:action HippieBackwardCompletion<CR>a
+nnoremap <C-o> :<C-u>action Back<CR>
+nnoremap <C-i> :<C-u>action Forward<CR>

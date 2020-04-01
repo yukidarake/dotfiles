@@ -1,18 +1,19 @@
 if has('gui_macvim')
   set showtabline=2
   set antialias
-  set guifont=Hack:h13
+  set guifont=Hack:h14
   set guioptions+=a
   set guioptions-=T
   set guioptions-=r
   set guioptions-=R
   set guioptions-=l
   set guioptions-=L
-  set lines=44
-  set columns=100
+  set lines=54
+  set columns=120
   set fuoptions=maxvert,maxhorz
   set formatoptions=q
-  set imdisable
+  " set imdisable
+  highlight Visual cterm=bold ctermbg=Blue ctermfg=NONE guifg=NONE guibg=SkyBlue1
 
   function! ToggleFullScreen()
     if &fullscreen
@@ -29,4 +30,3 @@ if has('gui_macvim')
 
   au GUIEnter * set nofullscreen
 endif
-

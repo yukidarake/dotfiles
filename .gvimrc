@@ -2,12 +2,15 @@ if has('gui_macvim')
   set showtabline=2
   set antialias
   set guifont=Hack:h14
-  set guioptions+=a
+  set guioptions-=a
+  set guioptions-=A
   set guioptions-=T
   set guioptions-=r
   set guioptions-=R
   set guioptions-=l
   set guioptions-=L
+  set guioptions-=m
+  set guioptions-=b
   set lines=54
   set columns=120
   set fuoptions=maxvert,maxhorz

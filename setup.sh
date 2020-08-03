@@ -83,3 +83,6 @@ git config --global alias.p 'pull --prune'
 defaults write -g InitialKeyRepeat -int 10
 defaults write -g KeyRepeat -int 1
 
+# https://qiita.com/ucan-lab/items/c1a12c20c878d6fb1e21
+defaults write com.apple.finder AppleShowAllFiles -boolean true
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true

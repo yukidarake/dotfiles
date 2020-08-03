@@ -1,4 +1,3 @@
-set nocompatible
 set enc=utf-8
 set fencs=ucs-bom,utf-8,iso-2022-jp,euc-jp,cp932,utf-16le,utf-16,default,latin1
 set fileformats=unix,dos,mac
@@ -41,7 +40,7 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'stephpy/vim-php-cs-fixer'
 " If php-cs-fixer is in $PATH, you don't need to define line below
 " let g:php_cs_fixer_path = "~/php-cs-fixer.phar" " define the path to the php-cs-fixer.phar
-  set t_Co=256
+set t_Co=256
 let g:php_cs_fixer_rules = "@PSR2"          " options: --rules (default:@PSR2)
 "let g:php_cs_fixer_cache = ".php_cs.cache" " options: --cache-file
 "let g:php_cs_fixer_config_file = '.php_cs' " options: --config
@@ -80,7 +79,6 @@ nnoremap ,? ?
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jacoborus/tender.vim'
 let macvim_skip_colorscheme=1
-Plug 'mopp/autodirmake.vim'
 Plug 'othree/yajs.vim', { 'for': ['javascript'] } " es6のハイライト
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }  " stage-0 のsyntax highlight
 Plug 'tpope/vim-commentary'

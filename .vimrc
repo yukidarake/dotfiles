@@ -180,6 +180,12 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
+if v:version >= 800
+  set emoji
+  set fixendofline
+  set termguicolors
+endif
+
 augroup MyAutocmd
   autocmd!
   autocmd BufReadPost,BufNewFile *.json,.jshintrc,.eslintrc setlocal filetype=json

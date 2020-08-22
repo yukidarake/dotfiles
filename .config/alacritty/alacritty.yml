@@ -3,13 +3,13 @@ window:
 font:
   size: 13.0
   normal:
-    family: Hack
+    family: JetBrains Mono NL
     style: Regular
   bold:
-    family: Hack
+    family: JetBrains Mono NL
     style: Bold
   italic:
-    family: Hack
+    family: JetBrains Mono NL
     style: Italic
 # Colors (Tender)
 colors:

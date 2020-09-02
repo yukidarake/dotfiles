@@ -49,6 +49,7 @@ CONFIG_FILES=(
 )
 for file in "${CONFIG_FILES[@]}"; do
   if [ ! -h "$HOME/.config/$file" ]; then
+    mkdir -p "$(dirname "$HOME/.config/$file")"
     ln -s "$(pwd)/.config/$file" "$HOME/.config/$file"
   fi
 done

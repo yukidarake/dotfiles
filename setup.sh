@@ -14,8 +14,8 @@ if [ ! -f ~/.vim/autoload/plug.vim ]; then
 fi
 
 DIRS=(
-  "$HOME/.vim/backup "
-  "$HOME/.vim/undo "
+  "$HOME/.vim/backup"
+  "$HOME/.vim/undo"
   "$HOME/.z"
 )
 for dir in "${DIRS[@]}"; do

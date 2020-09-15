@@ -63,8 +63,8 @@ augroup END
 "   endif
 " endfunction
 " Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp'], 'do': function('BuildYCM') }
-Plug 'tell-k/vim-autopep8'
-let g:autopep8_disable_show_diff=1
+" Plug 'tell-k/vim-autopep8'
+" let g:autopep8_disable_show_diff=1
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'thinca/vim-visualstar'
@@ -82,10 +82,10 @@ let macvim_skip_colorscheme=1
 Plug 'othree/yajs.vim', { 'for': ['javascript'] } " es6のハイライト
 Plug 'othree/es.next.syntax.vim', { 'for': ['javascript'] }  " stage-0 のsyntax highlight
 Plug 'tpope/vim-commentary'
-" plug 'cespare/vim-toml', { 'for': ['toml'] }
+Plug 'cespare/vim-toml', { 'for': ['toml'] }
 Plug 'stephpy/vim-yaml', { 'for': ['yaml'] }
 Plug 'chrisbra/vim-diff-enhanced'
-" plug 'pearofducks/ansible-vim', { 'for': ['yaml'] }
+Plug 'pearofducks/ansible-vim', { 'for': ['yaml'] }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': ['py'] }
 Plug 'w0rp/ale'
 let g:ale_linters = {
@@ -97,6 +97,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'typescript': ['prettier'],
+\   'python': ['autopep8'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
@@ -107,7 +108,6 @@ Plug 'dag/vim-fish'
 let colorscheme = 'tender'
 
 Plug 'itchyny/lightline.vim'
-set laststatus=2
 let g:lightline = { 'colorscheme': colorscheme }
 
 augroup JsAutocmd
@@ -131,6 +131,7 @@ call plug#end()
 let g:mapleader = '\'
 let g:maplocalleader = ','
 
+set laststatus=2
 set nrformats-=octal
 set clipboard+=unnamed
 set noswapfile
@@ -216,7 +217,6 @@ augroup MyAutocmd
   " color
   syntax enable
 
-  set background=dark
 
   execute 'colorscheme' colorscheme
   execute 'autocmd GUIEnter * colorscheme' colorscheme

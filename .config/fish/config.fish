@@ -1,10 +1,6 @@
 set fish_greeting
 
-if not string match -q '*go/bin*' -- $PATH
-  set -x PATH \
-    ~/go/bin \
-    $PATH
-end
+fish_add_path ~/go/bin 
 set -x TERM xterm-256color
 set -x PIPENV_VENV_IN_PROJECT true
 set -x LANG ja_JP.UTF-8

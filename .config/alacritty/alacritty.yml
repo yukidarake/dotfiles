@@ -1,7 +1,7 @@
 window:
   startup_mode: SimpleFullscreen
 font:
-  size: 15.0
+  size: 13.0
   normal:
     family: JetBrains Mono NL
     style: Regular

@@ -46,6 +46,7 @@ CONFIG_FILES=(
   fish/fishfile
   karabiner/karabiner.json
   alacritty/alacritty.yml
+  git/ignore
 )
 for file in "${CONFIG_FILES[@]}"; do
   if [ ! -h "$HOME/.config/$file" ]; then
@@ -79,7 +80,6 @@ git config --global alias.ci commit
 git config --global alias.co checkout
 git config --global alias.st 'status -uno'
 git config --global alias.p 'pull --prune'
-git config --global core.excludesfile ~/.gitignore_global
 git config --global merge.ff false
 git config --global pull.ff only
 

@@ -41,4 +41,9 @@ function fssh -d "Fuzzy-find ssh host via rg and ssh into it"
   rg --ignore-case '^host [^*]' ~/.ssh/config ~/.ssh/conf.d/hosts/* | cut -d ' ' -f 2 | fzf -m --tac --cycle | xpanes --ssh
 end
 
-source /usr/local/opt/asdf/asdf.fish
+if test -f /opt/homebrew/opt/asdf/asdf.fish
+  source /opt/homebrew/opt/asdf/asdf.fish
+else 
+  echo '/opt/homebrew/opt/asdf/asdf.fish not found'
+end
+

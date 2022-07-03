@@ -5,6 +5,8 @@ cd "$(dirname "$0")"
 
 if ! type brew >/dev/null 2>&1; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   brew bundle
 fi
 
@@ -34,6 +36,7 @@ DOT_FILES=(
   .ideavimrc
   .tmux.conf
   .terraformrc
+  .asdfrc
 )
 for file in "${DOT_FILES[@]}"; do
   if [ ! -h "$HOME/$file" ]; then
@@ -43,7 +46,7 @@ done
 
 CONFIG_FILES=(
   fish/config.fish
-  fish/fishfile
+  fish/fish_plugins
   karabiner/karabiner.json
   alacritty/alacritty.yml
   git/ignore

@@ -1,5 +1,5 @@
 #!/bin/bash 
-set -eux
+set -euxo pipefail
 
 cd "$(dirname "$0")"
 
@@ -10,29 +10,17 @@ if ! type brew >/dev/null 2>&1; then
   brew bundle
 fi
 
-if [ ! -f ~/.vim/autoload/plug.vim ]; then
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
-DIRS=(
-  "$HOME/.vim/backup"
-  "$HOME/.vim/undo"
-  "$HOME/.z"
-)
-for dir in "${DIRS[@]}"; do
-  if [ ! -d "$dir" ]; then
-    mkdir "$dir"
-  fi
-done
-
 if [ ! -d ~/.tmux/plugins/tpm ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
+PLUG_VIM="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
+if [ ! -e "$PLUG_VIM" ]; then
+  curl -fLo "$PLUG_VIM" --create-dirs 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+fi
+
 DOT_FILES=(
   .vimrc
-  .gvimrc
   .ideavimrc
   .tmux.conf
   .terraformrc
@@ -49,7 +37,7 @@ CONFIG_FILES=(
   fish/fish_plugins
   karabiner/karabiner.json
   alacritty/alacritty.yml
-  git/ignore
+  nvim/init.vim
 )
 for file in "${CONFIG_FILES[@]}"; do
   if [ ! -h "$HOME/.config/$file" ]; then
@@ -83,6 +71,7 @@ git config --global alias.ci commit
 git config --global alias.co checkout
 git config --global alias.st 'status -uno'
 git config --global alias.p 'pull --prune'
+git config --global alias.f 'fetch --prune'
 git config --global merge.ff false
 git config --global pull.ff only
 

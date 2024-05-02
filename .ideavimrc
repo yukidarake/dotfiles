@@ -1,5 +1,6 @@
 set surround
 set commentary
+set quickscope
 set clipboard-=ideaput
 set clipboard+=unnamed
 set ideajoin
@@ -14,7 +15,8 @@ if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
 " https://stackoverflow.com/a/45109772
-" inoremap <C-n> <ESC>:action HippieCompletion<CR>a
-" inoremap <C-p> <ESC>:action HippieBackwardCompletion<CR>a
-nnoremap <C-o> :<C-u>action Back<CR>
-nnoremap <C-i> :<C-u>action Forward<CR>
+imap <C-n> <Action>(HippieCompletion)
+imap <C-p> <Action>(HippieBackwardCompletion)
+nmap <C-o> <Action>(Back)
+nmap <C-i> <Action>(Forward)
+nmap <C-]> <Action>(GoToImplementation)

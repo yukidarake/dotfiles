@@ -24,7 +24,6 @@ DOT_FILES=(
   .ideavimrc
   .tmux.conf
   .terraformrc
-  .asdfrc
 )
 for file in "${DOT_FILES[@]}"; do
   if [ ! -h "$HOME/$file" ]; then

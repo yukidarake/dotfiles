@@ -180,6 +180,10 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 if v:version >= 800
   set emoji

@@ -40,6 +40,10 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 nnoremap [FZF] <Nop>
 nmap <Space> [FZF]

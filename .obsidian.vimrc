@@ -6,6 +6,10 @@ nmap H ^
 nmap L $
 " Quickly remove search highlights
 nmap <C-l> :nohl
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 
 " Yank to system clipboard
 set clipboard=unnamed

@@ -35,7 +35,7 @@ CONFIG_FILES=(
   fish/config.fish
   fish/fish_plugins
   karabiner/karabiner.json
-  alacritty/alacritty.yml
+  alacritty/alacritty.toml
   nvim/init.vim
 )
 for file in "${CONFIG_FILES[@]}"; do

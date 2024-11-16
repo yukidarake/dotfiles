@@ -1,0 +1,98 @@
+[colors.bright]
+black = "#4c4c4c"
+blue = "#b3deef"
+cyan = "#73cef4"
+green = "#c9d05c"
+magenta = "#d3b987"
+red = "#f43753"
+white = "#feffff"
+yellow = "#ffc24b"
+
+[colors.normal]
+black = "#282828"
+blue = "#b3deef"
+cyan = "#73cef4"
+green = "#c9d05c"
+magenta = "#d3b987"
+red = "#f43753"
+white = "#eeeeee"
+yellow = "#ffc24b"
+
+[colors.primary]
+background = "#282828"
+foreground = "#eeeeee"
+
+[font]
+size = 13.0
+
+[font.bold]
+family = "JetBrains Mono NL"
+style = "Bold"
+
+[font.italic]
+family = "JetBrains Mono NL"
+style = "Italic"
+
+[font.normal]
+family = "JetBrains Mono NL"
+style = "Regular"
+
+[[keyboard.bindings]]
+chars = "\u001Bf"
+key = "F"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001Bb"
+key = "B"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001Bd"
+key = "D"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B"
+key = "LBracket"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = '\'
+key = "Backslash"
+mods = "Alt"
+
+[[keyboard.bindings]]
+action = "ResetFontSize"
+key = "Key0"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Plus"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Minus"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+action = "ToggleSimpleFullscreen"
+key = 36
+mods = "Command"
+
+[[keyboard.bindings]]
+key = "Comma"
+mods = "Command"
+
+[keyboard.bindings.command]
+program = "vim"
+args = ["~/.config/alacritty/alacritty.toml"]
+
+[shell]
+program = "/bin/zsh"
+args = ["-l", "-c", "tmux a -t 0 || tmux"]
+
+[window]
+startup_mode = "SimpleFullscreen"

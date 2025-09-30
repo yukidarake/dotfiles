@@ -90,7 +90,7 @@ mods = "Command"
 program = "vim"
 args = ["~/.config/alacritty/alacritty.toml"]
 
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 args = ["-l", "-c", "tmux a -t 0 || tmux"]
 

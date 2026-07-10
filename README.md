@@ -28,35 +28,6 @@ cd dotfiles
 ./bin/mise bootstrap status --missing
 ```
 
-パッケージ、dotfile、macOS defaults は [mise.toml](./mise.toml) で管理します。Git 設定、Fisher、vim-plug は [scripts/bootstrap](./scripts/bootstrap) にある `bootstrap` task で管理します。
+パッケージ、dotfile、macOS 設定は [mise.toml](./mise.toml) で管理します。Git 設定、Fisher、vim-plug は [scripts/bootstrap](./scripts/bootstrap) にある `bootstrap` task で管理します。
 
-## Macでする設定
-
-### タブでボタンを選択できるようにする
-
-システム環境設定→キーボード→キーボードショートカット→すべてのコントロール
-
-### COMMAND + F1をウィンドウ切り替えにする
-
-システム環境設定→キーボード→キーボードショートカット
-
-### ダブルタップでドラッグにする
-
-システム環境設定→アクセシビリティ→マウスとトラックパッド→トラックパッドオプション→ドラッグを有効にする
-
-## トラックパッド
-
-### ダブルクリックでドラッグ可能に
-
-アクセシビリティ→マウス＆トラックパッド→トラックパッドオプション
-
-## COMMAND + TAB時の切り替えにアプリアイコンが出ないようにする
-
-### Info.plistの編集
-
-下記追記
-
-```xml
-  <key>NSUIElement</key>
-  <string>1</string>
-```
+macOS では、キーボードのフルキーボードアクセス、キーリピート、トラックパッドのドラッグ、Finder の隠しファイル表示、および `COMMAND + F1` でのウインドウ切り替えも bootstrap で設定されます。キーボードショートカットは、設定後のログアウトまたは再起動後に確実に反映されます。

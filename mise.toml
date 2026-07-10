@@ -94,6 +94,14 @@ show_all_files = true
 "com.apple.AppleMultitouchTrackpad" = { Dragging = true }
 "NSGlobalDomain" = { AppleKeyboardUIMode = 2 }
 
+[bootstrap.hooks.post-defaults]
+# AppleSymbolicHotKeys は他のショートカットも含む辞書なので、宣言的な
+# defaults で辞書全体を置き換えず、「次のウインドウへ移動」(27) だけを更新する。
+run = '''
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 \
+  '<dict><key>enabled</key><true/><key>value</key><dict><key>parameters</key><array><integer>65535</integer><integer>122</integer><integer>1048576</integer></array><key>type</key><string>standard</string></dict></dict>'
+'''
+
 [tasks.bootstrap]
 description = "mise の宣言対象外となるユーザー環境をセットアップする"
 run = "./scripts/bootstrap"

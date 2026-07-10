@@ -70,6 +70,7 @@ experimental = true
 "brew-cask:zoom" = "latest"
 
 [dotfiles]
+"~/.config/git/ignore" = { source = ".config/git/ignore", mode = "symlink" }
 "~/.vimrc" = { source = ".vimrc", mode = "symlink" }
 "~/.ideavimrc" = { source = ".ideavimrc", mode = "symlink" }
 "~/.terraformrc" = { source = ".terraformrc", mode = "symlink" }

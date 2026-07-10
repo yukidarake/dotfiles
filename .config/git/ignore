@@ -1,0 +1,24 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Logs
+*.log
+log/
+logs/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~

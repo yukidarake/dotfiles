@@ -16,6 +16,7 @@ set -x TERM xterm-256color
 set -x LANG ja_JP.UTF-8
 set -x EDITOR nvim
 set -x FZF_TMUX 0
+set -x UV_EXCLUDE_NEWER "7 days"
 
 if type -q colima
   set -x DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"

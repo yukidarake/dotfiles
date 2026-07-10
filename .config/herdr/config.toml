@@ -1,0 +1,23 @@
+onboading = false
+
+[keys]
+prefix = "ctrl+z"
+split_horizontal ="prefix+s"
+settings = "prefix+shift+s"
+
+[terminal]
+default_shell = "fish"
+
+[ui]
+prompt_new_tab_name= false
+
+show_agent_labels_on_pane_borders = true
+[ui.sound]
+enabled = true
+
+[ui.toast]
+delivery = "herdr"
+
+[experimental]
+pane_history = true
+switch_ascii_input_source_in_prefix = true

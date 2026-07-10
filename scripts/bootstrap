@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+plug_vim="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+if [[ ! -e "$plug_vim" ]]; then
+  curl -fLo "$plug_vim" --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+if (cd "$HOME" && fish -c 'type -q fisher'); then
+  (cd "$HOME" && fish -c 'fisher update')
+fi
+
+git config --global core.editor vim
+git config --global ghq.root "$HOME/go/src"
+git config --global commit.verbose true
+git config --global color.ui true
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.st 'status -uno'
+git config --global alias.p 'pull --prune'
+git config --global alias.f 'fetch --prune'
+git config --global merge.ff false
+git config --global pull.ff only
+git config --global user.email yukidarake@users.noreply.github.com

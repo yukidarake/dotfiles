@@ -1,0 +1,99 @@
+min_version = "2026.7.5"
+
+[settings]
+experimental = true
+
+[bootstrap.packages]
+"brew:xz" = "latest"
+"brew:autoconf" = "latest"
+"brew:automake" = "latest"
+"brew:gettext" = "latest"
+"brew:glib" = "latest"
+"brew:colima" = "latest"
+"brew:coreutils" = "latest"
+"brew:curl" = "latest"
+"brew:deno" = "latest"
+"brew:docker" = "latest"
+"brew:libevent" = "latest"
+"brew:libidn2" = "latest"
+"brew:gnutls" = "latest"
+"brew:harfbuzz" = "latest"
+"brew:pango" = "latest"
+"brew:ffmpeg" = "latest"
+"brew:fish" = "latest"
+"brew:fisher" = "latest"
+"brew:fzf" = "latest"
+"brew:gdk-pixbuf" = "latest"
+"brew:ghq" = "latest"
+"brew:git" = "latest"
+"brew:gnupg" = "latest"
+"brew:hunspell" = "latest"
+"brew:lua" = "latest"
+"brew:qt" = "latest"
+"brew:gnuplot" = "latest"
+"brew:go" = "latest"
+"brew:gobject-introspection" = "latest"
+"brew:helm" = "latest"
+"brew:herdr" = "latest"
+"brew:jq" = "latest"
+"brew:kubernetes-cli" = "latest"
+"brew:libffi" = "latest"
+"brew:libheif" = "latest"
+"brew:librsvg" = "latest"
+"brew:libtool" = "latest"
+"brew:mise" = "latest"
+"brew:neovim" = "latest"
+"brew:ngrep" = "latest"
+"brew:pyqt" = "latest"
+"brew:qt@5" = "latest"
+"brew:pyqt@5" = "latest"
+"brew:qscintilla2" = "latest"
+"brew:reattach-to-user-namespace" = "latest"
+"brew:ripgrep" = "latest"
+"brew:shellcheck" = "latest"
+"brew:zoxide" = "latest"
+"brew-cask:appcleaner" = "latest"
+"brew-cask:bettertouchtool" = "latest"
+"brew-cask:brave-browser" = "latest"
+"brew-cask:chatgpt" = "latest"
+"brew-cask:firefox" = "latest"
+"brew-cask:font-jetbrains-mono" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:google-chrome" = "latest"
+"brew-cask:google-japanese-ime" = "latest"
+"brew-cask:intellij-idea" = "latest"
+"brew-cask:karabiner-elements" = "latest"
+"brew-cask:obsidian" = "latest"
+"brew-cask:raycast" = "latest"
+"brew-cask:vimr" = "latest"
+"brew-cask:zed" = "latest"
+"brew-cask:zoom" = "latest"
+
+[dotfiles]
+"~/.vimrc" = { source = ".vimrc", mode = "symlink" }
+"~/.ideavimrc" = { source = ".ideavimrc", mode = "symlink" }
+"~/.terraformrc" = { source = ".terraformrc", mode = "symlink" }
+"~/.zprofile" = { source = ".zprofile", mode = "symlink" }
+"~/.zshrc" = { source = ".zshrc", mode = "symlink" }
+"~/.config/fish/config.fish" = { source = ".config/fish/config.fish", mode = "symlink" }
+"~/.config/fish/fish_plugins" = { source = ".config/fish/fish_plugins", mode = "symlink" }
+"~/.config/ghostty/config" = { source = ".config/ghostty/config", mode = "symlink" }
+"~/.config/herdr/config.toml" = { source = ".config/herdr/config.toml", mode = "symlink" }
+"~/.config/karabiner/karabiner.json" = { source = ".config/karabiner/karabiner.json", mode = "symlink" }
+"~/.config/nvim/init.vim" = { source = ".config/nvim/init.vim", mode = "symlink" }
+
+[bootstrap.macos.keyboard]
+initial_key_repeat = 10
+key_repeat = 1
+
+[bootstrap.macos.finder]
+show_all_files = true
+
+[bootstrap.macos.defaults]
+"com.apple.desktopservices" = { DSDontWriteNetworkStores = true }
+"com.apple.AppleMultitouchTrackpad" = { Dragging = true }
+"NSGlobalDomain" = { AppleKeyboardUIMode = 2 }
+
+[tasks.bootstrap]
+description = "mise の宣言対象外となるユーザー環境をセットアップする"
+run = "./scripts/bootstrap"

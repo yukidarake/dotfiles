@@ -14,6 +14,18 @@ set ts=2 sw=2 sts=2 sr et ai
 if maparg('<C-L>', 'n') ==# ''
   nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 endif
+
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
+
 " https://stackoverflow.com/a/45109772
 imap <C-n> <Action>(HippieCompletion)
 imap <C-p> <Action>(HippieBackwardCompletion)

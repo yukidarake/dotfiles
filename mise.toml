@@ -66,6 +66,8 @@ experimental = true
 "brew-cask:vimr" = "latest"
 "brew-cask:zed" = "latest"
 "brew-cask:zoom" = "latest"
+"brew:tig" = "latest"
+"brew:trash" = "latest"
 
 [bootstrap.repos]
 "~/ghq/github.com/yukidarake/dotfiles-private" = { url = "https://github.com/yukidarake/dotfiles-private.git", ref = "main" }

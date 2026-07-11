@@ -1,3 +1,4 @@
+onboarding = false
 onboading = false
 
 [keys]
@@ -12,6 +13,7 @@ default_shell = "fish"
 prompt_new_tab_name= false
 
 show_agent_labels_on_pane_borders = true
+agent_panel_sort = "priority"
 [ui.sound]
 enabled = true
 

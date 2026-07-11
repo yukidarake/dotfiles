@@ -12,7 +12,6 @@ experimental = true
 "brew:colima" = "latest"
 "brew:coreutils" = "latest"
 "brew:curl" = "latest"
-"brew:deno" = "latest"
 "brew:docker" = "latest"
 "brew:libevent" = "latest"
 "brew:libidn2" = "latest"
@@ -20,10 +19,12 @@ experimental = true
 "brew:harfbuzz" = "latest"
 "brew:pango" = "latest"
 "brew:ffmpeg" = "latest"
+"brew:fd" = "latest"
 "brew:fish" = "latest"
 "brew:fisher" = "latest"
 "brew:fzf" = "latest"
 "brew:gdk-pixbuf" = "latest"
+"brew:gh" = "latest"
 "brew:ghq" = "latest"
 "brew:git" = "latest"
 "brew:gnupg" = "latest"
@@ -31,9 +32,7 @@ experimental = true
 "brew:lua" = "latest"
 "brew:qt" = "latest"
 "brew:gnuplot" = "latest"
-"brew:go" = "latest"
 "brew:gobject-introspection" = "latest"
-"brew:helm" = "latest"
 "brew:herdr" = "latest"
 "brew:jq" = "latest"
 "brew:kubernetes-cli" = "latest"
@@ -48,7 +47,6 @@ experimental = true
 "brew:qt@5" = "latest"
 "brew:pyqt@5" = "latest"
 "brew:qscintilla2" = "latest"
-"brew:reattach-to-user-namespace" = "latest"
 "brew:ripgrep" = "latest"
 "brew:shellcheck" = "latest"
 "brew:zoxide" = "latest"
@@ -69,7 +67,12 @@ experimental = true
 "brew-cask:zed" = "latest"
 "brew-cask:zoom" = "latest"
 
+[bootstrap.repos]
+"~/ghq/github.com/yukidarake/dotfiles-private" = { url = "https://github.com/yukidarake/dotfiles-private.git", ref = "main" }
+
 [dotfiles]
+"~/.codex/config.toml" = { source = "~/ghq/github.com/yukidarake/dotfiles-private/codex/config.toml", mode = "symlink" }
+"~/.config/mise/config.toml" = { source = ".config/mise/config.toml", mode = "symlink" }
 "~/.config/git/ignore" = { source = ".config/git/ignore", mode = "symlink" }
 "~/.vimrc" = { source = ".vimrc", mode = "symlink" }
 "~/.ideavimrc" = { source = ".ideavimrc", mode = "symlink" }
@@ -106,3 +109,51 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 \
 [tasks.bootstrap]
 description = "mise の宣言対象外となるユーザー環境をセットアップする"
 run = "./scripts/bootstrap"
+
+[tasks.codex-backup]
+description = "Codex の設定を private repository に commit して push する"
+run = '''
+repo="$HOME/ghq/github.com/yukidarake/dotfiles-private"
+path="codex/config.toml"
+
+git -C "$repo" add -- "$path"
+if git -C "$repo" diff --cached --quiet -- "$path"; then
+  echo "Codex config is already backed up"
+  exit 0
+fi
+
+git -C "$repo" commit --only -m "Backup Codex config" -- "$path"
+git -C "$repo" push
+'''
+
+[tasks.dotfiles-backup]
+description = "管理中の dotfile を commit して push する"
+run = '''
+set -- \
+  README.md \
+  mise.toml \
+  bin/mise \
+  scripts/bootstrap \
+  .config/fish/config.fish \
+  .config/fish/fish_plugins \
+  .config/ghostty/config \
+  .config/git/ignore \
+  .config/herdr/config.toml \
+  .config/karabiner/karabiner.json \
+  .config/mise/config.toml \
+  .config/nvim/init.vim \
+  .ideavimrc \
+  .terraformrc \
+  .vimrc \
+  .zprofile \
+  .zshrc
+
+git add -- "$@"
+if git diff --cached --quiet -- "$@"; then
+  echo "Dotfiles are already backed up"
+  exit 0
+fi
+
+git commit --only -m "Backup dotfiles" -- "$@"
+git push
+'''

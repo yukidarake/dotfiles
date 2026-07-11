@@ -32,6 +32,46 @@ cd dotfiles
 
 macOS では、キーボードのフルキーボードアクセス、キーリピート、トラックパッドのドラッグ、Finder の隠しファイル表示、および `COMMAND + F1` でのウインドウ切り替えも bootstrap で設定されます。キーボードショートカットは、設定後のログアウトまたは再起動後に確実に反映されます。
 
+## Homebrew パッケージの管理
+
+Homebrew の formula と cask は、[mise.toml](./mise.toml) の `[bootstrap.packages]` を正として管理します。普段は `brew install` を直接使わず、`mise` 経由で追加・削除します。
+
+### 追加する
+
+formula を追加する場合は、次のコマンドで `mise.toml` への追記とインストールを同時に行います。
+
+```sh
+./bin/mise bootstrap packages use brew:tmux
+```
+
+cask の場合は `brew-cask:` を使います。
+
+```sh
+./bin/mise bootstrap packages use brew-cask:firefox
+```
+
+`mise.toml` を手作業で編集した場合は、次のコマンドで不足パッケージをインストールします。
+
+```sh
+./bin/mise bootstrap packages apply
+```
+
+### 削除する
+
+先に対象の行を `mise.toml` の `[bootstrap.packages]` から削除します。次に dry-run し、削除候補を確認します。
+
+```sh
+./bin/mise bootstrap packages prune --manager brew --dry-run
+```
+
+候補に問題がなければ、実際に削除します。
+
+```sh
+./bin/mise bootstrap packages prune --manager brew
+```
+
+`prune` は、現在の設定から必要と判定されない Homebrew formula をまとめて削除するため、dry-run の確認を省略しないでください。通常の `./bin/mise bootstrap` や `packages apply` は不足パッケージをインストールしますが、設定から消したパッケージの削除は行いません。
+
 ## dotfile の運用
 
 ### 状態を確認する

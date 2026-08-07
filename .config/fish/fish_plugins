@@ -1,4 +1,3 @@
-decors/fish-ghq
-PatrickF1/fzf.fish
-rafaelrinaldi/pure
-kidonng/zoxide.fish
+pure-fish/pure@v4.18.0
+patrickf1/fzf.fish@v11.0
+decors/fish-ghq@cafaaabe63c124bf0714f89ec715cfe9ece87fa2

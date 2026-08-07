@@ -37,6 +37,3 @@ function cdf -d "cd to the current Finder directory"
   cd (pfd)
 end
 
-function fssh -d "Fuzzy-find ssh host via rg and ssh into it"
-  rg --ignore-case '^host [^*]' ~/.ssh/config ~/.ssh/conf.d/hosts/* | cut -d ' ' -f 2 | fzf -m --tac --cycle | xpanes --ssh
-end

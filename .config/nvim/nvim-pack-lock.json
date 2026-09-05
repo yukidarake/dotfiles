@@ -1,0 +1,60 @@
+{
+  "plugins": {
+    "editorconfig-vim": {
+      "rev": "c0227885a06b155d5aa5465e08b9800e8c939f70",
+      "src": "https://github.com/editorconfig/editorconfig-vim"
+    },
+    "fzf": {
+      "rev": "3337be9d450cd349e99273a2d3985ceaf5f3753f",
+      "src": "https://github.com/junegunn/fzf"
+    },
+    "fzf-lua": {
+      "rev": "05e44d38de0a79c11fba5f7bf8138791b1dbdd1e",
+      "src": "https://github.com/ibhagwan/fzf-lua"
+    },
+    "fzf.vim": {
+      "rev": "d2a59a992a2455f609c0fde2ebd84427ea8f919a",
+      "src": "https://github.com/junegunn/fzf.vim"
+    },
+    "kanagawa.nvim": {
+      "rev": "bb85e4bfc8d89b0e62c8fa53ccdd13d12e2f77b3",
+      "src": "https://github.com/rebelot/kanagawa.nvim"
+    },
+    "lightline.vim": {
+      "rev": "d042c506cb2e7a59112a72447e0b5fe8739d9d1d",
+      "src": "https://github.com/itchyny/lightline.vim"
+    },
+    "lualine.nvim": {
+      "rev": "221ce6b2d999187044529f49da6554a92f740a96",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
+    },
+    "tender.vim": {
+      "rev": "b66dc330aff998dff9d44459d84bc1c5f4304fcc",
+      "src": "https://github.com/jacoborus/tender.vim"
+    },
+    "vim-commentary": {
+      "rev": "64a654ef4a20db1727938338310209b6a63f60c9",
+      "src": "https://github.com/tpope/vim-commentary"
+    },
+    "vim-fish-syntax": {
+      "rev": "e229becbf4bbee21cc78cd2cf24f57112e33c02a",
+      "src": "https://github.com/khaveesh/vim-fish-syntax"
+    },
+    "vim-quickrun": {
+      "rev": "77b4d6ea9972a206f02c736882c2398c36d2983c",
+      "src": "https://github.com/thinca/vim-quickrun"
+    },
+    "vim-repeat": {
+      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+      "src": "https://github.com/tpope/vim-repeat"
+    },
+    "vim-surround": {
+      "rev": "3d188ed2113431cf8dac77be61b842acb64433d9",
+      "src": "https://github.com/tpope/vim-surround"
+    },
+    "vim-visualstar": {
+      "rev": "a18cd0e7a03311ac709595c1d261ed44b45c9098",
+      "src": "https://github.com/thinca/vim-visualstar"
+    }
+  }
+}
